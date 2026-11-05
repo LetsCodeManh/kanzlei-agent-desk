@@ -1,0 +1,16 @@
+{
+  "id": "b08",
+  "channel": "email",
+  "receivedDateTime": "2026-11-02T05:30:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Fristenkalender",
+      "address": "fristen@kanzlei-berlin.example"
+    }
+  },
+  "subject": "Wiedervorlage heute: B-26-101 Musterfrau",
+  "body": {
+    "contentType": "text",
+    "content": "Wiedervorlage heute, 02.11.2026: B-26-101 Musterfrau ./. Fiktiv Logistik GmbH. Grund: Prüfen, ob die Beklagte die Lohnabrechnungen übersandt hat.\n\nAutomatische Nachricht der Kanzleisoftware."
+  }
+}

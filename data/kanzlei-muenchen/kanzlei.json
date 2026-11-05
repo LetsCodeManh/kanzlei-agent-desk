@@ -1,0 +1,7 @@
+{
+  "name": "Kanzlei Muster Rechtsanwälte",
+  "land": "BY",
+  "domain": "kanzlei-muenchen.example",
+  "anwalt": {"name": "RA Jonas Erfunden", "address": "j.erfunden@kanzlei-muenchen.example"},
+  "simulated_today": "2026-11-02"
+}

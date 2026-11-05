@@ -1,0 +1,54 @@
+{
+ "email_id": "b11",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Arbeitsgericht Berlin verlegt den Kammertermin vom 12.11.2026 auf den 10.12.2026, 9:00 Uhr, Saal 108.",
+   "quotes": [
+    "Der Kammertermin vom 12.11.2026 wird aufgehoben und verlegt auf Donnerstag, den 10.12.2026, 9:00 Uhr, Saal 108."
+   ]
+  },
+  "sender_role": {
+   "value": "court",
+   "quote": "Arbeitsgericht Berlin"
+  },
+  "aktenzeichen": {
+   "value": "21 Ca 2222/26",
+   "quote": "Aktenzeichen: 21 Ca 2222/26"
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [
+   {
+    "what": "Kammertermin neu angesetzt (verlegt vom 12.11.2026), Saal 108",
+    "date_text": "Donnerstag, den 10.12.2026, 9:00 Uhr",
+    "quote": "verlegt auf Donnerstag, den 10.12.2026, 9:00 Uhr, Saal 108."
+   }
+  ],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3508,
+  "cost_usd": 0.0096794,
+  "input_tokens": 3190,
+  "output_tokens": 626
+ }
+}

@@ -1,0 +1,54 @@
+{
+ "email_id": "m09",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Amtsgericht München lädt zur mündlichen Verhandlung am 09.12.2026, 11:00 Uhr, Sitzungssaal A 105 (211 C 999/26).",
+   "quotes": [
+    "Termin zur mündlichen Verhandlung wird bestimmt auf Mittwoch, den 09.12.2026, 11:00 Uhr, Sitzungssaal A 105."
+   ]
+  },
+  "sender_role": {
+   "value": "court",
+   "quote": "Amtsgericht München"
+  },
+  "aktenzeichen": {
+   "value": "211 C 999/26",
+   "quote": "Aktenzeichen: 211 C 999/26"
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [
+   {
+    "what": "Termin zur mündlichen Verhandlung, Sitzungssaal A 105",
+    "date_text": "Mittwoch, den 09.12.2026, 11:00 Uhr",
+    "quote": "Termin zur mündlichen Verhandlung wird bestimmt auf Mittwoch, den 09.12.2026, 11:00 Uhr, Sitzungssaal A 105."
+   }
+  ],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3629,
+  "cost_usd": 0.009723399999999998,
+  "input_tokens": 3176,
+  "output_tokens": 636
+ }
+}

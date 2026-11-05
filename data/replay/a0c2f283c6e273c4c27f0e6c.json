@@ -1,0 +1,54 @@
+{
+ "email_id": "m14",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "IT kündigt Serverwartung am Samstag, 07.11.2026, von 8 bis 12 Uhr an; Dokumente vorher speichern.",
+   "quotes": [
+    "am Samstag, 07.11.2026, ist der Server von 8 bis 12 Uhr wegen Wartung nicht erreichbar"
+   ]
+  },
+  "sender_role": {
+   "value": "internal",
+   "quote": "Bitte speichert eure Dokumente vorher."
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [
+   {
+    "what": "Serverwartung, Server nicht erreichbar",
+    "date_text": "Samstag, 07.11.2026, 8 bis 12 Uhr",
+    "quote": "am Samstag, 07.11.2026, ist der Server von 8 bis 12 Uhr wegen Wartung nicht erreichbar"
+   }
+  ],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3577,
+  "cost_usd": 0.008663399999999998,
+  "input_tokens": 3101,
+  "output_tokens": 560
+ }
+}

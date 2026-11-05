@@ -1,0 +1,8 @@
+{
+  "id": "b02",
+  "channel": "bea",
+  "receivedDateTime": "2026-11-02T06:55:00Z",
+  "from": {"emailAddress": {"name": "Arbeitsgericht Berlin", "address": "poststelle@arbg-berlin.justiz.example"}},
+  "subject": "beA: 38 Ca 7890/26 - Ladung und Auflage",
+  "body": {"contentType": "text", "content": "Arbeitsgericht Berlin\nAktenzeichen: 38 Ca 7890/26\n\nIn dem Rechtsstreit Mustermann ./. Probe Bau GmbH\n\nTermin zur Güteverhandlung wird bestimmt auf Freitag, den 04.12.2026, 10:30 Uhr, Saal 214.\n\nDem Kläger wird aufgegeben, bis zum 21.11.2026 zur Klageerwiderung vom 15.10.2026 schriftsätzlich Stellung zu nehmen.\n\nDas persönliche Erscheinen des Klägers wird angeordnet.\n\nZugestellt gegen elektronisches Empfangsbekenntnis am 02.11.2026."}
+}

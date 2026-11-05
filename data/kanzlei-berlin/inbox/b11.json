@@ -1,0 +1,16 @@
+{
+  "id": "b11",
+  "channel": "bea",
+  "receivedDateTime": "2026-11-02T07:05:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Arbeitsgericht Berlin",
+      "address": "poststelle@arbg-berlin.justiz.example"
+    }
+  },
+  "subject": "beA: 21 Ca 2222/26 - Terminsverlegung",
+  "body": {
+    "contentType": "text",
+    "content": "Arbeitsgericht Berlin\nAktenzeichen: 21 Ca 2222/26\n\nIn dem Rechtsstreit Testmann ./. Muster Handel AG\n\nDer Kammertermin vom 12.11.2026 wird aufgehoben und verlegt auf Donnerstag, den 10.12.2026, 9:00 Uhr, Saal 108.\n\nDie Geschäftsstelle"
+  }
+}

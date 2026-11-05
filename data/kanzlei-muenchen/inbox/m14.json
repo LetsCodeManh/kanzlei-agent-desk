@@ -1,0 +1,16 @@
+{
+  "id": "m14",
+  "channel": "email",
+  "receivedDateTime": "2026-10-30T17:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "IT",
+      "address": "it@kanzlei-muenchen.example"
+    }
+  },
+  "subject": "Wartung Server am Samstag",
+  "body": {
+    "contentType": "text",
+    "content": "Hallo zusammen,\n\nam Samstag, 07.11.2026, ist der Server von 8 bis 12 Uhr wegen Wartung nicht erreichbar. Bitte speichert eure Dokumente vorher.\n\nIT"
+  }
+}

@@ -1,0 +1,49 @@
+{
+ "email_id": "b10",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Kanzleisoft übersendet Rechnung Oktober 2026 über 89,00 EUR; Lastschrifteinzug am 15.11.2026.",
+   "quotes": [
+    "anbei erhalten Sie Ihre Rechnung für Oktober 2026 über 89,00 EUR.",
+    "Der Betrag wird am 15.11.2026 per Lastschrift eingezogen."
+   ]
+  },
+  "sender_role": {
+   "value": "other",
+   "quote": "Ihr Kanzleisoft-Team"
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3124,
+  "cost_usd": 0.008029399999999999,
+  "input_tokens": 3140,
+  "output_tokens": 481
+ }
+}

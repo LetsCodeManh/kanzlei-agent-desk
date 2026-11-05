@@ -1,0 +1,16 @@
+{
+  "id": "m09",
+  "channel": "bea",
+  "receivedDateTime": "2026-10-30T08:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Amtsgericht München",
+      "address": "poststelle@ag-muenchen.justiz.example"
+    }
+  },
+  "subject": "beA: 211 C 999/26 - Terminsladung",
+  "body": {
+    "contentType": "text",
+    "content": "Amtsgericht München\nAktenzeichen: 211 C 999/26\n\nIn dem Rechtsstreit Konjunktiv ./. Nachbar\n\nTermin zur mündlichen Verhandlung wird bestimmt auf Mittwoch, den 09.12.2026, 11:00 Uhr, Sitzungssaal A 105.\n\nGeschäftsstelle der Abteilung 211"
+  }
+}

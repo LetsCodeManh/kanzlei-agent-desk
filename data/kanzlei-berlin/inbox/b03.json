@@ -1,0 +1,8 @@
+{
+  "id": "b03",
+  "channel": "email",
+  "receivedDateTime": "2026-10-30T17:20:00Z",
+  "from": {"emailAddress": {"name": "Lena Probe", "address": "lena.probe@example.net"}},
+  "subject": "Kündigung erhalten - was jetzt?",
+  "body": {"contentType": "text", "content": "Sehr geehrte Frau Fiktiv,\n\ngestern kam die Kündigung von meinem Arbeitgeber per Einwurf-Einschreiben, ich habe sie abends im Briefkasten gefunden. Was muss ich jetzt tun? Ein Foto der Kündigung hänge ich an.\n\nViele Grüße\nLena Probe"}
+}

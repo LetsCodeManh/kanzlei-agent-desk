@@ -1,0 +1,8 @@
+{
+  "id": "b01",
+  "channel": "bea",
+  "receivedDateTime": "2026-11-02T06:41:00Z",
+  "from": {"emailAddress": {"name": "Arbeitsgericht Berlin", "address": "poststelle@arbg-berlin.justiz.example"}},
+  "subject": "beA: 12 Ca 3456/26 - Beschluss",
+  "body": {"contentType": "text", "content": "Arbeitsgericht Berlin\nAktenzeichen: 12 Ca 3456/26\n\nIn dem Rechtsstreit Musterfrau ./. Fiktiv Logistik GmbH\n\nBeschluss\n\nDer Klägerin wird aufgegeben, binnen einer Frist von zwei Wochen ab Zustellung dieses Beschlusses zum Schriftsatz der Beklagten vom 20.10.2026 Stellung zu nehmen.\n\nBitte bestätigen Sie den Empfang mit elektronischem Empfangsbekenntnis.\n\nDie Vorsitzende der 12. Kammer"}
+}

@@ -1,0 +1,65 @@
+{
+ "email_id": "b02",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Arbeitsgericht lädt zur Güteverhandlung am 04.12.2026 und gibt dem Kläger Stellungnahme bis 21.11.2026 auf; persönliches Erscheinen angeordnet.",
+   "quotes": [
+    "Termin zur Güteverhandlung wird bestimmt auf Freitag, den 04.12.2026, 10:30 Uhr, Saal 214.",
+    "Dem Kläger wird aufgegeben, bis zum 21.11.2026 zur Klageerwiderung vom 15.10.2026 schriftsätzlich Stellung zu nehmen.",
+    "Das persönliche Erscheinen des Klägers wird angeordnet."
+   ]
+  },
+  "sender_role": {
+   "value": "court",
+   "quote": "Arbeitsgericht Berlin"
+  },
+  "aktenzeichen": {
+   "value": "38 Ca 7890/26",
+   "quote": "Aktenzeichen: 38 Ca 7890/26"
+  },
+  "fristen": [
+   {
+    "what": "Schriftsätzliche Stellungnahme des Klägers zur Klageerwiderung vom 15.10.2026",
+    "trigger": "stated_date",
+    "trigger_date_text": "21.11.2026",
+    "length_text": "",
+    "quote": "Dem Kläger wird aufgegeben, bis zum 21.11.2026 zur Klageerwiderung vom 15.10.2026 schriftsätzlich Stellung zu nehmen.",
+    "status": "found"
+   }
+  ],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [
+   {
+    "what": "Güteverhandlung, Saal 214, 10:30 Uhr; persönliches Erscheinen des Klägers angeordnet",
+    "date_text": "Freitag, den 04.12.2026",
+    "quote": "Termin zur Güteverhandlung wird bestimmt auf Freitag, den 04.12.2026, 10:30 Uhr, Saal 214."
+   }
+  ],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 4599,
+  "cost_usd": 0.012781400000000002,
+  "input_tokens": 3298,
+  "output_tokens": 893
+ }
+}

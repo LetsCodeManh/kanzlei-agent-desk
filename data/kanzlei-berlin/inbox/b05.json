@@ -1,0 +1,16 @@
+{
+  "id": "b05",
+  "channel": "email",
+  "receivedDateTime": "2026-11-01T07:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Arbeitsrecht aktuell",
+      "address": "newsletter@arbeitsrecht-seminare.example"
+    }
+  },
+  "subject": "Letzte Frist! Anmeldeschluss für unser Herbstseminar",
+  "body": {
+    "contentType": "text",
+    "content": "Liebe Kolleginnen und Kollegen,\n\nletzte Frist! Anmeldeschluss für unser Seminar \"Kündigungsschutz kompakt\" ist der 06.11.2026. Sichern Sie sich jetzt Ihren Platz zum Frühbucherpreis.\n\nIhr Seminarteam\n\nAbmelden: Antworten Sie mit \"Abmelden\"."
+  }
+}

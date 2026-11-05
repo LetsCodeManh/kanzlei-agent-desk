@@ -1,0 +1,7 @@
+{
+  "name": "Kanzlei Beispiel & Partner",
+  "land": "BE",
+  "domain": "kanzlei-berlin.example",
+  "anwalt": {"name": "RAin Clara Fiktiv", "address": "c.fiktiv@kanzlei-berlin.example"},
+  "simulated_today": "2026-11-02"
+}

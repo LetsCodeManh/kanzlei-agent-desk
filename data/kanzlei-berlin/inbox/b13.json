@@ -1,0 +1,16 @@
+{
+  "id": "b13",
+  "channel": "email",
+  "receivedDateTime": "2026-10-30T13:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Büro",
+      "address": "buero@kanzlei-berlin.example"
+    }
+  },
+  "subject": "Urlaubsplanung Dezember",
+  "body": {
+    "contentType": "text",
+    "content": "Liebe alle,\n\nbitte tragt eure Urlaubswünsche für Dezember bis Ende nächster Woche in den Kalender ein.\n\nDanke\nBüro"
+  }
+}

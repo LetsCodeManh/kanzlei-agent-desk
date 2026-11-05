@@ -1,0 +1,59 @@
+{
+ "email_id": "m01",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Amtsgericht München übersendet Versäumnisurteil vom 27.10.2026, zugestellt am 29.10.2026; Einspruchsfrist zwei Wochen ab Zustellung.",
+   "quotes": [
+    "anbei erhalten Sie das Versäumnisurteil vom 27.10.2026 gegen den Beklagten.",
+    "Das Versäumnisurteil wurde Ihnen am 29.10.2026 gegen elektronisches Empfangsbekenntnis zugestellt.",
+    "binnen einer Notfrist von zwei Wochen ab Zustellung Einspruch einlegen"
+   ]
+  },
+  "sender_role": {
+   "value": "court",
+   "quote": "Amtsgericht München"
+  },
+  "aktenzeichen": {
+   "value": "123 C 4567/26",
+   "quote": "Aktenzeichen: 123 C 4567/26"
+  },
+  "fristen": [
+   {
+    "what": "Einspruch gegen das Versäumnisurteil (Notfrist)",
+    "trigger": "zustellung",
+    "trigger_date_text": "29.10.2026",
+    "length_text": "zwei Wochen",
+    "quote": "binnen einer Notfrist von zwei Wochen ab Zustellung Einspruch einlegen",
+    "status": "found"
+   }
+  ],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3709,
+  "cost_usd": 0.010735399999999999,
+  "input_tokens": 3289,
+  "output_tokens": 692
+ }
+}

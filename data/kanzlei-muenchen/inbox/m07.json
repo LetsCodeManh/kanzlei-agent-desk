@@ -1,0 +1,16 @@
+{
+  "id": "m07",
+  "channel": "email",
+  "receivedDateTime": "2026-11-02T06:50:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Maria Muster",
+      "address": "maria.muster@example.org"
+    }
+  },
+  "subject": "Bitte dringend zurückrufen",
+  "body": {
+    "contentType": "text",
+    "content": "Sehr geehrter Herr Erfunden,\n\nder Vermieter will morgen früh ohne Termin die Wohnung besichtigen, das möchte ich nicht. Bitte rufen Sie mich heute noch an, ich bin sehr beunruhigt.\n\nMaria Muster"
+  }
+}

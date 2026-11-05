@@ -1,0 +1,16 @@
+{
+  "id": "b09",
+  "channel": "email",
+  "receivedDateTime": "2026-10-31T09:45:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Erika Musterfrau",
+      "address": "erika.musterfrau@example.com"
+    }
+  },
+  "subject": "Unterlagen",
+  "body": {
+    "contentType": "text",
+    "content": "Hallo Frau Fiktiv,\n\nwie besprochen schicke ich Ihnen die Arbeitszeitnachweise für September und Oktober. Melden Sie sich gern, wenn noch etwas fehlt, es eilt nicht.\n\nBeste Grüße\nErika Musterfrau"
+  }
+}

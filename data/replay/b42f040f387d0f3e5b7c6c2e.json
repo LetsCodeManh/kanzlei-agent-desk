@@ -1,0 +1,48 @@
+{
+ "email_id": "b14",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Gegnerische Kanzlei übersendet vorab eine Abschrift ihres Schriftsatzes an das Arbeitsgericht zur Kenntnisnahme; keine Frist genannt.",
+   "quotes": [
+    "übersenden wir Ihnen vorab per E-Mail eine Abschrift unseres heutigen Schriftsatzes an das Arbeitsgericht zur Kenntnisnahme"
+   ]
+  },
+  "sender_role": {
+   "value": "opponent",
+   "quote": "in der Sache Musterfrau ./. Fiktiv Logistik GmbH übersenden wir Ihnen vorab per E-Mail eine Abschrift"
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 4072,
+  "cost_usd": 0.010169399999999999,
+  "input_tokens": 3195,
+  "output_tokens": 673
+ }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "m04",
+  "channel": "email",
+  "receivedDateTime": "2026-10-30T16:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Hans Hypothese",
+      "address": "hans.hypothese@example.com"
+    }
+  },
+  "subject": "AW: Nebenkostenabrechnung 2025",
+  "body": {
+    "contentType": "text",
+    "content": "Hallo Herr Erfunden,\n\ndanke für Ihre Nachricht. Die Belege habe ich inzwischen eingescannt und hänge sie an.\n\nViele Grüße\nHans Hypothese\n\n> Am 03.09.2026 schrieb RA Jonas Erfunden:\n> Sehr geehrter Herr Hypothese,\n> bitte senden Sie mir die Belege bis zum 17.09.2026, damit wir die Einwendungen rechtzeitig erheben können.\n> Mit freundlichen Grüßen\n> Jonas Erfunden"
+  }
+}

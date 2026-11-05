@@ -1,0 +1,49 @@
+{
+ "email_id": "m11",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Gutachter stellt 1.450,00 EUR für das erstellte Gutachten in Rechnung, zahlbar innerhalb von 14 Tagen.",
+   "quotes": [
+    "für das erstellte Gutachten erlauben wir uns, 1.450,00 EUR in Rechnung zu stellen.",
+    "Zahlbar innerhalb von 14 Tagen ohne Abzug."
+   ]
+  },
+  "sender_role": {
+   "value": "other",
+   "quote": "für das erstellte Gutachten erlauben wir uns, 1.450,00 EUR in Rechnung zu stellen."
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3623,
+  "cost_usd": 0.008237399999999999,
+  "input_tokens": 3122,
+  "output_tokens": 509
+ }
+}

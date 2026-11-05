@@ -1,0 +1,49 @@
+{
+ "email_id": "m08",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Automatische Wiedervorlage heute zu M-26-202 Gedacht: Mandantin über das Urteil informieren und Berufung besprechen.",
+   "quotes": [
+    "Wiedervorlage heute, 02.11.2026: M-26-202 Gedacht ./. Beispiel Bau KG.",
+    "Grund: Mandantin über das Urteil informieren und die Berufung besprechen."
+   ]
+  },
+  "sender_role": {
+   "value": "internal",
+   "quote": "Automatische Nachricht der Kanzleisoftware."
+  },
+  "aktenzeichen": {
+   "value": "M-26-202",
+   "quote": "M-26-202 Gedacht ./. Beispiel Bau KG."
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": true,
+   "quote": "Wiedervorlage heute, 02.11.2026"
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3373,
+  "cost_usd": 0.008575399999999999,
+  "input_tokens": 3134,
+  "output_tokens": 538
+ }
+}

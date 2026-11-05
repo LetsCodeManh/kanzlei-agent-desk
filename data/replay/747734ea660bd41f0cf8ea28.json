@@ -1,0 +1,68 @@
+{
+ "email_id": "m03",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Landgericht München I übersendet das Urteil vom 20.10.2026, zugestellt am 26.10.2026; Berufungsfrist einen Monat, Begründungsfrist zwei Monate ab Zustellung.",
+   "quotes": [
+    "anbei erhalten Sie das Urteil vom 20.10.2026 in vollständiger Form.",
+    "Zugestellt gegen elektronisches Empfangsbekenntnis am 26.10.2026.",
+    "Die Berufung ist binnen einer Notfrist von einem Monat einzulegen.",
+    "Die Berufung ist binnen zwei Monaten zu begründen."
+   ]
+  },
+  "sender_role": {
+   "value": "court",
+   "quote": "Geschäftsstelle der 4. Zivilkammer"
+  },
+  "aktenzeichen": {
+   "value": "4 O 8910/25",
+   "quote": "Aktenzeichen: 4 O 8910/25"
+  },
+  "fristen": [
+   {
+    "what": "Berufungseinlegung (Notfrist)",
+    "trigger": "zustellung",
+    "trigger_date_text": "26.10.2026",
+    "length_text": "einem Monat",
+    "quote": "Die Berufung ist binnen einer Notfrist von einem Monat einzulegen.",
+    "status": "found"
+   },
+   {
+    "what": "Berufungsbegründung",
+    "trigger": "zustellung",
+    "trigger_date_text": "26.10.2026",
+    "length_text": "zwei Monaten",
+    "quote": "Die Berufung ist binnen zwei Monaten zu begründen.",
+    "status": "found"
+   }
+  ],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 4450,
+  "cost_usd": 0.0118234,
+  "input_tokens": 3341,
+  "output_tokens": 780
+ }
+}

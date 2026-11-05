@@ -1,0 +1,49 @@
+{
+ "email_id": "m13",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Hausverwaltung bestätigt Eingang der Mängelanzeige; ein Handwerker meldet sich zur Terminabsprache.",
+   "quotes": [
+    "wir bestätigen den Eingang der Mängelanzeige Ihrer Mandantin.",
+    "Ein Handwerker wird sich zur Terminabsprache melden."
+   ]
+  },
+  "sender_role": {
+   "value": "opponent",
+   "quote": "Beispiel Immobilien GmbH, Hausverwaltung"
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3030,
+  "cost_usd": 0.007999399999999999,
+  "input_tokens": 3150,
+  "output_tokens": 474
+ }
+}

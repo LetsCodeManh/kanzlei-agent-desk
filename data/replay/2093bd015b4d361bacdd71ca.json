@@ -1,0 +1,48 @@
+{
+ "email_id": "b13",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Büro bittet intern um Eintrag der Urlaubswünsche für Dezember in den Kalender.",
+   "quotes": [
+    "bitte tragt eure Urlaubswünsche für Dezember bis Ende nächster Woche in den Kalender ein."
+   ]
+  },
+  "sender_role": {
+   "value": "internal",
+   "quote": "Liebe alle,"
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2770,
+  "cost_usd": 0.0111775,
+  "input_tokens": 3083,
+  "output_tokens": 429
+ }
+}

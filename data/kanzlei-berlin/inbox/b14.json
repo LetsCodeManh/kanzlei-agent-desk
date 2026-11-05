@@ -1,0 +1,16 @@
+{
+  "id": "b14",
+  "channel": "email",
+  "receivedDateTime": "2026-10-31T10:30:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "RA-Kanzlei Gegenpart",
+      "address": "kanzlei@ra-gegenpart.example"
+    }
+  },
+  "subject": "12 Ca 3456/26 - Schriftsatz zur Kenntnis",
+  "body": {
+    "contentType": "text",
+    "content": "Sehr geehrte Frau Kollegin,\n\nin der Sache Musterfrau ./. Fiktiv Logistik GmbH übersenden wir Ihnen vorab per E-Mail eine Abschrift unseres heutigen Schriftsatzes an das Arbeitsgericht zur Kenntnisnahme.\n\nMit kollegialen Grüßen\nRA-Kanzlei Gegenpart"
+  }
+}

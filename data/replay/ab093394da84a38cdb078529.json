@@ -1,0 +1,48 @@
+{
+ "email_id": "b08",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Automatische Wiedervorlage heute zu B-26-101 Musterfrau: Prüfen, ob die Beklagte die Lohnabrechnungen übersandt hat.",
+   "quotes": [
+    "Wiedervorlage heute, 02.11.2026: B-26-101 Musterfrau ./. Fiktiv Logistik GmbH. Grund: Prüfen, ob die Beklagte die Lohnabrechnungen übersandt hat."
+   ]
+  },
+  "sender_role": {
+   "value": "internal",
+   "quote": "Automatische Nachricht der Kanzleisoftware."
+  },
+  "aktenzeichen": {
+   "value": "B-26-101",
+   "quote": "Wiedervorlage heute, 02.11.2026: B-26-101 Musterfrau ./. Fiktiv Logistik GmbH."
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": true,
+   "quote": "Wiedervorlage heute, 02.11.2026"
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3582,
+  "cost_usd": 0.0090634,
+  "input_tokens": 3146,
+  "output_tokens": 582
+ }
+}

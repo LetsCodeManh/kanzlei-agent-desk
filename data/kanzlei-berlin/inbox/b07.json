@@ -1,0 +1,16 @@
+{
+  "id": "b07",
+  "channel": "email",
+  "receivedDateTime": "2026-11-02T06:10:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Tom Testmann",
+      "address": "tom.testmann@example.org"
+    }
+  },
+  "subject": "Dringend: Gespräch beim Arbeitgeber heute um 14 Uhr",
+  "body": {
+    "contentType": "text",
+    "content": "Guten Morgen Frau Fiktiv,\n\nmein Arbeitgeber hat mich für heute 14 Uhr zu einem Personalgespräch geladen, angeblich wegen einer Abmahnung. Können Sie mich bitte heute Vormittag noch zurückrufen? Ich bin unter der bekannten Nummer erreichbar.\n\nDanke und Gruß\nTom Testmann"
+  }
+}

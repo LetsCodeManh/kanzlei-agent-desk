@@ -1,0 +1,16 @@
+{
+  "id": "b04",
+  "channel": "email",
+  "receivedDateTime": "2026-10-30T15:40:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "RA Paul Kollegial",
+      "address": "p.kollegial@kanzlei-berlin.example"
+    }
+  },
+  "subject": "B-26-077 Beispielmann: Berufungsbegründung",
+  "body": {
+    "contentType": "text",
+    "content": "Hallo Clara,\n\nkurz zur Info: Die Berufungsbegründung im Verfahren 7 Sa 1111/26 haben wir heute bereits beim LAG eingereicht, die Frist bis 16.11.2026 ist damit erledigt. Die Eingangsbestätigung liegt in der Akte.\n\nViele Grüße\nPaul"
+  }
+}

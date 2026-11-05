@@ -1,0 +1,16 @@
+{
+  "id": "m13",
+  "channel": "email",
+  "receivedDateTime": "2026-10-31T09:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Beispiel Immobilien GmbH",
+      "address": "info@beispiel-immobilien.example"
+    }
+  },
+  "subject": "Mängelanzeige Wohnung Muster",
+  "body": {
+    "contentType": "text",
+    "content": "Sehr geehrter Herr Erfunden,\n\nwir bestätigen den Eingang der Mängelanzeige Ihrer Mandantin. Ein Handwerker wird sich zur Terminabsprache melden.\n\nMit freundlichen Grüßen\nBeispiel Immobilien GmbH, Hausverwaltung"
+  }
+}

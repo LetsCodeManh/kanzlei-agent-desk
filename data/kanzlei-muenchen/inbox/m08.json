@@ -1,0 +1,16 @@
+{
+  "id": "m08",
+  "channel": "email",
+  "receivedDateTime": "2026-11-02T05:30:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Fristenkalender",
+      "address": "fristen@kanzlei-muenchen.example"
+    }
+  },
+  "subject": "Wiedervorlage heute: M-26-202 Gedacht",
+  "body": {
+    "contentType": "text",
+    "content": "Wiedervorlage heute, 02.11.2026: M-26-202 Gedacht ./. Beispiel Bau KG. Grund: Mandantin über das Urteil informieren und die Berufung besprechen.\n\nAutomatische Nachricht der Kanzleisoftware."
+  }
+}

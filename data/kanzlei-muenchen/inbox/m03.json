@@ -1,0 +1,8 @@
+{
+  "id": "m03",
+  "channel": "bea",
+  "receivedDateTime": "2026-10-26T08:30:00Z",
+  "from": {"emailAddress": {"name": "Landgericht München I", "address": "poststelle@lg-muenchen1.justiz.example"}},
+  "subject": "beA: 4 O 8910/25 - Urteil",
+  "body": {"contentType": "text", "content": "Landgericht München I\nAktenzeichen: 4 O 8910/25\n\nIn dem Rechtsstreit Gedacht ./. Beispiel Bau KG\n\nanbei erhalten Sie das Urteil vom 20.10.2026 in vollständiger Form.\n\nZugestellt gegen elektronisches Empfangsbekenntnis am 26.10.2026.\n\nRechtsmittelbelehrung: Gegen dieses Urteil ist die Berufung zulässig. Die Berufung ist binnen einer Notfrist von einem Monat einzulegen. Die Frist beginnt mit der Zustellung des in vollständiger Form abgefassten Urteils. Die Berufung ist binnen zwei Monaten zu begründen. Auch diese Frist beginnt mit der Zustellung des Urteils.\n\nGeschäftsstelle der 4. Zivilkammer"}
+}

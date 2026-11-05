@@ -1,0 +1,16 @@
+{
+  "id": "b12",
+  "channel": "email",
+  "receivedDateTime": "2026-11-01T19:22:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Sven Anfrage",
+      "address": "sven.anfrage@example.net"
+    }
+  },
+  "subject": "Anfrage Abmahnung",
+  "body": {
+    "contentType": "text",
+    "content": "Guten Tag,\n\nich habe von meinem Arbeitgeber eine Abmahnung bekommen und möchte wissen, ob ich mich dagegen wehren sollte. Übernehmen Sie solche Fälle? Ich wäre auch bereit, eine Erstberatung zu bezahlen.\n\nMit freundlichen Grüßen\nSven Anfrage"
+  }
+}

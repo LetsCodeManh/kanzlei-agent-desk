@@ -1,0 +1,48 @@
+{
+ "email_id": "m04",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Mandant Hans Hypothese schickt die eingescannten Belege zur Nebenkostenabrechnung 2025 als Anhang.",
+   "quotes": [
+    "Die Belege habe ich inzwischen eingescannt und hänge sie an."
+   ]
+  },
+  "sender_role": {
+   "value": "client",
+   "quote": "danke für Ihre Nachricht. Die Belege habe ich inzwischen eingescannt und hänge sie an."
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3275,
+  "cost_usd": 0.0081374,
+  "input_tokens": 3227,
+  "output_tokens": 457
+ }
+}

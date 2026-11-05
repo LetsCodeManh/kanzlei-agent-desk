@@ -1,0 +1,16 @@
+{
+  "id": "m10",
+  "channel": "email",
+  "receivedDateTime": "2026-11-01T06:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Mietrecht Newsletter",
+      "address": "news@mietrecht-verlag.example"
+    }
+  },
+  "subject": "Mietrecht-Newsletter November",
+  "body": {
+    "contentType": "text",
+    "content": "Die Themen dieser Ausgabe: neue Rechtsprechung zur Mietpreisbremse, zu Schönheitsreparaturen und zum Eigenbedarf. Jetzt lesen auf unserer Website.\n\nSie erhalten diesen Newsletter, weil Sie ihn abonniert haben."
+  }
+}

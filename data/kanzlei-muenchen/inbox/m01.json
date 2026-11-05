@@ -1,0 +1,8 @@
+{
+  "id": "m01",
+  "channel": "bea",
+  "receivedDateTime": "2026-10-29T09:12:00Z",
+  "from": {"emailAddress": {"name": "Amtsgericht München", "address": "poststelle@ag-muenchen.justiz.example"}},
+  "subject": "beA: 123 C 4567/26 - Versäumnisurteil",
+  "body": {"contentType": "text", "content": "Amtsgericht München\nAktenzeichen: 123 C 4567/26\n\nIn dem Rechtsstreit Beispiel Versand GmbH ./. Platzhalter\n\nanbei erhalten Sie das Versäumnisurteil vom 27.10.2026 gegen den Beklagten.\n\nDas Versäumnisurteil wurde Ihnen am 29.10.2026 gegen elektronisches Empfangsbekenntnis zugestellt.\n\nRechtsbehelfsbelehrung: Gegen dieses Urteil kann der Beklagte binnen einer Notfrist von zwei Wochen ab Zustellung Einspruch einlegen.\n\nGeschäftsstelle der Abteilung 123"}
+}

@@ -1,0 +1,55 @@
+{
+ "email_id": "m07",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Mandantin bittet dringend um Rückruf heute, da der Vermieter morgen früh ohne Termin die Wohnung besichtigen will.",
+   "quotes": [
+    "Bitte rufen Sie mich heute noch an, ich bin sehr beunruhigt.",
+    "der Vermieter will morgen früh ohne Termin die Wohnung besichtigen"
+   ]
+  },
+  "sender_role": {
+   "value": "client",
+   "quote": "Bitte rufen Sie mich heute noch an, ich bin sehr beunruhigt."
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": true,
+   "quote": "Bitte rufen Sie mich heute noch an"
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [
+   {
+    "what": "Wohnungsbesichtigung durch den Vermieter (ohne vereinbarten Termin)",
+    "date_text": "morgen früh",
+    "quote": "der Vermieter will morgen früh ohne Termin die Wohnung besichtigen"
+   }
+  ],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3916,
+  "cost_usd": 0.009059399999999999,
+  "input_tokens": 3120,
+  "output_tokens": 592
+ }
+}

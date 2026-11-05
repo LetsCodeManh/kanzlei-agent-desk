@@ -1,0 +1,59 @@
+{
+ "email_id": "m02",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Sekretariat leitet Versäumnisurteil des AG München vom 27.10.2026 weiter; Einspruch binnen zwei Wochen ab Zustellung am 29.10.2026.",
+   "quotes": [
+    "anbei erhalten Sie das Versäumnisurteil vom 27.10.2026 gegen den Beklagten.",
+    "Das Versäumnisurteil wurde Ihnen am 29.10.2026 gegen elektronisches Empfangsbekenntnis zugestellt.",
+    "binnen einer Notfrist von zwei Wochen ab Zustellung Einspruch einlegen"
+   ]
+  },
+  "sender_role": {
+   "value": "internal",
+   "quote": "Zur Info, bitte die Frist notieren."
+  },
+  "aktenzeichen": {
+   "value": "123 C 4567/26",
+   "quote": "Aktenzeichen: 123 C 4567/26"
+  },
+  "fristen": [
+   {
+    "what": "Einspruch gegen das Versäumnisurteil (Notfrist)",
+    "trigger": "zustellung",
+    "trigger_date_text": "29.10.2026",
+    "length_text": "zwei Wochen",
+    "quote": "binnen einer Notfrist von zwei Wochen ab Zustellung Einspruch einlegen",
+    "status": "found"
+   }
+  ],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3913,
+  "cost_usd": 0.0110534,
+  "input_tokens": 3351,
+  "output_tokens": 699
+ }
+}

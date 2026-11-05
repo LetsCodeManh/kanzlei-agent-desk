@@ -1,0 +1,16 @@
+{
+  "id": "b10",
+  "channel": "email",
+  "receivedDateTime": "2026-10-31T12:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Kanzleisoft Abrechnung",
+      "address": "rechnung@kanzleisoft.example"
+    }
+  },
+  "subject": "Ihre Rechnung Oktober 2026",
+  "body": {
+    "contentType": "text",
+    "content": "Sehr geehrte Damen und Herren,\n\nanbei erhalten Sie Ihre Rechnung für Oktober 2026 über 89,00 EUR. Der Betrag wird am 15.11.2026 per Lastschrift eingezogen.\n\nIhr Kanzleisoft-Team"
+  }
+}

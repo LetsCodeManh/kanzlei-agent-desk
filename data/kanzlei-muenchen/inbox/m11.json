@@ -1,0 +1,16 @@
+{
+  "id": "m11",
+  "channel": "email",
+  "receivedDateTime": "2026-10-30T14:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Büro Gutachter",
+      "address": "rechnung@sv-beispiel.example"
+    }
+  },
+  "subject": "Rechnung Gutachten",
+  "body": {
+    "contentType": "text",
+    "content": "Sehr geehrte Damen und Herren,\n\nfür das erstellte Gutachten erlauben wir uns, 1.450,00 EUR in Rechnung zu stellen. Zahlbar innerhalb von 14 Tagen ohne Abzug.\n\nBüro Gutachter"
+  }
+}

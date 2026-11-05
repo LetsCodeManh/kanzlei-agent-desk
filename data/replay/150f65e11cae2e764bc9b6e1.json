@@ -1,0 +1,48 @@
+{
+ "email_id": "b05",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Newsletter eines Seminaranbieters mit Werbung zum Anmeldeschluss; keine rechtliche Frist, kein Mandatsbezug.",
+   "quotes": [
+    "Anmeldeschluss für unser Seminar \"Kündigungsschutz kompakt\" ist der 06.11.2026."
+   ]
+  },
+  "sender_role": {
+   "value": "other",
+   "quote": "Sichern Sie sich jetzt Ihren Platz zum Frühbucherpreis."
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2949,
+  "cost_usd": 0.0081414,
+  "input_tokens": 3188,
+  "output_tokens": 473
+ }
+}

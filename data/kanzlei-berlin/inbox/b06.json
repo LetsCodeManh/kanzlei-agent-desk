@@ -1,0 +1,16 @@
+{
+  "id": "b06",
+  "channel": "email",
+  "receivedDateTime": "2026-10-30T11:15:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "RA Dr. Schein",
+      "address": "ra.schein@schein-kollegen.example"
+    }
+  },
+  "subject": "38 Ca 7890/26 Mustermann ./. Probe Bau GmbH - Vergleichsvorschlag",
+  "body": {
+    "contentType": "text",
+    "content": "Sehr geehrte Frau Kollegin Fiktiv,\n\nnamens unserer Mandantin schlagen wir zur Beilegung des Rechtsstreits einen Vergleich vor: Beendigung des Arbeitsverhältnisses zum 31.12.2026 gegen Zahlung einer Abfindung in Höhe von 12.000 EUR brutto.\n\nAn dieses Angebot halten wir uns bis zum 13.11.2026 gebunden.\n\nMit freundlichen kollegialen Grüßen\nDr. Schein\nRechtsanwalt"
+  }
+}

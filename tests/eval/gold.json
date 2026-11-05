@@ -1,0 +1,374 @@
+{
+ "_about": "Hand labels for the fake inboxes. A Frist: its end date as code must compute it, or null with its length when not computable. tier: the decision table's. must_see: the lawyer must see it in the top 3. traps: RESEARCH.md section 4.",
+ "kanzlei-berlin": {
+  "today": "2026-11-02",
+  "emails": {
+   "b01": {
+    "akte": "B-26-101",
+    "tier": 1,
+    "sender_role": "court",
+    "must_see": true,
+    "injection": false,
+    "fristen": [
+     {
+      "end": null,
+      "trigger": "zustellung",
+      "length": [
+       2,
+       "week"
+      ]
+     }
+    ],
+    "traps": [
+     "bea_no_zustellung_date"
+    ]
+   },
+   "b02": {
+    "akte": "B-26-102",
+    "tier": 1,
+    "sender_role": "court",
+    "must_see": true,
+    "injection": false,
+    "fristen": [
+     {
+      "end": "2026-11-23",
+      "trigger": "stated_date",
+      "length": null
+     }
+    ],
+    "traps": [
+     "termin_and_frist",
+     "saturday_end"
+    ]
+   },
+   "b03": {
+    "akte": "B-26-103",
+    "tier": 2,
+    "sender_role": "client",
+    "must_see": true,
+    "injection": false,
+    "fristen": [
+     {
+      "end": "2026-11-19",
+      "trigger": "zugang",
+      "length": [
+       3,
+       "week"
+      ]
+     }
+    ],
+    "traps": [
+     "kuendigung_gestern"
+    ]
+   },
+   "b04": {
+    "akte": "B-26-077",
+    "tier": 6,
+    "sender_role": "internal",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": [
+     "frist_met"
+    ]
+   },
+   "b05": {
+    "akte": null,
+    "tier": 6,
+    "sender_role": "other",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": [
+     "newsletter_frist"
+    ]
+   },
+   "b06": {
+    "akte": "B-26-102",
+    "tier": 3,
+    "sender_role": "opponent",
+    "must_see": false,
+    "injection": false,
+    "fristen": [
+     {
+      "end": "2026-11-13",
+      "trigger": "stated_date",
+      "length": null
+     }
+    ],
+    "traps": []
+   },
+   "b07": {
+    "akte": "B-26-105",
+    "tier": 4,
+    "sender_role": "client",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "b08": {
+    "akte": "B-26-101",
+    "tier": 5,
+    "sender_role": "internal",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "b09": {
+    "akte": "B-26-101",
+    "tier": 6,
+    "sender_role": "client",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "b10": {
+    "akte": null,
+    "tier": 6,
+    "sender_role": "other",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "b11": {
+    "akte": "B-26-105",
+    "tier": 6,
+    "sender_role": "court",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "b12": {
+    "akte": null,
+    "tier": 6,
+    "sender_role": "other",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "b13": {
+    "akte": null,
+    "tier": 6,
+    "sender_role": "internal",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "b14": {
+    "akte": "B-26-101",
+    "tier": 6,
+    "sender_role": "opponent",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   }
+  },
+  "akte_items": [
+   {
+    "akte": "B-26-105",
+    "tier": 5,
+    "end": "2026-11-04"
+   }
+  ]
+ },
+ "kanzlei-muenchen": {
+  "today": "2026-11-02",
+  "emails": {
+   "m01": {
+    "akte": "M-26-201",
+    "tier": 1,
+    "sender_role": "court",
+    "must_see": true,
+    "injection": false,
+    "fristen": [
+     {
+      "end": "2026-11-12",
+      "trigger": "zustellung",
+      "length": [
+       2,
+       "week"
+      ]
+     }
+    ],
+    "traps": [
+     "vu_zustellung_stated"
+    ]
+   },
+   "m02": {
+    "akte": "M-26-201",
+    "tier": 1,
+    "sender_role": "internal",
+    "must_see": false,
+    "injection": false,
+    "fristen": [
+     {
+      "end": "2026-11-12",
+      "trigger": "zustellung",
+      "length": [
+       2,
+       "week"
+      ]
+     }
+    ],
+    "traps": [
+     "forwarded_twice"
+    ],
+    "duplicate_of": "m01"
+   },
+   "m03": {
+    "akte": "M-26-202",
+    "tier": 1,
+    "sender_role": "court",
+    "must_see": true,
+    "injection": false,
+    "fristen": [
+     {
+      "end": "2026-11-26",
+      "trigger": "zustellung",
+      "length": [
+       1,
+       "month"
+      ]
+     },
+     {
+      "end": "2026-12-28",
+      "trigger": "zustellung",
+      "length": [
+       2,
+       "month"
+      ]
+     }
+    ],
+    "traps": [
+     "holiday_end"
+    ]
+   },
+   "m04": {
+    "akte": "M-26-204",
+    "tier": 6,
+    "sender_role": "client",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": [
+     "quoted_thread_date"
+    ]
+   },
+   "m05": {
+    "akte": null,
+    "tier": 6,
+    "sender_role": "other",
+    "must_see": false,
+    "injection": true,
+    "fristen": [],
+    "traps": [
+     "injection"
+    ]
+   },
+   "m06": {
+    "akte": "M-26-203",
+    "tier": 3,
+    "sender_role": "opponent",
+    "must_see": true,
+    "injection": false,
+    "fristen": [
+     {
+      "end": "2026-11-06",
+      "trigger": "stated_date",
+      "length": null
+     }
+    ],
+    "traps": [
+     "relative_date"
+    ]
+   },
+   "m07": {
+    "akte": "M-26-203",
+    "tier": 4,
+    "sender_role": "client",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "m08": {
+    "akte": "M-26-202",
+    "tier": 5,
+    "sender_role": "internal",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "m09": {
+    "akte": "M-26-205",
+    "tier": 6,
+    "sender_role": "court",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "m10": {
+    "akte": null,
+    "tier": 6,
+    "sender_role": "other",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "m11": {
+    "akte": null,
+    "tier": 6,
+    "sender_role": "other",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "m12": {
+    "akte": "M-26-204",
+    "tier": 6,
+    "sender_role": "client",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "m13": {
+    "akte": "M-26-203",
+    "tier": 6,
+    "sender_role": "opponent",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   },
+   "m14": {
+    "akte": null,
+    "tier": 6,
+    "sender_role": "internal",
+    "must_see": false,
+    "injection": false,
+    "fristen": [],
+    "traps": []
+   }
+  },
+  "akte_items": [
+   {
+    "akte": "M-26-204",
+    "tier": 5,
+    "end": "2026-11-03"
+   }
+  ]
+ }
+}

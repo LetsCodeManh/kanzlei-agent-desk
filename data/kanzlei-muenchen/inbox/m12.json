@@ -1,0 +1,16 @@
+{
+  "id": "m12",
+  "channel": "email",
+  "receivedDateTime": "2026-10-31T11:00:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Hans Hypothese",
+      "address": "hans.hypothese@example.com"
+    }
+  },
+  "subject": "Mietvertrag",
+  "body": {
+    "contentType": "text",
+    "content": "Hallo Herr Erfunden,\n\nanbei noch eine Kopie des Mietvertrags, nach der Sie gefragt hatten. Schauen Sie bitte drüber, wenn Sie Zeit haben.\n\nGruß\nHans Hypothese"
+  }
+}

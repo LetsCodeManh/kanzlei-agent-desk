@@ -1,0 +1,49 @@
+{
+ "email_id": "b12",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Interessent fragt zur Abmahnung durch den Arbeitgeber an und will wissen, ob Sie solche Fälle übernehmen; Erstberatung wäre bezahlbar.",
+   "quotes": [
+    "ich habe von meinem Arbeitgeber eine Abmahnung bekommen und möchte wissen, ob ich mich dagegen wehren sollte.",
+    "Ich wäre auch bereit, eine Erstberatung zu bezahlen."
+   ]
+  },
+  "sender_role": {
+   "value": "client",
+   "quote": "Übernehmen Sie solche Fälle?"
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3497,
+  "cost_usd": 0.008341399999999999,
+  "input_tokens": 3153,
+  "output_tokens": 507
+ }
+}

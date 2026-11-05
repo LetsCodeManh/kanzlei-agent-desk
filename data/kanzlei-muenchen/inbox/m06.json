@@ -1,0 +1,16 @@
+{
+  "id": "m06",
+  "channel": "email",
+  "receivedDateTime": "2026-11-02T06:30:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "RA Hausverwalter",
+      "address": "kanzlei@ra-hausverwalter.example"
+    }
+  },
+  "subject": "Mietrückstand Muster - Fristsetzung",
+  "body": {
+    "contentType": "text",
+    "content": "Sehr geehrter Herr Kollege Erfunden,\n\nwir vertreten die Beispiel Immobilien GmbH. Ihre Mandantin Frau Muster ist mit zwei Monatsmieten im Rückstand. Wir setzen hiermit Frist zur Zahlung des Rückstands bis Freitag. Nach fruchtlosem Ablauf behalten wir uns die fristlose Kündigung des Mietverhältnisses vor.\n\nMit freundlichen kollegialen Grüßen\nRA Hausverwalter"
+  }
+}
