@@ -226,7 +226,9 @@ data/<kanzlei>/inbox/*.json   loadInbox, the connector
 The order: `verify`, `frist`, `schema`, `connector`, `akte`, `items`, `rank`, `extract`, `llm`, `pipeline`, the eval.
 
 The gate: every spike test for a ported module has a TypeScript twin, and `pnpm eval` gives the spike's numbers on the
-same replies. Nothing new is added before that. The spike's tests: `uv run pytest` there gives 142 passed.
+same replies. A one-time comparison of the full item list with the spike's also passes, because the table does not score
+`raw_end`, `hint`, `reason`, `relative` or the order in a tier. Nothing new is added before that. The spike's tests:
+`uv run pytest` there gives 142 passed.
 
 **Re-key the replies by a script, with no live call.** Each record holds `email_id`, `model` and `prompt_version`.
 Compute the new key in TypeScript and rename each file by its `email_id`. Do not reproduce Python's JSON bytes. Sort keys
@@ -249,10 +251,13 @@ recursively, and pin one key in a test. `test_no_stale_fixture` (its twin) catch
 - The German day: `Intl.DateTimeFormat('en-CA', {timeZone: 'Europe/Berlin'})`. Add a test with an email at 23:30 UTC.
 - Months: `setMonth` overflows, Python clamps. Add 31 Jan + 1 month gives 28 Feb by hand.
 - Regexes: JS `\b` is ASCII-only, and Python's is Unicode-aware. Test "März" and the weekdays.
-- Case folding: JS has no `casefold`, so `ß` stays `ß`. Use one function on both quote and body. Test `ß`.
+- Case folding: JS has no `casefold`, so `toLowerCase` keeps `ß`. Fold `ß` to `ss`, as Python does. Use one function on both quote and body. Test `STRASSE` against `Straße`.
+- Invalid dates: `Date.UTC(2026, 1, 31)` gives 3 March with no error. Python raises. Fail loudly. Test it.
+- Modulo: `-3 % 7` is `-3` in JS and `4` in Python. Test a weekday sent on a day that is not a Monday.
+- The prompt's `Received:` line: Python writes `2026-11-02T06:41:00+00:00`, and `toISOString()` writes `.000Z`. Match Python. Before the re-key, compare the system prompt, the schema and the prompt with Python's for all 28 emails, because a re-key hides a difference.
 - Quote spans: JS strings iterate UTF-16 units. Test an astral character and a combining sequence.
 - The `[kanzlei]` URL value is a trust boundary. Check it as `inbox.py:25` does.
-- `pnpm daily` runs outside Vite: use `tsx`, relative imports in `src/lib/server/`, and no `$app/*` or `$env`.
+- `pnpm daily` and `pnpm eval` run outside Vite: plain `node`, which runs `.ts` itself. Use relative imports with `.ts` in `src/lib/server/`, and no `$app/*` or `$env`.
 - Resolve `data/` from `import.meta.url`, not `process.cwd()`.
 - The button's action must redirect, so a reload does not start a second run.
 
