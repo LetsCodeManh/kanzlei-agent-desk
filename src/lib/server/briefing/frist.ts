@@ -7,9 +7,8 @@
  *
  * Every computation is on UTC days. No local Date method is used.
  */
-import type { Day, Trigger } from '../../types.ts';
+import type { Day, Land, Trigger } from '../../types.ts';
 
-export type Land = 'BE' | 'BY';
 export type Unit = 'day' | 'week' | 'month';
 
 // Typed in by hand. Checked against the `holidays` package in tests/frist.test.ts.
@@ -80,6 +79,13 @@ function makeDay(year: number, month: number, date: number): Day {
 		throw new RangeError(`no such date: ${date}.${month}.${year}`);
 	}
 	return made.toISOString().slice(0, 10);
+}
+
+/** A `YYYY-MM-DD` from a file, or a thrown error. Python's date.fromisoformat fails on the same inputs. */
+export function parseDay(text: string): Day {
+	const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+	if (!match) throw new RangeError(`not a YYYY-MM-DD date: ${text}`);
+	return makeDay(Number(match[1]), Number(match[2]), Number(match[3]));
 }
 
 export function addDays(day: Day, n: number): Day {
