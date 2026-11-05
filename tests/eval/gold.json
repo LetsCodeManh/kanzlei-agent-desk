@@ -136,7 +136,7 @@
    },
    "b11": {
     "akte": "B-26-105",
-    "tier": 6,
+    "tier": 5,
     "sender_role": "court",
     "must_see": false,
     "injection": false,
@@ -310,7 +310,7 @@
    },
    "m09": {
     "akte": "M-26-205",
-    "tier": 6,
+    "tier": 5,
     "sender_role": "court",
     "must_see": false,
     "injection": false,

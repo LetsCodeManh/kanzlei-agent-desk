@@ -65,6 +65,7 @@ export interface Akte {
 	mandant: { name: string; address: string };
 	gegenseite: { name: string; addresses: string[] };
 	fristen: { what: string; end: Day; noted_from: string }[];
+	termine: { what: string; date: Day; time: string; room: string }[];
 	last_contact: Day;
 }
 
@@ -83,8 +84,14 @@ export interface Frist {
 	relative: boolean;
 	reason: string;
 	hint: string;
+	/** To `rawEnd` for a stated date, which may not move. To `end` for a computed one. */
 	daysLeft: number | null;
 }
+
+export type ItemEvent = Facts['events'][number] & {
+	/** A moved hearing's old date, found in the email's body. Show this, not a date in `what`, which is unchecked. */
+	oldDate: string | null;
+};
 
 export interface Item {
 	emails: Email[];
@@ -99,7 +106,7 @@ export interface Item {
 	urgent: boolean;
 	wvToday: boolean;
 	injection: boolean;
-	events: Facts['events'];
+	events: ItemEvent[];
 	facts: Facts | null;
 	/** The paths of the facts whose quote was not found in the email. */
 	unsicher: string[];

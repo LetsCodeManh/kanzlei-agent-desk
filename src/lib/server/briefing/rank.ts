@@ -6,7 +6,7 @@
  * | 2 | sender_role = client and a frist_event |
  * | 3 | sender_role = opponent and a Frist |
  * | 4 | sender_role = client and an urgent_request |
- * | 5 | wiedervorlage_today, or an open Frist in akten.json that ends soon |
+ * | 5 | wiedervorlage_today, an open Frist in akten.json that ends soon, or sender_role = court and a Termin |
  * | 6 | everything else, collapsed |
  */
 import type { Item, RankedItem, Role } from '../../types.ts';
@@ -18,7 +18,7 @@ export const TIER_LABELS: Record<number, string> = {
 	2: 'Mandant: Frist beginnt',
 	3: 'Gegenseite: Frist',
 	4: 'Mandant: dringend',
-	5: 'Wiedervorlage, Frist aus der Akte',
+	5: 'Wiedervorlage, Frist aus der Akte, Gerichtstermin',
 	6: 'Sonstiges'
 };
 
@@ -28,13 +28,14 @@ export function tierFor(
 	fristEvent: boolean,
 	urgent: boolean,
 	wvToday: boolean,
-	akteFristSoon: boolean
+	akteFristSoon: boolean,
+	hasTermin: boolean
 ): number {
 	if (role === 'court' && hasFrist) return 1;
 	if (role === 'client' && fristEvent) return 2;
 	if (role === 'opponent' && hasFrist) return 3;
 	if (role === 'client' && urgent) return 4;
-	if (wvToday || akteFristSoon) return 5;
+	if (wvToday || akteFristSoon || (role === 'court' && hasTermin)) return 5;
 	return 6;
 }
 
@@ -43,7 +44,15 @@ export function tier(item: Item): number {
 	const roles = item.roleSure ? [item.role] : ROLES;
 	return Math.min(
 		...roles.map((role) =>
-			tierFor(role, item.fristen.length > 0, item.fristEvent, item.urgent, item.wvToday, item.akteFristSoon)
+			tierFor(
+				role,
+				item.fristen.length > 0,
+				item.fristEvent,
+				item.urgent,
+				item.wvToday,
+				item.akteFristSoon,
+				item.events.length > 0
+			)
 		)
 	);
 }

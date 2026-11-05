@@ -230,6 +230,17 @@ function german(day: Day): string {
 	return `${String(date).padStart(2, '0')}.${String(month).padStart(2, '0')}.${year}`;
 }
 
+/**
+ * A stated date that is no Werktag. Whether § 222 Abs. 2 ZPO moves a date the court set is not sure, so both dates show.
+ * The ZPO is named only for a court's date.
+ */
+export function movedDateHint(rawEnd: Day, end: Day, byCourt: boolean): string {
+	const [raw, moved] = [german(rawEnd).slice(0, 6), german(end).slice(0, 6)];
+	return byCourt
+		? `${raw} (Gericht), ${moved} nach § 222 Abs. 2 ZPO, bitte prüfen`
+		: `${raw} (genannt), ${moved} nächster Werktag, bitte prüfen`;
+}
+
 /** beA court mail with no Zustellung date yet. My reasoning, not verified in a source. */
 export function eebHint(lengthText: string, today: Day, land: Land): string {
 	const length = parseLength(lengthText);

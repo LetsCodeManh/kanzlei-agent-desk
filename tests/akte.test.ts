@@ -12,6 +12,7 @@ const AKTEN: Akte[] = [
 		mandant: { name: '', address: 'm@example.com' },
 		gegenseite: { name: '', addresses: ['g@example.org'] },
 		fristen: [],
+		termine: [],
 		last_contact: '2026-10-20'
 	},
 	{
@@ -21,6 +22,7 @@ const AKTEN: Akte[] = [
 		mandant: { name: '', address: 'n@example.com' },
 		gegenseite: { name: '', addresses: [] },
 		fristen: [{ what: 'x', end: '2026-11-09', noted_from: 'Mail' }],
+		termine: [],
 		last_contact: '2026-10-20'
 	}
 ];

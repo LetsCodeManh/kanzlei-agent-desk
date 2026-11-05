@@ -14,20 +14,24 @@ const TODAY = '2026-11-02';
 
 describe('the decision table', () => {
 	it.each([
-		['court', true, false, false, false, false, 1],
-		['client', false, true, false, false, false, 2],
-		['opponent', true, false, false, false, false, 3],
-		['client', false, false, true, false, false, 4],
-		['internal', false, false, false, true, false, 5],
-		['other', false, false, false, false, true, 5],
-		['court', false, false, false, false, false, 6], // a court mail with no Frist: a Termin, a notice
-		['other', true, false, true, false, false, 6], // a newsletter's "letzte Frist" or an unknown sender's demand
-		['internal', true, false, false, false, false, 6],
-		['client', true, true, true, true, true, 2] // the highest row that holds wins
-	] as [Role, boolean, boolean, boolean, boolean, boolean, number][])(
-		'%s, Frist %s, event %s, urgent %s, WV %s, Akte soon %s: tier %i',
-		(role, hasFrist, fristEvent, urgent, wv, akteSoon, expected) => {
-			expect(tierFor(role, hasFrist, fristEvent, urgent, wv, akteSoon)).toBe(expected);
+		['court', true, false, false, false, false, false, 1],
+		['client', false, true, false, false, false, false, 2],
+		['opponent', true, false, false, false, false, false, 3],
+		['client', false, false, true, false, false, false, 4],
+		['internal', false, false, false, true, false, false, 5],
+		['other', false, false, false, false, true, false, 5],
+		['court', false, false, false, false, false, true, 5], // the hearing rule: b11, m09
+		['court', true, false, false, false, false, true, 1], // b02: its Frist wins, its Termin shows on the item
+		['client', false, false, false, false, false, true, 6], // a Personalgespräch is not a hearing
+		['other', false, false, false, false, false, true, 6],
+		['court', false, false, false, false, false, false, 6], // a court notice with no Frist and no Termin
+		['other', true, false, true, false, false, false, 6], // a newsletter's "letzte Frist" or an unknown sender's demand
+		['internal', true, false, false, false, false, false, 6],
+		['client', true, true, true, true, true, true, 2] // the highest row that holds wins
+	] as [Role, boolean, boolean, boolean, boolean, boolean, boolean, number][])(
+		'%s, Frist %s, event %s, urgent %s, WV %s, Akte soon %s, Termin %s: tier %i',
+		(role, hasFrist, fristEvent, urgent, wv, akteSoon, hasTermin, expected) => {
+			expect(tierFor(role, hasFrist, fristEvent, urgent, wv, akteSoon, hasTermin)).toBe(expected);
 		}
 	);
 });
@@ -245,5 +249,72 @@ describe('buildItem: from facts to an item', () => {
 			AKTEN
 		);
 		expect(built.fristen).toEqual([]);
+	});
+
+	describe('a date someone set, on a day that is not a Werktag', () => {
+		const stated = (date: string) =>
+			facts({
+				fristen: [{ what: 'x', trigger: 'stated_date', trigger_date_text: date, length_text: '', quote: 'q', status: 'found' }]
+			});
+		const COURT = 'poststelle@arbg-berlin.justiz.example';
+		const checks = { sender_role: true, 'fristen[0]': true };
+
+		it('b02, the court set Saturday 21.11: ranks by that day, and shows the moved date beside it', () => {
+			const built = buildItem(from(COURT, 'bea'), stated('21.11.2026'), checks, KANZLEI, TODAY);
+			expect(built.fristen[0]).toMatchObject({
+				end: '2026-11-23',
+				rawEnd: '2026-11-21',
+				daysLeft: 19,
+				hint: '21.11. (Gericht), 23.11. nach § 222 Abs. 2 ZPO, bitte prüfen'
+			});
+		});
+
+		it('from the other side: the same count, and no claim about the ZPO or a court', () => {
+			const built = buildItem(from('g@example.org'), stated('21.11.2026'), checks, KANZLEI, TODAY, AKTEN);
+			expect(built.fristen[0]).toMatchObject({ daysLeft: 19, hint: '21.11. (genannt), 23.11. nächster Werktag, bitte prüfen' });
+		});
+
+		it('on a Werktag: one date and no hint', () => {
+			const built = buildItem(from(COURT, 'bea'), stated('20.11.2026'), checks, KANZLEI, TODAY);
+			expect(built.fristen[0]).toMatchObject({ end: '2026-11-20', daysLeft: 18, hint: '' });
+		});
+
+		it('a Frist that runs from Zustellung still counts to its moved end', () => {
+			const built = buildItem(
+				from(COURT, 'bea'),
+				facts({
+					// 7.11.2026 + 2 weeks is Saturday 21.11. The law moves this one: no doubt, so no hint.
+					fristen: [{ what: 'x', trigger: 'zustellung', trigger_date_text: '07.11.2026', length_text: 'zwei Wochen', quote: 'q', status: 'found' }]
+				}),
+				checks,
+				KANZLEI,
+				TODAY
+			);
+			expect(built.fristen[0]).toMatchObject({ end: '2026-11-23', daysLeft: 21, hint: '' });
+		});
+	});
+
+	describe("a moved hearing's old date", () => {
+		const BODY = 'Der Kammertermin vom 12.11.2026 wird aufgehoben und verlegt auf Donnerstag, den 10.12.2026.';
+		const withEvent = (what: string, body = BODY) =>
+			buildItem(
+				{ ...from('poststelle@arbg-berlin.justiz.example', 'bea'), body },
+				facts({ events: [{ what, date_text: 'Donnerstag, den 10.12.2026', quote: 'q' }] }),
+				{ sender_role: true },
+				KANZLEI,
+				TODAY
+			).events[0].oldDate;
+
+		it('b11: taken from the free text, because the body holds it', () => {
+			expect(withEvent('Kammertermin neu angesetzt (verlegt vom 12.11.2026), Saal 108')).toBe('12.11.2026');
+		});
+
+		it('not shown when the body does not hold it: the free text sits outside the quote', () => {
+			expect(withEvent('Kammertermin (verlegt vom 05.11.2026)')).toBeNull();
+		});
+
+		it('not taken from a hearing that was not moved', () => {
+			expect(withEvent('Kammertermin, Ladung vom 12.11.2026')).toBeNull();
+		});
 	});
 });

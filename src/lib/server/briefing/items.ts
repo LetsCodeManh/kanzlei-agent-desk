@@ -4,9 +4,9 @@
  * Metadata and `akten.json` win over the LLM for the sender role. A failed quote keeps the fact and marks it unsicher:
  * when unsure, rank higher, never lower.
  */
-import type { Akte, Day, Email, Facts, Frist, Item, Kanzlei, Role, Status, Trigger } from '../../types.ts';
+import type { Akte, Day, Email, Facts, Frist, Item, ItemEvent, Kanzlei, Role, Status, Trigger } from '../../types.ts';
 import type { OpenFrist } from './akte.ts';
-import { compute, daysBetween, eebHint, KSCHG_LENGTH } from './frist.ts';
+import { compute, daysBetween, eebHint, KSCHG_LENGTH, movedDateHint } from './frist.ts';
 
 const EVENT_FRISTEN: Partial<Record<Facts['frist_event']['kind'], string>> = {
 	kuendigung: 'Kündigungsschutzklage (§ 4 KSchG)',
@@ -51,14 +51,17 @@ interface FristFacts {
 	status: Status | 'from_event';
 }
 
-function buildFrist(f: FristFacts, email: Email, today: Day, land: Kanzlei['land']): Frist {
+function buildFrist(f: FristFacts, email: Email, role: Role, today: Day, land: Kanzlei['land']): Frist {
 	const computed = compute(f.trigger, f.dateText, f.lengthText, email.receivedDay, land);
 	let hint = '';
 	if (computed.end === null && f.trigger === 'zustellung' && email.channel === 'bea') {
 		hint = eebHint(f.lengthText, today, land);
 	} else if (f.trigger === 'zugang') {
 		hint = 'Zugangsdatum prüfen';
+	} else if (f.trigger === 'stated_date' && computed.rawEnd && computed.end && computed.rawEnd !== computed.end) {
+		hint = movedDateHint(computed.rawEnd, computed.end, role === 'court');
 	}
+	const counted = f.trigger === 'stated_date' ? computed.rawEnd : computed.end;
 	return {
 		what: f.what,
 		trigger: f.trigger,
@@ -70,8 +73,17 @@ function buildFrist(f: FristFacts, email: Email, today: Day, land: Kanzlei['land
 		source: 'email',
 		...computed,
 		hint,
-		daysLeft: computed.end ? daysBetween(today, computed.end) : null
+		daysLeft: counted ? daysBetween(today, counted) : null
 	};
+}
+
+const GERMAN_DATE = /\d{2}\.\d{2}\.\d{4}/g;
+const MOVED = /verleg|verschob|aufgehoben/i;
+
+/** `what` is the LLM's free text, outside the quote. So its old date counts only if the email's body holds it. */
+function withOldDate(event: Facts['events'][number], body: string): ItemEvent {
+	const dates = MOVED.test(event.what) ? (event.what.match(GERMAN_DATE) ?? []) : [];
+	return { ...event, oldDate: dates.find((date) => body.includes(date) && !event.date_text.includes(date)) ?? null };
 }
 
 export function blankItem(): Item {
@@ -120,6 +132,7 @@ export function buildItem(
 							status: f.status
 						},
 						email,
+						role,
 						today,
 						kanzlei.land
 					)
@@ -140,6 +153,7 @@ export function buildItem(
 					status: 'from_event'
 				},
 				email,
+				role,
 				today,
 				kanzlei.land
 			)
@@ -158,7 +172,7 @@ export function buildItem(
 		urgent: facts.urgent_request.present,
 		wvToday: facts.wiedervorlage_today.present,
 		injection: facts.injection_suspect.present,
-		events: facts.events,
+		events: facts.events.map((event) => withOldDate(event, email.body)),
 		facts,
 		unsicher: Object.entries(checks)
 			.filter(([, ok]) => !ok)

@@ -28,9 +28,17 @@ const AKTEN: Schema = {
 			fristen: {
 				type: 'array',
 				items: { type: 'object', properties: { what: STR, end: STR, noted_from: STR }, required: ['what', 'end', 'noted_from'] }
+			},
+			termine: {
+				type: 'array',
+				items: {
+					type: 'object',
+					properties: { what: STR, date: STR, time: STR, room: STR },
+					required: ['what', 'date', 'time', 'room']
+				}
 			}
 		},
-		required: ['aktenzeichen', 'az_gericht', 'mandant', 'gegenseite', 'fristen']
+		required: ['aktenzeichen', 'az_gericht', 'mandant', 'gegenseite', 'fristen', 'termine']
 	}
 };
 
