@@ -10,7 +10,8 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test": "vitest --run"
+		"test": "vitest --run",
+		"eval": "node tests/eval/run-eval.ts"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^8.0.0",
@@ -22,6 +23,9 @@
 		"typescript": "^6.0.3",
 		"vite": "^8.3.0",
 		"vitest": "^4.1.8"
+	},
+	"engines": {
+		"node": ">=22.18"
 	},
 	"imports": {
 		"#lib": "./src/lib/index.js",

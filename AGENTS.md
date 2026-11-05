@@ -11,6 +11,7 @@ pnpm install
 pnpm dev        # the app, on localhost:5173
 pnpm test       # Vitest, replay mode, no login
 pnpm check      # svelte-check
+pnpm eval       # the scorers on the recorded replies, no login
 ```
 
 ## Rules
