@@ -76,7 +76,7 @@ The coverage line counts the emails read and the emails not read. A silently dro
 | 2 | Client mail that starts a Frist (a Kündigung, a Mahnbescheid, a Klage) | The Frist often runs already. Kündigungsschutzklage: 3 weeks from Zugang (§ 4 KSchG). |
 | 3 | The other side with a deadline | A settlement offer, a Fristsetzung. My reasoning. |
 | 4 | Client asks for action today | My reasoning. |
-| 5 | Wiedervorlage today, an open Frist in the case list within 7 days, or **court mail with a Termin** | The BGH expects a Vorfrist the lawyer checks (III ZR 47/14). A date the court sets cannot move. |
+| 5 | Wiedervorlage today, an open Frist in the case list within 7 days, or **court mail with a Termin** | The BGH expects a Vorfrist the lawyer checks (III ZR 47/14). A hearing is a fixed calendar fact, my reasoning. |
 | 6 | Everything else, collapsed | Newsletters, invoices, notices. |
 
 - In a tier: an end date not computable first, then the fewest days left, then the oldest email.
@@ -86,13 +86,26 @@ The coverage line counts the emails read and the emails not read. A silently dro
 
 ### The hearing rule
 
-This is the one change to the spike's table. A court mail with a Termin leaves tier 6.
+This is the one change to the spike's tiers. A court mail with a Termin leaves tier 6.
 
 - `b11` (a moved hearing) and `m09` (a new hearing) go from tier 6 to tier 5. Their two gold labels change with the rule, in one commit.
 - `b02` stays tier 1, from its Frist. Its Termin shows on the item.
-- The moved date shows beside the new date. No prompt change: `events[].what` already holds it as free text.
-- That text sits outside the quote. Code shows the moved date only if it finds that date in the email's body.
+- A moved hearing shows its old date beside the new one. No prompt change: `events[].what` already holds it as free text.
+- That text sits outside the quote. Code shows the old date only if it finds that date in the email's body.
 - The rule is `role == court && events.length > 0`. Prompt v2 stays, so the 28 recorded replies stay.
+
+### A date the court set
+
+This is a separate rule, about the Frist's date, not about a hearing. It changes the order in a tier, not a tier.
+
+Code moves an end on a Saturday, a Sunday or a holiday to the next Werktag (§ 222 Abs. 2 ZPO). `b02`: the court says
+"bis zum 21.11.2026", a Saturday, and code computes 23.11.
+
+- Whether § 222 Abs. 2 ZPO moves a date the court set is not sure. Do not state it either way.
+- So a date the court set ranks by itself: `days_left` counts to 21.11. "Bald" uses that date too.
+- The moved date shows beside it: "21.11. (Gericht), 23.11. nach § 222 Abs. 2 ZPO, bitte prüfen".
+- The trigger is `stated_date`. No prompt change. Gold's `end` stays 23.11, so the end-date scorer does not change.
+- Check at the test: which other emails have this case, and whether a must-see item moves in the top 3.
 
 ## Stack
 
@@ -282,8 +295,8 @@ Agree each step with the user before it starts.
 
 1. Scaffold, copy the data, `git init`. Check: `pnpm check` and `pnpm test` pass.
 2. Port with the tests, in the order above, and the `run-eval` skill. Check: the gate above.
-3. Tests first: `connector.ts`, `termine[]`, "Heute", the hearing rule, "nicht gelesen" and the coverage line,
-   `daily.ts`. Check: `pnpm test`, `pnpm eval`, and `pnpm daily` exits non-zero on a planted failure.
+3. Tests first: `connector.ts`, `termine[]`, "Heute", the hearing rule, a date the court set, "nicht gelesen" and the
+   coverage line, `daily.ts`. Check: `pnpm test`, `pnpm eval`, and `pnpm daily` exits non-zero on a planted failure.
 4. The mock, then the screens. A visual choice: 3 variants behind a temporary switch. Check: the user, in the UI.
 5. The docs: the README, `AGENTS.md`, `DECISIONS.md`, `HOW-IT-WAS-BUILT.md`. The first cuts, if scope must shrink: screen
    polish, then docs length. Never the tests or the eval.
@@ -303,7 +316,7 @@ The builder stops here and hands the user one thing to check. Work continues aft
 | Before each build step | The step's design, in 3 lines or fewer |
 | Step 2, after `verify` and `frist` | These two are the port's main risk. The user runs `pnpm test` and reads the list of twins. |
 | Step 2, at its end | `pnpm eval` against the spike's table in "Eval". Any number that differs is shown with its cause. |
-| Step 3, after the hearing rule | The diff of the two gold labels (`b11`, `m09`), and the new tier order |
+| Step 3, after the hearing rule and a date the court set | The diff of the two gold labels (`b11`, `m09`), and the new order |
 | Step 3, at its end | `pnpm daily`, and the content of "Heute" for both Kanzleien |
 | Step 4, before any screen | The mock. Then each screen, in the UI. |
 | Step 5, before anything goes to Florian | The README and `HOW-IT-WAS-BUILT.md`, read in full |
