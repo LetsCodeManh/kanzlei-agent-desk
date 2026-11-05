@@ -13,15 +13,6 @@ import type { Item, RankedItem, Role } from '../../types.ts';
 import { ROLES } from './extract.ts';
 import { normalise } from './verify.ts';
 
-export const TIER_LABELS: Record<number, string> = {
-	1: 'Gericht: Frist läuft',
-	2: 'Mandant: Frist beginnt',
-	3: 'Gegenseite: Frist',
-	4: 'Mandant: dringend',
-	5: 'Wiedervorlage, Frist aus der Akte, Gerichtstermin',
-	6: 'Sonstiges'
-};
-
 export function tierFor(
 	role: Role,
 	hasFrist: boolean,

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildHeute, coverageLine } from '#lib/server/briefing/heute.ts';
+import { coverageLine } from '#lib/format.ts';
+import { buildHeute } from '#lib/server/briefing/heute.ts';
 import { blankItem } from '#lib/server/briefing/items.ts';
 import { run } from '#lib/server/briefing/pipeline.ts';
 import { rank } from '#lib/server/briefing/rank.ts';
@@ -66,7 +67,7 @@ describe('"Heute" on the two fake inboxes', () => {
 	it('Berlin: no Termin, the same-day items, b01 and b03 to check, and the Akte\'s Replik', async () => {
 		const { heute } = await run('kanzlei-berlin', { live: false });
 		expect(heute.termine).toEqual([]);
-		expect(ids(heute.anrufen)).toEqual(['b07', 'b08']);
+		expect(ids(heute.tun)).toEqual(['b07', 'b08']);
 		expect(heute.pruefen.map((line) => line.text)).toEqual([
 			'B-26-101: Frist nicht berechenbar, Zustellungsdatum prüfen',
 			'B-26-103: Kündigungsschutzklage (§ 4 KSchG) bis 19.11. (relative Angabe, prüfen)' // "gestern"
@@ -79,10 +80,10 @@ describe('"Heute" on the two fake inboxes', () => {
 		expect(heute.termine.map((line) => line.text)).toEqual([
 			'Morgen 09:30: Mündliche Verhandlung, 172 C 3141/26 (Theo Theorie), Sitzungssaal B 214'
 		]);
-		expect(ids(heute.anrufen)).toEqual(['m07', 'm08']);
+		expect(ids(heute.tun)).toEqual(['m07', 'm08']);
 		expect(heute.pruefen).toEqual([]);
 		expect(ids(heute.bald)).toEqual(['', 'm06']); // the Akte's Frist, 1 day, then m06, 4 days
-		expect(ids([...heute.anrufen, ...heute.pruefen, ...heute.bald]).join()).not.toContain('m05');
+		expect(ids([...heute.tun, ...heute.pruefen, ...heute.bald]).join()).not.toContain('m05');
 	});
 });
 
@@ -106,19 +107,19 @@ describe('Termine', () => {
 	});
 });
 
-describe('Anrufen', () => {
+describe('Heute tun', () => {
 	it('holds a client\'s urgent request and a Wiedervorlage today', () => {
 		const heute = heuteOf(item('client', { urgent: true, summary: 'a' }), item('internal', { wvToday: true, summary: 'b' }));
-		expect(heute.anrufen.map((line) => line.text).sort()).toEqual(['a', 'b']);
+		expect(heute.tun.map((line) => line.text).sort()).toEqual(['a', 'b']);
 	});
 
 	it('takes an unsure role as a client: rank higher, never lower', () => {
-		expect(heuteOf(item('other', { urgent: true, roleSure: false })).anrufen).toHaveLength(1);
+		expect(heuteOf(item('other', { urgent: true, roleSure: false })).tun).toHaveLength(1);
 	});
 
 	it('leaves out an unknown sender\'s demand: text in an email cannot put it here', () => {
-		expect(heuteOf(item('other', { urgent: true })).anrufen).toEqual([]);
-		expect(heuteOf(item('opponent', { urgent: true })).anrufen).toEqual([]);
+		expect(heuteOf(item('other', { urgent: true })).tun).toEqual([]);
+		expect(heuteOf(item('opponent', { urgent: true })).tun).toEqual([]);
 	});
 });
 

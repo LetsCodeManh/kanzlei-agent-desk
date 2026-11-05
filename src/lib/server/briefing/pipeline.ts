@@ -1,12 +1,13 @@
 /** The pipeline: inbox, one LLM call per email, quote check, Fristen, decision table, ranked items, "Heute". */
 import { mkdirSync, renameSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { coverageLine } from '../../format.ts';
 import type { Briefing, Coverage, Day, Email, Facts, Heute, Kanzlei, NotRead, RankedItem } from '../../types.ts';
 import { DATA, kanzleiDir, listKanzleien, loadInbox, loadKanzlei } from '../connector.ts';
 import { loadAkten, matchAkte, soon } from './akte.ts';
 import { DEFAULT_MODEL, extract, isLive, SCHEMA } from './extract.ts';
 import { parseDay } from './frist.ts';
-import { buildHeute, coverageLine } from './heute.ts';
+import { buildHeute } from './heute.ts';
 import { akteItem, buildItem } from './items.ts';
 import { LlmError, type LlmMeta } from './llm.ts';
 import { rank } from './rank.ts';

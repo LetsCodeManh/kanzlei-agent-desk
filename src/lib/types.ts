@@ -145,7 +145,8 @@ export interface HeuteLine {
 
 export interface Heute {
 	termine: HeuteLine[];
-	anrufen: HeuteLine[];
+	/** On screen: "Heute tun". A Wiedervorlage is not always a call. */
+	tun: HeuteLine[];
 	pruefen: HeuteLine[];
 	bald: HeuteLine[];
 }

@@ -7,6 +7,7 @@
  *
  * Every computation is on UTC days. No local Date method is used.
  */
+import { shortGerman } from '../../format.ts';
 import type { Day, Land, Trigger } from '../../types.ts';
 
 export type Unit = 'day' | 'week' | 'month';
@@ -228,11 +229,6 @@ export function compute(trigger: Trigger, dateText: string, lengthText: string, 
 function german(day: Day): string {
 	const [year, month, date] = parts(day);
 	return `${String(date).padStart(2, '0')}.${String(month).padStart(2, '0')}.${year}`;
-}
-
-/** `21.11.`, the short form for a line on the screen. */
-export function shortGerman(day: Day): string {
-	return german(day).slice(0, 6);
 }
 
 /**

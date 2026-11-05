@@ -4,9 +4,10 @@
  * A sender known as `other` stays out, as in the tiers: text in an email cannot put a newsletter's "letzte Frist" or
  * an unknown sender's demand here. An unsure role stays in: rank higher, never lower.
  */
-import type { Akte, Coverage, Day, Frist, Heute, HeuteLine, Item, RankedItem } from '../../types.ts';
+import { fileLabel, shortGerman, shownEnd } from '../../format.ts';
+import type { Akte, Day, Frist, Heute, HeuteLine, Item, RankedItem } from '../../types.ts';
 import { SOON_DAYS } from './akte.ts';
-import { daysBetween, parseDay, shortGerman } from './frist.ts';
+import { daysBetween, parseDay } from './frist.ts';
 
 const TERMIN_DAYS = ['Heute', 'Morgen'];
 
@@ -29,17 +30,8 @@ function emailIds(item: Item): string[] {
 	return item.emails.map((email) => email.id);
 }
 
-function fileLabel(item: Item): string {
-	return item.akte ?? (item.aktenzeichen || 'ohne Akte');
-}
-
-/** The date `daysLeft` counts to: a stated date may not move, so it shows unmoved. */
-function shownEnd(frist: Frist): Day {
-	return (frist.trigger === 'stated_date' ? frist.rawEnd : frist.end) as Day;
-}
-
 function fristLine(item: Item, frist: Frist): HeuteLine {
-	const end = shortGerman(shownEnd(frist));
+	const end = shortGerman(shownEnd(frist) as Day);
 	const when = (frist.daysLeft as number) < 0 ? `, abgelaufen am ${end}` : ` bis ${end}`;
 	const check = frist.relative ? ' (relative Angabe, prüfen)' : '';
 	return { text: `${fileLabel(item)}: ${frist.what}${when}${check}`, emailIds: emailIds(item) };
@@ -54,7 +46,7 @@ export function buildHeute(items: RankedItem[], akten: Akte[], today: Day): Heut
 	const fristen = counted.flatMap((item) => item.fristen.map((frist) => ({ item, frist })));
 	return {
 		termine: termine(akten, today),
-		anrufen: counted
+		tun: counted
 			.filter((item) => item.wvToday || (item.urgent && (item.role === 'client' || !item.roleSure)))
 			.map((item) => ({ text: item.summary, emailIds: emailIds(item) })),
 		pruefen: fristen.flatMap(({ item, frist }) => {
@@ -66,8 +58,4 @@ export function buildHeute(items: RankedItem[], akten: Akte[], today: Day): Heut
 			.sort((a, b) => (a.frist.daysLeft as number) - (b.frist.daysLeft as number))
 			.map(({ item, frist }) => fristLine(item, frist))
 	};
-}
-
-export function coverageLine({ read, notRead }: Coverage): string {
-	return `${read} ${read === 1 ? 'E-Mail' : 'E-Mails'} gelesen, ${notRead} nicht gelesen`;
 }
