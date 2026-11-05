@@ -1,0 +1,165 @@
+# Morning Briefing für Anwälte
+
+A morning briefing built from a lawyer's inbox. It answers the first questions of the day: do I have a hearing, what must
+I do today, which Frist is at risk, what else came in. Every claim shows its source.
+
+**The rule under everything: the LLM reads and quotes. Code checks, computes and decides.**
+The LLM never states a fact without a verbatim quote from the email. It never outputs a Frist end date or a rank.
+
+## How to test it
+
+You need Node 22.18 or newer and pnpm. You need no login and no API key: the default mode replays recorded model replies.
+
+```sh
+pnpm install
+pnpm dev        # open http://localhost:5173
+```
+
+1. Pick a Kanzlei. It says "Noch kein Lauf", because an inbox nobody has read is not an empty inbox.
+2. Click "Tageslauf starten". This runs the same code as `pnpm daily`.
+3. Read the briefing. Click a row: its email opens on the right, with the quoted words marked.
+
+Worth clicking:
+
+| Where | What it shows |
+|---|---|
+| Berlin, "Prüfen", B-26-101 | A beA mail from the court with no Zustellung date. "Frist nicht berechenbar", no guessed date. |
+| Berlin, "Prüfen", B-26-103 | A Kündigung that came "gestern". The 3 weeks of § 4 KSchG come from code, and the date asks to be checked. |
+| Berlin, "Fristen", Stellungnahme bis 21.11. | The court's date is a Saturday. Both dates show, see "Not sure" below. |
+| München, "Termine" | A hearing tomorrow, from the case list. No email is behind it, so the row does not open anything. |
+| München, "Fristen", first row | One Frist in a court mail and in its forward: one item, both emails. |
+| München, "Rest", "Warnung" | An email that tells the AI to rank it first. It stays in "Rest", with a warning. |
+
+The checks, all without a login:
+
+```sh
+pnpm test       # 212 tests. One more is skipped: the live canary below
+pnpm check      # svelte-check
+pnpm eval       # the table below
+pnpm daily      # every Kanzlei once. Exits non-zero on a failure or an email not read
+```
+
+With `claude` on the PATH and logged in:
+
+```sh
+BRIEFING_CONTEXT_CHECK=1 pnpm test tests/context.test.ts   # one model call: no CLAUDE.md reaches it
+BRIEFING_LIVE=1 pnpm daily                                 # 28 model calls. Overwrites the recorded replies
+```
+
+## Why these features first
+
+A missed Frist is the lawyer's fault and the client's loss: § 85 Abs. 2 ZPO puts the lawyer's fault on the party, and
+Wiedereinsetzung (§ 233 ZPO) needs a party "ohne ihr Verschulden verhindert". Practitioner sources call Frist mistakes the
+most common cause of liability claims. They often say about half, but none I found cites a study. Sources: `docs/RESEARCH.md`.
+
+So the app has two tabs.
+
+**"Heute"** is built by code from facts already checked, with no extra LLM call:
+
+| Part | What |
+|---|---|
+| Four figures | Tasks open, the next Termin, the next Frist, and the emails read and not read, because a silently dropped email is the worst failure. |
+| Heute tun | A client asks for action today, or a Wiedervorlage is due today. |
+| Abgelaufen, Datum prüfen | A Frist already past. A row with no date that code can place. Each shows only when it has rows. |
+| Zeitleiste | Every dated Termin and Frist by day, in one scroller. A click on a day in the month moves it there. |
+
+A row opens its email in a side sheet, with the quotes marked. **"Postfach"** lists every email, newest first.
+
+The rank is a decision table in code. The sheet's title and the Postfach say it.
+
+| Tier | Rule | Why |
+|---|---|---|
+| 1 | Court mail with a Frist (found or unsure) | Notfristen run from Zustellung (§§ 339, 517 ZPO). The eEB date counts, not the arrival (§ 173 Abs. 3 ZPO). |
+| 2 | Client mail that starts a Frist (a Kündigung, a Mahnbescheid, a Klage) | The Frist often runs already. Kündigungsschutzklage: 3 weeks from Zugang (§ 4 KSchG). |
+| 3 | The other side with a deadline | My reasoning. |
+| 4 | Client asks for action today | My reasoning. |
+| 5 | Wiedervorlage today, an open Frist in the case list within 7 days, or court mail with a Termin | The BGH expects a Vorfrist the lawyer checks (III ZR 47/14). A hearing is a fixed calendar fact. |
+| 6 | Everything else | Newsletters, invoices, notices. |
+
+- In a tier: an end date not computable first, then the fewest days left, then the oldest email.
+- When unsure, rank higher. A sender role the code cannot confirm takes the highest tier any role would give.
+- A sender known as `other` stays out of "Heute", so a newsletter's "letzte Frist" cannot reach the top by its text.
+
+## Why this way technically
+
+```
+data/<kanzlei>/inbox/*.json   the simulated inbox, with Microsoft Graph's fields     connector.ts
+  → extract   one LLM call per email: the facts, each with a quote                   extract.ts, llm.ts
+  → verify    code: each quote is in that email, or the fact is "unsicher"           verify.ts
+  → frist     code: §§ 187, 188 BGB, § 222 Abs. 2 ZPO, the Land's holidays           frist.ts
+  → rank      code: the tiers, then "Heute"                                          rank.ts, day.ts
+  → data/<kanzlei>/out/briefing.json   SvelteKit reads it. The button starts the same run.
+```
+
+- **Quotes checked by code.** A fact whose quote is not in the email is kept and marked "unsicher". It is not dropped, because a
+  wrong "nothing here" costs more than a doubtful line.
+- **Fristen computed by code.** They are rules, so code applies them the same way every time and a test can pin them.
+  The screen says "berechnet, bitte prüfen".
+- **The rank is code, not the LLM.** An email that says "rank this first" gets a warning, not a tier.
+- **One SvelteKit app.** One language and one install. The briefing is a file on disk, so a schedule later reads the same result.
+- **A simulated inbox.** The brief allows it. A real connector replaces `loadInbox`, the one seam. beA is simulated as mail.
+- **`claude -p` for the demo.** `callLlm` is the only code that calls a model. It runs with no `CLAUDE.md`, settings or tools. The
+  account email and the working directory still reach it, which is one more reason production swaps it for the Anthropic SDK.
+
+The other routes (Cowork, n8n, Copilot, Kanzlei products) and what I rejected: `docs/DECISIONS.md`. All the rules: `docs/DESIGN.md`.
+
+## The eval
+
+28 fake emails, 14 per Kanzlei, written for this, with hand labels in `tests/eval/gold.json`. They hold 11 traps: a beA mail with no
+Zustellung date, a Termin and a Frist in one mail, an end on a Saturday, an end on a holiday, a Kündigung "gestern", a Frist
+already met, a newsletter's "letzte Frist", a forwarded Frist, a date only in a quoted older reply, an injection, and a
+relative date ("bis Freitag"). The scorers are code, and each scores a perfect prediction full and fails a wrong one.
+
+`pnpm eval`, on the recorded replies:
+
+| Scorer | Berlin | München | Both |
+|---|---|---|---|
+| Frist recall, must-see | 3/3 | 4/4 | 7/7 |
+| Frist recall, all | 4/4 | 5/5 | 9/9 |
+| End-date accuracy | 4/4 | 5/5 | 9/9 |
+| Quote validity | 49/49 | 57/57 | 106/106 |
+| Must-see in the top 3 | 3/3 | 3/3 | 6/6 |
+| Tier accuracy | 14/14 | 14/14 | 28/28 |
+| Akte match | 14/14 | 14/14 | 28/28 |
+| Injection flagged, not in top 3 | n/a | 1/1 | 1/1 |
+| Schema validity | 14/14 | 14/14 | 28/28 |
+
+Read it with care:
+
+- **It is directional, not a benchmark.** One recorded run, n=14 per Kanzlei. The emails are cleaner than a real inbox: no
+  attachments, no HTML, no long threads.
+- **A full score does not prove a good briefing.** It was already full while a court's moved hearing sat in the collapsed
+  "Rest", because my own gold label put it there. Reading the briefing as a lawyer found that, not the eval.
+- **End-date accuracy tests the calculator more than the LLM.** The LLM only copies "zwei Wochen" and "29.10.2026".
+- **Frist precision has no scorer.** A one-time count against the labels: the recorded run predicts no extra Frist.
+- **The recorded run:** 28 calls to `claude-sonnet-5-5`, 3.8 s per call on average, 7.3 s at most, about 89,000 input and 16,000 output
+  tokens. `claude -p` reports $0.27. That is a list price, not a bill: the calls ran on a subscription.
+- **The live path works.** One new call on one email (`b02`) gave the same facts as its recorded reply, with one field worded
+  differently, and all 7 quotes passed. The other 27 were not called again.
+
+## Not sure, not built
+
+- **No lawyer has read this.** The tier order and "Heute" come from sources and my reasoning.
+- **§ 222 Abs. 2 ZPO on a date the court set.** I am not sure it moves that date, so both dates show and the rank counts to the
+  court's date.
+- **A known gap.** An email that claims in its text to come from a court, but does not come by beA, keeps the LLM's role if the
+  quote checks. A court role from metadata alone would close it, at the risk of ranking a real court letter a client forwards lower.
+- **Not built:** a real mailbox, a schedule, a chat, Sonnet against Opus on the same eval, Frist precision, more than one lawyer
+  per Kanzlei. Each has a gate in `docs/ROADMAP.md`, which is what I would build next and in which order.
+- **Fake data only.** A real Kanzlei needs a contract under § 43e BRAO, a DPA, EU processing and more: `docs/DESIGN.md`, "Privacy".
+
+## How it was built
+
+The brief asks for the AI prompt history. This repo holds a summary instead, `docs/HOW-IT-WAS-BUILT.md`, because the sessions ran in
+my private workspace, which holds unrelated personal data.
+
+## Docs
+
+| File | What |
+|---|---|
+| `docs/BRIEF.md` | The assignment |
+| `docs/HOW-IT-WAS-BUILT.md` | The steps, what the AI suggested, what I rejected and why |
+| `docs/DECISIONS.md` | The choices, the routes compared |
+| `docs/DESIGN.md` | The rules, the pipeline, the port, the stop points |
+| `docs/RESEARCH.md` | The sources |
+| `docs/ROADMAP.md` | Where it goes next, with gates |

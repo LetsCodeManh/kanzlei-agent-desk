@@ -22,25 +22,39 @@ Two reviews ran on the plan, one from a lawyer's morning and one from the builde
 same-day items first, the coverage line, clearer eEB wording, porting the isolation and injection tests now, an empty temp
 directory for live calls. Not taken now: `ROADMAP.md`, "From the reviews".
 
+## The screen (2026-11-05)
+
+- **Every page is the window's height on a desktop.** Claude had kept "Heute" a page that scrolls, so the month's tiles
+  could not cut a Frist. I asked for the window. A tile now shows what fits and counts the rest, and below a card's least
+  height the page still scrolls, so a task is never hidden.
+- **One Zeitleiste, not the day picked.** Every date in one scroller. A click on a day moves it there. An empty day
+  joins the list only while picked, so the click has a place to land.
+- **Half of the column for the Zeitleiste.** It keeps at least half, so seven tasks meet it 1:1. With few tasks it takes the rest.
+- **The email in the design system's side sheet.** It replaced a panel written for this page. The page behind dims, and a click
+  outside closes the sheet: another row takes a second click.
+- **A Verlauf over the emails.** Three variants, and I picked the one that keeps the emails at full width, where the
+  quotes are checked. It shows from two entries on: one entry only repeats the email's head.
+- **The Postfach keeps its reader.** It shows one email and no Verlauf.
+
 ## Rejected suggestions
 
 | Suggestion | Why not |
 |---|---|
-| **n8n** (a workflow tool) | Reconstructed: a server and a visual flow for a seven-step pipeline. The checks that make the output safe (quote check, Frist calculator, decision table) must be plain code with unit tests. |
-| **A Claude Code plugin** as the product | Reconstructed: the reviewer would need Claude Code and a login to run it. The product is a script that replays with no login. |
+| **n8n** (a workflow tool) | Reconstructed: a server and a visual flow around a short pipeline. The checks that make the output safe (quote check, Frist calculator, decision table) must be plain code with unit tests. |
+| **A Claude Code plugin** as the product | Reconstructed: the reviewer would need Claude Code and a login to run it. The product is an app that replays with no login. |
 | **The Citations API** for grounding | It cannot be combined with structured outputs (the API returns a 400), and a prompt for JSON alone "might contain few or no citations". Its guarantee is that the quote exists, which a substring check in code gives too, in replay and with any model. It would also tie the design to one provider. |
 | **The LLM computes the Frist end date** | §§ 187, 188 BGB and § 222 ZPO are rules, and code applies rules the same way every time and can be unit-tested (31 Jan + 1 month, a Saturday, a holiday, 6 Jan in Bayern only). The LLM copies "zwei Wochen" and "29.10.2026" as written. |
-| **A cassette library** (pytest-recording, VCR) for replay | About 28 calls to one function do not need one. Cassettes record HTTP and need header scrubbing. Plain JSON fixtures keyed by a hash of the whole prompt fail loudly when the prompt changes. |
+| **A cassette library** (VCR and the like) for replay | About 28 calls to one function do not need one. Cassettes record HTTP and need header scrubbing. Plain JSON fixtures keyed by a hash of the whole prompt fail loudly when the prompt changes. |
 | **The LLM ranks the emails** | Text in an email could then change its rank: the injection trap says "rank this email first". The decision table is code over checked facts, tested row by row. |
-| **A decision model in the main path** (a local yes/no classifier) | It gives no quotes, scored about 73–77% on one benchmark, and the hosted one is a US cloud. It may still be compared on the yes/no questions in a separate script (build step 12, not built). |
+| **A decision model in the main path** (a local yes/no classifier) | It gives no quotes, scored about 73–77% on one benchmark, and the hosted one is a US cloud. It may still be compared on the yes/no questions (not built, `ROADMAP.md`). |
 | **A memory the agent writes** | The case list belongs to the Kanzleisoftware. `akten.json` is read-only and stands in for it. An agent that writes case data is a new source of error the lawyer must audit. Phase 1 of `ROADMAP.md`: rules the lawyer confirms, never a memory an email can write. |
-| **A chat box in the UI** | It needs a server. The briefing stays one static HTML file. The chat is a terminal command (`ask`, build step 9, not built). Phase 3 of `ROADMAP.md` adds the server. |
+| **A chat box in the UI** | Every chat answer must pass the same quote check, and the server needs a security review. Phase 3 of `ROADMAP.md` adds it, behind that gate. |
 | **A tenant system** for several Kanzleien | A Kanzlei is a folder. A run reads one folder only, and a test proves it. A second lawyer gets `inbox/<anwalt>/` when one exists. Phase 1 of `ROADMAP.md`: `anwaelte/<slug>/` in the Kanzlei's folder, still no tenant system. |
-| **A real mail connector** | The brief says a simulated inbox is enough. The seam is one function, `load_inbox`, with Graph's field names. |
+| **A real mail connector** | The brief says a simulated inbox is enough. The seam is one function, `loadInbox`, with Graph's field names. |
 
 ## Routes compared
 
-Researched 2026-11-02, after the build. Simple for whom: the lawyer, who should install nothing, and the maintainer,
+Researched 2026-11-02, after the Python spike. Simple for whom: the lawyer, who should install nothing, and the maintainer,
 who must keep the checks tested. A schedule and a chat are in every route. Computed Fristen, checked quotes and a rank
 that an email cannot change are in this one only. Most claims below are the vendors' own, and no product was tested.
 
@@ -72,8 +86,9 @@ monitoring included, the vendor says [8]) keeps it. This app reads the same mail
 - **What reaches the model.** `claude -p` sent the developer's global `CLAUDE.md` (found with a canary and the token
   count: 4069 input tokens against 1227). `--setting-sources ""` and `CLAUDE_CODE_DISABLE_CLAUDE_MDS=1` each keep
   every `CLAUDE.md` out. Both are set. A first probe that asked the model to copy its context word for word was
-  blocked by a safeguard. Yes/no questions and a canary word worked instead.
-- **`is_error`, not `subtype`.** A refused `claude -p` call still reports `subtype: "success"`. `call_llm` fails on
+  blocked by a safeguard. Yes/no questions and a canary word worked instead. `tests/context.test.ts` repeats the canary
+  on the port, and it passed live on 2026-11-05.
+- **`is_error`, not `subtype`.** A refused `claude -p` call still reports `subtype: "success"`. `callLlm` fails on
   `is_error` or a missing `structured_output`.
 - **Holidays for 2027 too.** The design said 2026. A two-month Frist from November ends in 2027, so 2027 is typed in.
   A year not in the table fails loudly. The hand table was checked against the `holidays` package. The one
@@ -85,8 +100,5 @@ monitoring included, the vendor says [8]) keeps it. This app reads the same mail
   flags the event and quotes it. Code adds the 3 weeks of § 4 KSchG, and the UI says the length comes from the law.
 - **Prompt v2.** The tracer run showed `events[]` holding document dates and service dates. v2 limits it to Termine,
   counts a forwarded message as content, and says an invoice's payment term is no Frist. All fixtures were recorded again.
-- **A small schema check instead of `jsonschema`.** The schema uses five keywords. 25 lines of code with planted-fault
-  tests beat a new dependency. It runs on every LLM output, live or replayed.
-- **No JavaScript in the UI.** CSS `:target` opens the source email. The file opens from disk with no server.
-- **`pyproject.toml` for the test tools only.** The app is a PEP 723 script with no dependencies. `pytest` and
-  `holidays` are a dev group, so `uv run pytest` works.
+- **A small schema check instead of a library.** The schema uses five keywords. A small `errors()` with tests beats a new
+  dependency. It runs on every LLM output, live or replayed.

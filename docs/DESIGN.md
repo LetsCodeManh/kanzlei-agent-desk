@@ -36,40 +36,43 @@ The quality checks: `pnpm test` and `pnpm eval`. `BRIEFING_LIVE=1` calls the rea
 
 The first question is "do I have a hearing today?". Then: who must I call, which Frist is at risk, what else came in.
 
-This is the content of the screen, in three bands: "Heute", "Fristen" and a collapsed "Rest" (the user's pick at the mock).
+The app has two tabs, "Heute" and "Postfach". On a desktop every page is the window's height: only a card scrolls.
 
 ```
-Mo 2 Nov · Postfach: simuliert · 14 E-Mails gelesen, 0 nicht gelesen
+HEUTE      Guten Morgen, Mo 2 Nov
+           4 figures: Aufgaben heute, Nächster Termin, Nächste Frist, E-Mails gelesen
+  left     Heute tun      a tick on each task
+           Abgelaufen     only when a Frist is past
+           Datum prüfen   only when a row has no date
+           Zeitleiste     every dated row, by day, in one scroller, at least half of the column
+  right    the month      a click on a day moves the Zeitleiste to it
 
-HEUTE
-  Termine   keine heute oder morgen
-  Heute tun Testmann: Personalgespräch um 14 Uhr, Rückruf am Vormittag
-  Prüfen    12 Ca 3456/26: Frist nicht berechenbar, Zustellungsdatum prüfen
-  Bald      B-26-105: Replik bis 04.11.
+SHEET      a row with an email opens it in a side sheet: the rank as its title, the Akte, a Verlauf
+           (emails, Frist, Termin, in order, when there are two or more), the emails with quotes marked
 
-FRISTEN UND REST
-  Items by rank, tier 6 collapsed. A click opens the email, quotes marked.
+POSTFACH   every email, newest first, and the one picked with its quotes marked
 ```
 
 In this version a lawyer only reads the screen, on the fake inbox. A real mailbox and a schedule: `ROADMAP.md`.
 
 ## "Heute"
 
-Code builds it from existing facts. No LLM call and no new prompt. Its lines, in this order:
+Code builds it from existing facts. No LLM call and no new prompt. Its parts:
 
-| Line | Source | Note |
+| Part | Source | Note |
 |---|---|---|
-| Termine | `termine[]` in `akten.json`, today and tomorrow | Always shown. Empty state: "keine Termine heute oder morgen" |
-| Heute tun | `urgent_request`, `wiedervorlage_today` | Same-day items come first in "Heute" |
-| Prüfen | a Frist with no computable end date | `b01`. A relative date such as "bis Freitag" (`m06`) is here or in Bald |
-| Bald | any Frist with 7 days or fewer left, from an email or `akten.json` | A Frist already past is here too, first |
+| Heute tun | `urgent_request`, `wiedervorlage_today` | A task has a tick. A Frist has none: it is struck after its check |
+| Abgelaufen | any Frist already past | It must not wait on a past tile of the month |
+| Datum prüfen | a row with no date to place it by | `b01`. It cannot sit on a day |
+| Zeitleiste | every dated Termin (`termine[]` in `akten.json`, or a court's email), Frist and thing from an email | Opens at the next day with a row. An empty day is on it only while picked |
+| The month | the same rows | A tile shows what fits, and "N weitere" for the rest |
 
 A sender known as `other` stays out of "Heute", as in the tiers: a newsletter's "letzte Frist" must not reach it. An unsure
 role stays in.
 
-An item in "Heute" stays in its tier as well. Both open the same email.
+A row on "Heute" keeps its tier: the sheet's title says it, and the Postfach too.
 
-The coverage line counts the emails read and the emails not read. A silently dropped email is the worst failure.
+"E-Mails gelesen" counts the emails read and the emails not read. A silently dropped email is the worst failure.
 
 ## The tiers
 
@@ -133,7 +136,7 @@ planted canary `CLAUDE.md` and the input token count:
 
 `callLlm` uses both switches, `--tools ""`, `--no-session-persistence` and `--strict-mcp-config`. It runs in an empty
 temp directory, because this repo holds `AGENTS.md` and `CLAUDE.md`. `tests/context.test.ts` repeats the canary check.
-It is live, so it is skipped unless `BRIEFING_CONTEXT_CHECK=1`. `pnpm test` itself cannot go live: `vite.config.ts` turns `BRIEFING_LIVE` off for it. The account email and the working directory still reach the call. That is one
+It is live, so it is skipped unless `BRIEFING_CONTEXT_CHECK=1`. It passed on 2026-11-05. `pnpm test` itself cannot go live: `vite.config.ts` turns `BRIEFING_LIVE` off for it. The account email and the working directory still reach the call. That is one
 more reason the SDK replaces `claude -p` in production.
 
 ## Folders
@@ -151,20 +154,24 @@ kanzlei-agent-desk/
 │   ├── lib/
 │   │   ├── types.ts           Email, Akte, Item, Frist
 │   │   ├── format.ts          how a date or a line reads. The browser loads it too
-│   │   ├── components/        BriefingPane, Row
+│   │   ├── calendar.ts        which rows the month and the Zeitleiste show. The browser loads it too
+│   │   ├── components/        DayPage DayStats DayRowLink DayTimeline MonthCalendar EmailSource SourceTimeline ReadForm Connect RunProblems
+│   │   ├── design/            a copy of what this app uses from ../design-system. A change goes there first
 │   │   └── server/            never reaches the browser
 │   │       ├── connector.ts   loadInbox(kanzlei): the simulated inbox, Graph-shaped
-│   │       └── briefing/      akte extract frist heute items llm pipeline rank schema verify
+│   │       └── briefing/      akte day extract frist items llm pipeline rank schema verify
 │   └── routes/
 │       ├── +page.server.ts  +page.svelte   pick a Kanzlei
 │       └── [kanzlei]/
 │           ├── +layout.server.ts   reads this Kanzlei's briefing.json
-│           ├── +layout.svelte      the header and the left pane: the briefing
-│           ├── +page.server.ts     the "Tageslauf starten" action, then a redirect
-│           ├── +page.svelte        the right pane, nothing picked
-│           └── [email]/
-│               ├── +page.server.ts  cuts the body at its quotes, on the server
-│               └── +page.svelte     the right pane: the email, quotes marked
+│           ├── +layout.svelte      the sidebar: the two tabs
+│           ├── (heute)/
+│           │   ├── +layout.svelte      the day, and the side sheet over it
+│           │   ├── +page.server.ts     "Neu lesen" and a tick
+│           │   └── [email]/+page.server.ts   cuts the body at its quotes, on the server
+│           └── postfach/
+│               ├── +layout.svelte      the list and the reader
+│               └── [email]/+page.server.ts   the same, for one email
 ├── data/                      fake only
 │   ├── kanzlei-berlin/        kanzlei.json, akten.json, inbox/*.json
 │   ├── kanzlei-muenchen/      the same
@@ -254,7 +261,7 @@ recursively, and pin one key in a test. `test_no_stale_fixture` (its twin) catch
 | `test_frist.py`: the holiday table against the `holidays` package | Export the expected sets once from Python to a JSON file |
 | `test_metrics.py` | No twin. Metrics wait (`ROADMAP.md`). |
 
-**Traps in the port.** They come from reading the code. None has been run in TypeScript yet.
+**Traps in the port.** They come from reading the code.
 
 - Dates: UTC-date arithmetic only. No local `Date` methods.
 - The German day: `Intl.DateTimeFormat('en-CA', {timeZone: 'Europe/Berlin'})`. Add a test with an email at 23:30 UTC.
@@ -317,9 +324,6 @@ Agree each step with the user before it starts.
 
 `HOW-IT-WAS-BUILT.md` is a summary: the steps, what the AI suggested, what the user rejected and why. No session history
 goes in the repo. The brief asks for it, so the README says in one line that this is a summary, and why.
-
-Stale text to fix in step 5, in `DECISIONS.md`: the "chat box" row ("one static HTML file"), the Claude Code plugin row
-("a script"), the n8n row ("seven-step pipeline"), and the build's choices "No JavaScript" and `pyproject.toml`.
 
 ## Stop points
 
