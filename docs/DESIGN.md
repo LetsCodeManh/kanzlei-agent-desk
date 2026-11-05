@@ -36,14 +36,14 @@ The quality checks: `pnpm test` and `pnpm eval`. `BRIEFING_LIVE=1` calls the rea
 
 The first question is "do I have a hearing today?". Then: who must I call, which Frist is at risk, what else came in.
 
-This is the content of the screen. The look is agreed at the mock (build step 4).
+This is the content of the screen, in three bands: "Heute", "Fristen" and a collapsed "Rest" (the user's pick at the mock).
 
 ```
 Mo 2 Nov · Postfach: simuliert · 14 E-Mails gelesen, 0 nicht gelesen
 
 HEUTE
   Termine   keine heute oder morgen
-  Anrufen   Testmann: Personalgespräch um 14 Uhr, Rückruf am Vormittag
+  Heute tun Testmann: Personalgespräch um 14 Uhr, Rückruf am Vormittag
   Prüfen    12 Ca 3456/26: Frist nicht berechenbar, Zustellungsdatum prüfen
   Bald      B-26-105: Replik bis 04.11.
 
@@ -60,7 +60,7 @@ Code builds it from existing facts. No LLM call and no new prompt. Its lines, in
 | Line | Source | Note |
 |---|---|---|
 | Termine | `termine[]` in `akten.json`, today and tomorrow | Always shown. Empty state: "keine Termine heute oder morgen" |
-| Anrufen | `urgent_request`, `wiedervorlage_today` | Same-day items come first in "Heute" |
+| Heute tun | `urgent_request`, `wiedervorlage_today` | Same-day items come first in "Heute" |
 | Prüfen | a Frist with no computable end date | `b01`. A relative date such as "bis Freitag" (`m06`) is here or in Bald |
 | Bald | any Frist with 7 days or fewer left, from an email or `akten.json` | A Frist already past is here too, first |
 
@@ -147,21 +147,24 @@ kanzlei-agent-desk/
 ├── .claude/skills/run-eval/SKILL.md   runs the eval, says what failed and why
 ├── scripts/daily.ts           pnpm daily: every Kanzlei once, a non-zero exit on a failure
 ├── src/
-│   ├── app.html  app.d.ts
+│   ├── app.html  app.css  app.d.ts
 │   ├── lib/
 │   │   ├── types.ts           Email, Akte, Item, Frist
-│   │   ├── components/        after the mock is agreed
+│   │   ├── format.ts          how a date or a line reads. The browser loads it too
+│   │   ├── components/        BriefingPane, Row
 │   │   └── server/            never reaches the browser
 │   │       ├── connector.ts   loadInbox(kanzlei): the simulated inbox, Graph-shaped
 │   │       └── briefing/      akte extract frist heute items llm pipeline rank schema verify
 │   └── routes/
-│       ├── +page.svelte       pick a Kanzlei
+│       ├── +page.server.ts  +page.svelte   pick a Kanzlei
 │       └── [kanzlei]/
 │           ├── +layout.server.ts   reads this Kanzlei's briefing.json
-│           ├── +layout.svelte      the left pane: the briefing
+│           ├── +layout.svelte      the header and the left pane: the briefing
 │           ├── +page.server.ts     the "Tageslauf starten" action, then a redirect
 │           ├── +page.svelte        the right pane, nothing picked
-│           └── [email]/+page.svelte   the right pane: the email, quotes marked
+│           └── [email]/
+│               ├── +page.server.ts  cuts the body at its quotes, on the server
+│               └── +page.svelte     the right pane: the email, quotes marked
 ├── data/                      fake only
 │   ├── kanzlei-berlin/        kanzlei.json, akten.json, inbox/*.json
 │   ├── kanzlei-muenchen/      the same
@@ -171,7 +174,7 @@ kanzlei-agent-desk/
     └── eval/                  gold.json gold.ts scorers.ts run-eval.ts
 ```
 
-- Generated and gitignored: `data/<kanzlei>/out/briefing.json`.
+- Generated and gitignored: `data/<kanzlei>/out/briefing.json`, and `last-run-failed` beside it after a failed run.
 - `daily.ts` finds a Kanzlei by its `kanzlei.json`, because `data/` also holds `replay/`.
 - Tests live in `tests/`, not next to the code. The user chose this, with the eval beside them.
 
@@ -218,6 +221,8 @@ data/<kanzlei>/inbox/*.json   loadInbox, the connector
 - A missing recorded reply is not "nicht gelesen". The replay is broken, so the Kanzlei fails.
 - A Kanzlei that fails does not stop the others. `pnpm daily` exits non-zero at the end, and also on an email not read.
 - No run yet: the page says so. It does not look like an empty inbox.
+- A failed run keeps the last briefing and leaves a mark beside it. The page says it failed until a run passes, after a
+  reload and after a failed `pnpm daily` too. The cause goes to the server's log, not the browser.
 
 ### Replay
 
@@ -262,7 +267,7 @@ recursively, and pin one key in a test. `test_no_stale_fixture` (its twin) catch
 - Quote spans: JS strings iterate UTF-16 units. Test an astral character and a combining sequence.
 - The `[kanzlei]` URL value is a trust boundary. Check it as `inbox.py:25` does.
 - `pnpm daily` and `pnpm eval` run outside Vite: plain `node`, which runs `.ts` itself. Use relative imports with `.ts` in `src/lib/server/`, and no `$app/*` or `$env`.
-- Resolve `data/` from `import.meta.url`, not `process.cwd()`.
+- Find `data/` by walking up from `import.meta.url`, not from `process.cwd()`. A fixed relative path breaks after `pnpm build`.
 - The button's action must redirect, so a reload does not start a second run.
 
 ## Eval
@@ -341,4 +346,3 @@ Stop at once, at any step, for one of these:
 ## Open
 
 - A Termin in a mail that also has a Frist (`b02`): one item or two. Default: one item, the Termin shown on it.
-- Three bands ("Heute", "Fristen", "Rest") or six visible tiers. Decided at the mock.

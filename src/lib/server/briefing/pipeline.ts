@@ -1,5 +1,5 @@
 /** The pipeline: inbox, one LLM call per email, quote check, Fristen, decision table, ranked items, "Heute". */
-import { mkdirSync, renameSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { coverageLine } from '../../format.ts';
 import type { Briefing, Coverage, Day, Email, Facts, Heute, Kanzlei, NotRead, RankedItem } from '../../types.ts';
@@ -114,25 +114,53 @@ export async function run(
 	};
 }
 
-/** One Kanzlei's run, written to its `out/briefing.json`. The button and `pnpm daily` both come here. */
+const FAILED_MARK = 'last-run-failed';
+
+/**
+ * One Kanzlei's run, written to its `out/briefing.json`. The button and `pnpm daily` both come here.
+ * A failed run leaves the last briefing and a mark beside it, so the page says so until a run passes, after a reload too.
+ */
 export async function saveBriefing(kanzlei: string, options: RunOptions = {}): Promise<Run> {
-	const result = await run(kanzlei, options);
-	const briefing: Briefing = {
-		kanzlei,
-		info: result.info,
-		today: result.today,
-		model: result.model,
-		coverage: result.coverage,
-		notRead: result.notRead.map(({ detail: _, ...rest }) => rest),
-		heute: result.heute,
-		items: result.items
-	};
 	const out = join(kanzleiDir(kanzlei, options.data), 'out');
 	mkdirSync(out, { recursive: true });
-	// A rename, so a run that dies on the way leaves the last whole briefing, not half a file.
-	writeFileSync(join(out, 'briefing.json.tmp'), `${JSON.stringify(briefing, null, 1)}\n`);
-	renameSync(join(out, 'briefing.json.tmp'), join(out, 'briefing.json'));
-	return result;
+	try {
+		const result = await run(kanzlei, options);
+		const briefing: Briefing = {
+			kanzlei,
+			info: result.info,
+			today: result.today,
+			model: result.model,
+			coverage: result.coverage,
+			notRead: result.notRead.map(({ detail: _, ...rest }) => rest),
+			heute: result.heute,
+			items: result.items
+		};
+		// A rename, so a run that dies on the way leaves the last whole briefing, not half a file.
+		writeFileSync(join(out, 'briefing.json.tmp'), `${JSON.stringify(briefing, null, 1)}\n`);
+		renameSync(join(out, 'briefing.json.tmp'), join(out, 'briefing.json'));
+		rmSync(join(out, FAILED_MARK), { force: true });
+		return result;
+	} catch (error) {
+		writeFileSync(join(out, FAILED_MARK), new Date().toISOString());
+		throw error;
+	}
+}
+
+export interface StoredBriefing {
+	/** null: no run has finished yet. That is not an empty inbox. */
+	briefing: Briefing | null;
+	/** The last run failed. `briefing` is then an older run's, if there is one. */
+	failed: boolean;
+}
+
+/** What the screens read. A broken `briefing.json` throws: it must not look like no run. */
+export function readBriefing(kanzlei: string, data = DATA): StoredBriefing {
+	const out = join(kanzleiDir(kanzlei, data), 'out');
+	const path = join(out, 'briefing.json');
+	return {
+		briefing: existsSync(path) ? (JSON.parse(readFileSync(path, 'utf-8')) as Briefing) : null,
+		failed: existsSync(join(out, FAILED_MARK))
+	};
 }
 
 /** Every Kanzlei once. false if any failed or left an email not read. One failure does not stop the next Kanzlei. */

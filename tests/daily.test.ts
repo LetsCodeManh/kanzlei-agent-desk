@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DATA } from '#lib/server/connector.ts';
-import { runDaily } from '#lib/server/briefing/pipeline.ts';
+import { readBriefing, runDaily } from '#lib/server/briefing/pipeline.ts';
 
 const temp: string[] = [];
 afterEach(() => {
@@ -58,6 +58,29 @@ describe('runDaily', () => {
 		expect(written.coverage).toEqual({ read: 14, notRead: 1 });
 		expect(written.notRead).toEqual([{ id: 'broken', sender: '', subject: '', reason: 'Datei nicht lesbar' }]);
 		expect(log).toHaveBeenCalledWith('kanzlei-berlin: 14 E-Mails gelesen, 1 nicht gelesen: broken');
+	});
+
+	it('a failed run keeps the last briefing and says so until a run passes. No run yet is not an empty inbox.', async () => {
+		vi.spyOn(console, 'log').mockImplementation(() => {});
+		vi.spyOn(console, 'error').mockImplementation(() => {});
+		const data = copyOfData();
+		expect(readBriefing('kanzlei-berlin', data)).toEqual({ briefing: null, failed: false });
+
+		expect(await runDaily(data)).toBe(true);
+		const last = readBriefing('kanzlei-berlin', data);
+		expect(last.failed).toBe(false);
+		expect(last.briefing?.coverage.read).toBe(14);
+
+		const akten = join(data, 'kanzlei-berlin/akten.json');
+		const good = readFileSync(akten, 'utf-8');
+		writeFileSync(akten, '{ not json');
+		expect(await runDaily(data)).toBe(false);
+		expect(readBriefing('kanzlei-berlin', data)).toEqual({ briefing: last.briefing, failed: true });
+		expect(readBriefing('kanzlei-muenchen', data).failed).toBe(false);
+
+		writeFileSync(akten, good);
+		expect(await runDaily(data)).toBe(true);
+		expect(readBriefing('kanzlei-berlin', data).failed).toBe(false);
 	});
 
 	it('finding no Kanzlei is a failure, not an empty success', async () => {

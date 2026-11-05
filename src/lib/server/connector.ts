@@ -4,14 +4,24 @@
  * The file shape follows Microsoft Graph's message resource (id, from.emailAddress, receivedDateTime, subject,
  * body.content), so a Graph connector maps one to one. `channel` (bea or email) is ours.
  */
-import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { basename, join } from 'node:path';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { Channel, Day, Email, Kanzlei, NotRead } from '../types.ts';
 import { parseDay } from './briefing/frist.ts';
 import { errors, type Schema } from './briefing/schema.ts';
 
-export const DATA = fileURLToPath(new URL('../../../data/', import.meta.url));
+/** Found by walking up: this file is `src/lib/server` in `pnpm dev` and `node`, but a bundled chunk after `pnpm build`. */
+function findData(): string {
+	let dir = dirname(fileURLToPath(import.meta.url));
+	while (!existsSync(join(dir, 'data'))) {
+		if (dir === dirname(dir)) throw new Error(`No data/ folder above ${fileURLToPath(import.meta.url)}`);
+		dir = dirname(dir);
+	}
+	return `${join(dir, 'data')}/`;
+}
+
+export const DATA = findData();
 
 const KANZLEI_NAME = /^[a-z0-9-]+$/;
 const GERMAN_DAY = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin' });
