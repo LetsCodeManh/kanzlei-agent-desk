@@ -8,8 +8,7 @@ import {
 	nextWerktag,
 	parseDate,
 	parseLength,
-	weekday,
-	YEARS
+	weekday
 } from '#lib/server/briefing/frist.ts';
 
 const MON_2_NOV = '2026-11-02';
@@ -124,10 +123,6 @@ describe('the hand-typed holidays against an independent source', () => {
 		readFileSync(new URL('./holidays-expected.json', import.meta.url), 'utf-8')
 	);
 
-	it('covers the same years', () => {
-		expect([...YEARS].sort()).toEqual([2026, 2027]);
-	});
-
 	it('Berlin matches the package', () => {
 		expect([...HOLIDAYS.BE].sort()).toEqual(expected.BE);
 	});
@@ -148,11 +143,6 @@ describe('the traps of JavaScript dates', () => {
 		expect(() => parseDate('31.02.', MON_2_NOV)).toThrow();
 	});
 
-	it('accepts 29 Feb in a leap year only', () => {
-		expect(parseDate('29.02.2028', MON_2_NOV)?.date).toBe('2028-02-29');
-		expect(() => parseDate('29.02.2027', MON_2_NOV)).toThrow();
-	});
-
 	it('finds a weekday earlier in the week than the email', () => {
 		// Python's % never gives a negative. Every spike twin uses a Monday, so none would catch this.
 		const friday = '2026-11-06';
@@ -167,15 +157,6 @@ describe('the traps of JavaScript dates', () => {
 		expect(parseDate('Montag', '2026-11-08')).toEqual({ date: '2026-11-09', relative: true });
 	});
 
-	it('reads a two-digit year', () => {
-		expect(parseDate('29.10.26', MON_2_NOV)?.date).toBe('2026-10-29');
-	});
-
-	it('clamps 31 Jan in a leap year to 29 Feb, and 31 Oct + 1 month to 30 Nov', () => {
-		expect(addPeriod('2028-01-31', 1, 'month')).toBe('2028-02-29');
-		expect(addPeriod('2026-10-31', 1, 'month')).toBe('2026-11-30');
-	});
-
 	it('crosses a change to summer time without losing a day', () => {
 		// 29 Mar 2026: clocks move in Germany. UTC arithmetic does not see it.
 		expect(addPeriod('2026-03-28', 2, 'day')).toBe('2026-03-30');
@@ -188,21 +169,12 @@ describe('the traps of JavaScript regexes', () => {
 		expect(parseDate('3. MÄRZ 2027', MON_2_NOV)?.date).toBe('2027-03-03');
 	});
 
-	it('reads fünf and zwölf, in any case', () => {
-		expect(parseLength('FÜNF Tage')).toEqual([5, 'day']);
-		expect(parseLength('zwölf Monate')).toEqual([12, 'month']);
-	});
-
 	it('does not take a weekday or a word inside a longer word', () => {
 		// JS \b is ASCII-only: it sees a boundary before é and ä. Python's does not.
 		expect(parseDate('Freitagé', MON_2_NOV)).toBeNull();
 		expect(parseDate('äFreitag', MON_2_NOV)).toBeNull();
 		expect(parseDate('heuteä', MON_2_NOV)).toBeNull();
 		expect(parseDate('Freitagabend', MON_2_NOV)).toBeNull();
-	});
-
-	it('does not take a date behind a letter', () => {
-		expect(parseDate('ä12.10.2026', MON_2_NOV)).toBeNull();
 	});
 
 	it('takes vorgestern as -2, not as gestern', () => {

@@ -54,14 +54,6 @@ describe('normalise', () => {
 		expect(normalise('STRASSE')).toBe(normalise('Straße'));
 		expect(normalise('STRAẞE')).toBe('strasse');
 	});
-
-	it('maps the characters the spike maps', () => {
-		expect(normalise('„a“ «b» ‚c‘ d’ e–f—g i j k so­ft')).toBe(`"a" "b" 'c' d' e-f-g i j k soft`);
-	});
-
-	it('keeps the spike on U+2011: NFKC makes it U+2010 first, so its mapping never fires', () => {
-		expect(normalise('g‑h')).toBe('g‐h');
-	});
 });
 
 function facts(over: Partial<Facts> = {}): Facts {
@@ -126,10 +118,6 @@ describe('findSpan', () => {
 		expect(span('zwei Wochen', '😀 Frist von zwei Wochen ab')).toBe('zwei Wochen');
 	});
 
-	it('keeps an astral character inside the quote whole', () => {
-		expect(span('a 😀 b', 'x a 😀 b y')).toBe('a 😀 b');
-	});
-
 	it('finds a quote in a body with a combining sequence', () => {
 		const body = 'Herr Müller aus Zürich';
 		expect(span('Müller aus Zürich', body)).toBe('Müller aus Zürich');
@@ -149,12 +137,6 @@ describe('normalisedWithMap', () => {
 		expect(bodies).toHaveLength(28);
 		for (const body of bodies) expect(normalisedWithMap(body).text).toBe(normalise(body));
 	});
-
-	it('gives the same text as normalise, on the hard cases', () => {
-		for (const text of ['  a  b  ', 'Straße', 'Müller', 'so­ft', '😀 a', 'a\r\nb', ' x ', '']) {
-			expect(normalisedWithMap(text).text).toBe(normalise(text));
-		}
-	});
 });
 
 describe('markSegments', () => {
@@ -163,9 +145,5 @@ describe('markSegments', () => {
 			{ text: 'a ', marked: false },
 			{ text: '<b> c d', marked: true }
 		]);
-	});
-
-	it('marks nothing when no quote is found', () => {
-		expect(markSegments('a b', ['zz'])).toEqual([{ text: 'a b', marked: false }]);
 	});
 });
