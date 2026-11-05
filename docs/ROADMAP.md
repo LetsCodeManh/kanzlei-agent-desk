@@ -37,6 +37,8 @@ Each is a file or a folder only when its step starts. No empty structure before 
 | The ops desk and its screens | `src/lib/server/ops/`, `src/routes/(us)/ops/`, `data/lessons.jsonl` | The no-content test: `(us)/` and `ops` never read `data/<kanzlei>/` |
 | A chat | `src/lib/server/chat/` | Phase 3's gate |
 | Voice | `src/lib/server/voice/` | Not designed yet. Agree the design first. A spoken claim passes the same quote check. |
+| A second connector | The interface `graph.ts` needs, when a second vendor comes. The Postfach holds email from any vendor | The same test: read-only |
+| Stats for the admin | Later. "Heute" has four figures for the lawyer, and no admin screen exists | Agree the design first |
 
 ## From the reviews, not taken now
 

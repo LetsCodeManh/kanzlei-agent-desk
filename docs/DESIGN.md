@@ -26,9 +26,9 @@ pnpm dev        # open localhost:5173
 ```
 
 1. Pick a Kanzlei. The screen shows "Postfach: simuliert".
-2. Click "Tageslauf starten". This runs the same code as `pnpm daily`.
-3. Read the briefing.
-4. Click an item. Its email opens beside the briefing, with the quoted words marked.
+2. Click "Demo-Postfach verbinden". This runs the same code as `pnpm daily`.
+3. Read "Heute".
+4. Click a row. Its email opens in a side sheet, with the quoted words marked.
 
 The quality checks: `pnpm test` and `pnpm eval`. `BRIEFING_LIVE=1` calls the real model and needs `claude` on the PATH.
 

@@ -27,7 +27,8 @@ gates. Claude picked Python to keep the tested code. I reversed that the same da
    every row. A one-time comparison of the full item list found 0 differences, and 22,054 comparisons of `verify` and `frist`
    found 0 too. No new feature came before this passed.
 3. What was new: "Heute", the hearing rule, a date the court set, "nicht gelesen", `pnpm daily`.
-4. The screens: 3 variants at a mock with real content. I picked three bands, then the code.
+4. The screens: 3 variants at a mock with real content. I picked three bands, then the code. Once I saw them I asked for one day page,
+   then two tabs, Heute and Postfach, with a month, from my design system.
 
 ## What the AI suggested and I rejected
 

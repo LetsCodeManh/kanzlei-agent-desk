@@ -15,25 +15,25 @@ pnpm install
 pnpm dev        # open http://localhost:5173
 ```
 
-1. Pick a Kanzlei. It says "Noch kein Lauf", because an inbox nobody has read is not an empty inbox.
-2. Click "Tageslauf starten". This runs the same code as `pnpm daily`.
-3. Read the briefing. Click a row: its email opens on the right, with the quoted words marked.
+1. Pick a Kanzlei. It asks you to connect first, because an inbox nobody has read is not an empty inbox.
+2. Click "Demo-Postfach verbinden". This runs the same code as `pnpm daily`.
+3. Read "Heute". Click a row: its email opens in a side sheet, with the quoted words marked.
 
 Worth clicking:
 
 | Where | What it shows |
 |---|---|
-| Berlin, "Prüfen", B-26-101 | A beA mail from the court with no Zustellung date. "Frist nicht berechenbar", no guessed date. |
-| Berlin, "Prüfen", B-26-103 | A Kündigung that came "gestern". The 3 weeks of § 4 KSchG come from code, and the date asks to be checked. |
-| Berlin, "Fristen", Stellungnahme bis 21.11. | The court's date is a Saturday. Both dates show, see "Not sure" below. |
-| München, "Termine" | A hearing tomorrow, from the case list. No email is behind it, so the row does not open anything. |
-| München, "Fristen", first row | One Frist in a court mail and in its forward: one item, both emails. |
-| München, "Rest", "Warnung" | An email that tells the AI to rank it first. It stays in "Rest", with a warning. |
+| Berlin, "Datum prüfen", B-26-101 | A beA mail from the court with no Zustellung date. "Frist nicht berechenbar", no guessed date. |
+| Berlin, "Zeitleiste", B-26-103 | A Kündigung that came "gestern". The 3 weeks of § 4 KSchG come from code, and the date asks to be checked. |
+| Berlin, "Zeitleiste", Stellungnahme bis 21.11. | The court's date is a Saturday. Both dates show, see "Not sure" below. |
+| München, "Zeitleiste", 3 Nov, Mündliche Verhandlung | A hearing tomorrow, from the case list. No email is behind it, so the row does not open anything. |
+| München, "Zeitleiste", 12 Nov, Einspruch | One Frist in a court mail and in its forward: one item, both emails. |
+| München, "Postfach", "Warnung" | An email that tells the AI to rank it first. It stays at the lowest rank, with a warning, and reaches no task or calendar. |
 
 The checks, all without a login:
 
 ```sh
-pnpm test       # 212 tests. One more is skipped: the live canary below
+pnpm test       # 232 tests. One more is skipped: the live canary below
 pnpm check      # svelte-check
 pnpm eval       # the table below
 pnpm daily      # every Kanzlei once. Exits non-zero on a failure or an email not read
@@ -97,6 +97,7 @@ data/<kanzlei>/inbox/*.json   the simulated inbox, with Microsoft Graph's fields
   The screen says "berechnet, bitte prüfen".
 - **The rank is code, not the LLM.** An email that says "rank this first" gets a warning, not a tier.
 - **One SvelteKit app.** One language and one install. The briefing is a file on disk, so a schedule later reads the same result.
+- **`src/lib/design/` is a copy** of my own design system, so `pnpm install` needs no other repo. A change goes there first.
 - **A simulated inbox.** The brief allows it. A real connector replaces `loadInbox`, the one seam. beA is simulated as mail.
 - **`claude -p` for the demo.** `callLlm` is the only code that calls a model. It runs with no `CLAUDE.md`, settings or tools. The
   account email and the working directory still reach it, which is one more reason production swaps it for the Anthropic SDK.
@@ -126,10 +127,11 @@ relative date ("bis Freitag"). The scorers are code, and each scores a perfect p
 
 Read it with care:
 
+- **"Must-see in the top 3" describes the rank, not the screen.** The screen sorts Fristen by date.
 - **It is directional, not a benchmark.** One recorded run, n=14 per Kanzlei. The emails are cleaner than a real inbox: no
   attachments, no HTML, no long threads.
-- **A full score does not prove a good briefing.** It was already full while a court's moved hearing sat in the collapsed
-  "Rest", because my own gold label put it there. Reading the briefing as a lawyer found that, not the eval.
+- **A full score does not prove a good briefing.** It was already full while a court's moved hearing sat in a collapsed
+  "Rest" on an earlier screen, because my own gold label put it there. Reading the briefing as a lawyer found that, not the eval.
 - **End-date accuracy tests the calculator more than the LLM.** The LLM only copies "zwei Wochen" and "29.10.2026".
 - **Frist precision has no scorer.** A one-time count against the labels: the recorded run predicts no extra Frist.
 - **The recorded run:** 28 calls to `claude-sonnet-5-5`, 3.8 s per call on average, 7.3 s at most, about 89,000 input and 16,000 output
