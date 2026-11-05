@@ -64,6 +64,9 @@ Code builds it from existing facts. No LLM call and no new prompt. Its lines, in
 | Prüfen | a Frist with no computable end date | `b01`. A relative date such as "bis Freitag" (`m06`) is here or in Bald |
 | Bald | any Frist with 7 days or fewer left, from an email or `akten.json` | A Frist already past is here too, first |
 
+A sender known as `other` stays out of "Heute", as in the tiers: a newsletter's "letzte Frist" must not reach it. An unsure
+role stays in.
+
 An item in "Heute" stays in its tier as well. Both open the same email.
 
 The coverage line counts the emails read and the emails not read. A silently dropped email is the worst failure.
@@ -212,7 +215,8 @@ data/<kanzlei>/inbox/*.json   loadInbox, the connector
 
 - An email that cannot be read shows "nicht gelesen", and the coverage line counts it. The other emails still run.
   The spike stops the whole run here. This is new behaviour, so it gets a test first.
-- A Kanzlei that fails does not stop the others. `pnpm daily` exits non-zero at the end.
+- A missing recorded reply is not "nicht gelesen". The replay is broken, so the Kanzlei fails.
+- A Kanzlei that fails does not stop the others. `pnpm daily` exits non-zero at the end, and also on an email not read.
 - No run yet: the page says so. It does not look like an empty inbox.
 
 ### Replay

@@ -34,6 +34,9 @@ export interface Predictions {
 }
 
 export function predictions(result: Run): Predictions {
+	if (result.notRead.length > 0) {
+		throw new Error(`The eval needs every email read. Not read: ${result.notRead.map((email) => email.id).join(', ')}`);
+	}
 	const emails: Record<string, Predicted> = {};
 	result.items.forEach((item, index) => {
 		for (const email of item.emails) {

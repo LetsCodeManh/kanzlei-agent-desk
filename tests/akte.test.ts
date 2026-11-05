@@ -79,7 +79,7 @@ describe('isolation between Kanzleien', () => {
 
 	it.each(pairs)('no email of %s matches an Akte of %s', (mine, other) => {
 		const otherAkten = loadAkten(other);
-		expect(loadInbox(mine).filter((e) => matchAkte(e, otherAkten))).toEqual([]);
+		expect(loadInbox(mine).emails.filter((e) => matchAkte(e, otherAkten))).toEqual([]);
 	});
 
 	it('has no Aktenzeichen in both', () => {

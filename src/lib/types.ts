@@ -120,3 +120,44 @@ export interface RankedItem extends Item {
 	/** The items merged into this one, because they hold the same Frist. */
 	duplicates?: RankedItem[];
 }
+
+/** An email that could not be read. A silently dropped email is the worst failure, so it is counted and listed. */
+export interface NotRead {
+	/** The file's name when the file itself could not be read. */
+	id: string;
+	sender: string;
+	subject: string;
+	reason: string;
+	/** The error, for the operator. It does not go in `briefing.json`. */
+	detail: string;
+}
+
+export interface Coverage {
+	read: number;
+	notRead: number;
+}
+
+export interface HeuteLine {
+	text: string;
+	/** Empty for a line from `akten.json`, which has no email. */
+	emailIds: string[];
+}
+
+export interface Heute {
+	termine: HeuteLine[];
+	anrufen: HeuteLine[];
+	pruefen: HeuteLine[];
+	bald: HeuteLine[];
+}
+
+/** `data/<kanzlei>/out/briefing.json`. The screens read this. */
+export interface Briefing {
+	kanzlei: string;
+	info: Kanzlei;
+	today: Day;
+	model: string;
+	coverage: Coverage;
+	notRead: Omit<NotRead, 'detail'>[];
+	heute: Heute;
+	items: RankedItem[];
+}

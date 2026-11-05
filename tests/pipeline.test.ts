@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { extract } from '#lib/server/briefing/extract.ts';
+import { extract, MissingFixture } from '#lib/server/briefing/extract.ts';
+import { LlmError } from '#lib/server/briefing/llm.ts';
 import { run } from '#lib/server/briefing/pipeline.ts';
 
 vi.mock('#lib/server/briefing/extract.ts', async (original) => ({
@@ -15,13 +16,48 @@ afterEach(() => {
 });
 
 describe('run', () => {
-	it('fails loudly, and names the email, on a reply that breaks the schema', async () => {
+	it('a reply that breaks the schema: that email is not read, and counted. The others run.', async () => {
 		vi.mocked(extract).mockImplementation(async (email, options) => {
 			const reply = await real.extract(email, options);
 			if (email.id !== 'b03') return reply;
 			return { ...reply, output: { ...(reply.output as object), end_date: '2026-11-12' } };
 		});
-		await expect(run('kanzlei-berlin', { live: false })).rejects.toThrow(/^b03: the LLM output breaks the schema: \$: unexpected end_date/);
+		const result = await run('kanzlei-berlin', { live: false });
+		expect(result.notRead).toEqual([
+			expect.objectContaining({ id: 'b03', reason: 'Antwort des Modells ungültig', detail: expect.stringMatching(/unexpected end_date/) })
+		]);
+		expect(result.notRead[0].sender).not.toBe('');
+		expect(result.notRead[0].subject).not.toBe('');
+		expect(result.coverage).toEqual({ read: 13, notRead: 1 });
+		expect(result.items.flatMap((item) => item.emails.map((e) => e.id))).not.toContain('b03');
+	});
+
+	it('a failed model call: that email is not read, and counted. The others run.', async () => {
+		vi.mocked(extract).mockImplementation(async (email, options) => {
+			if (email.id === 'b03') throw new LlmError('claude -p timed out');
+			return real.extract(email, options);
+		});
+		const result = await run('kanzlei-berlin', { live: false });
+		expect(result.notRead.map((n) => [n.id, n.reason])).toEqual([['b03', 'Modell nicht erreichbar']]);
+		expect(result.coverage).toEqual({ read: 13, notRead: 1 });
+	});
+
+	it('a missing recorded reply fails the Kanzlei: the replay is broken, not the email', async () => {
+		vi.mocked(extract).mockRejectedValue(new MissingFixture('No recorded reply'));
+		await expect(run('kanzlei-berlin', { live: false })).rejects.toThrow(MissingFixture);
+	});
+
+	it('a bug fails the Kanzlei: only a known failure becomes "nicht gelesen"', async () => {
+		vi.mocked(extract).mockRejectedValue(new TypeError('x is not a function'));
+		await expect(run('kanzlei-berlin', { live: false })).rejects.toThrow(TypeError);
+	});
+
+	it('a clean run: every email counted as read, and "Heute" built', async () => {
+		vi.mocked(extract).mockImplementation((email, options) => real.extract(email, options));
+		const result = await run('kanzlei-muenchen', { live: false });
+		expect(result.coverage).toEqual({ read: 14, notRead: 0 });
+		expect(result.notRead).toEqual([]);
+		expect(result.heute.termine).toHaveLength(1);
 	});
 
 	it('live: runs at most 4 calls at a time, and keeps the inbox order', async () => {

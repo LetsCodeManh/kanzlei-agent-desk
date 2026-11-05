@@ -230,12 +230,17 @@ function german(day: Day): string {
 	return `${String(date).padStart(2, '0')}.${String(month).padStart(2, '0')}.${year}`;
 }
 
+/** `21.11.`, the short form for a line on the screen. */
+export function shortGerman(day: Day): string {
+	return german(day).slice(0, 6);
+}
+
 /**
  * A stated date that is no Werktag. Whether § 222 Abs. 2 ZPO moves a date the court set is not sure, so both dates show.
  * The ZPO is named only for a court's date.
  */
 export function movedDateHint(rawEnd: Day, end: Day, byCourt: boolean): string {
-	const [raw, moved] = [german(rawEnd).slice(0, 6), german(end).slice(0, 6)];
+	const [raw, moved] = [shortGerman(rawEnd), shortGerman(end)];
 	return byCourt
 		? `${raw} (Gericht), ${moved} nach § 222 Abs. 2 ZPO, bitte prüfen`
 		: `${raw} (genannt), ${moved} nächster Werktag, bitte prüfen`;

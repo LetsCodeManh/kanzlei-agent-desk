@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { germanDay, kanzleiDir, loadInbox, loadKanzlei } from '#lib/server/connector.ts';
+import { germanDay, kanzleiDir, listKanzleien, loadInbox, loadKanzlei } from '#lib/server/connector.ts';
 
 const temp: string[] = [];
 afterEach(() => {
@@ -63,7 +63,7 @@ describe('kanzleiDir', () => {
 
 describe('loadInbox', () => {
 	it('maps Graph fields, with the sender in lower case and Python-style time', () => {
-		const [email] = loadInbox('k', dataWith(message()));
+		const [email] = loadInbox('k', dataWith(message())).emails;
 		expect(email).toEqual({
 			id: 'a1',
 			channel: 'email',
@@ -82,14 +82,37 @@ describe('loadInbox', () => {
 			message({ id: 'b', receivedDateTime: '2026-11-02T07:00:00Z' }),
 			message({ id: 'a', receivedDateTime: '2026-11-02T08:00:00Z' })
 		);
-		expect(loadInbox('k', data).map((e) => e.id)).toEqual(['b', 'a', 'c']);
+		expect(loadInbox('k', data).emails.map((e) => e.id)).toEqual(['b', 'a', 'c']);
 	});
 
 	it.each([
-		['a missing subject', [{ ...message(), subject: undefined }], /missing subject/],
-		['a date that does not exist', [message({ receivedDateTime: '2026-02-31T06:41:00Z' })], /no such date/]
-	])('fails loudly on %s', (_, messages, error) => {
-		expect(() => loadInbox('k', dataWith(...messages))).toThrow(error);
+		['a missing subject', { ...message({ id: 'bad' }), subject: undefined }, /missing subject/],
+		['a date that does not exist', message({ id: 'bad', receivedDateTime: '2026-02-31T06:41:00Z' }), /no such date/],
+		['an HTML body', message({ id: 'bad', body: { contentType: 'html', content: '<p>b</p>' } }), /only text bodies/]
+	])('on %s: that file is not read, the others are', (_, bad, detail) => {
+		const { emails, notRead } = loadInbox('k', dataWith(message({ id: 'good' }), bad));
+		expect(emails.map((e) => e.id)).toEqual(['good']);
+		expect(notRead).toEqual([{ id: '1', sender: '', subject: '', reason: 'Datei nicht lesbar', detail: expect.stringMatching(detail) }]);
+	});
+
+	it('a file that is not JSON is not read, the others are', () => {
+		const data = dataWith(message({ id: 'good' }));
+		writeFileSync(join(data, 'k/inbox/broken.json'), '{ not json');
+		const { emails, notRead } = loadInbox('k', data);
+		expect(emails.map((e) => e.id)).toEqual(['good']);
+		expect(notRead.map((n) => n.id)).toEqual(['broken']);
+	});
+
+	it('a duplicate id still fails the whole inbox: links would open the wrong email', () => {
+		expect(() => loadInbox('k', dataWith(message(), message()))).toThrow(/Duplicate email ids/);
+	});
+});
+
+describe('listKanzleien', () => {
+	it('finds a Kanzlei by its kanzlei.json, so replay/ and a stray folder are not one', () => {
+		const data = dataWith();
+		mkdirSync(join(data, 'replay'));
+		expect(listKanzleien(data)).toEqual(['k']);
 	});
 });
 

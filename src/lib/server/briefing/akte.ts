@@ -9,7 +9,7 @@ import { daysBetween, parseDay } from './frist.ts';
 import type { Schema } from './schema.ts';
 
 /** An open Frist in the Akte that ends within a week, or is overdue, goes into tier 5. */
-const SOON_DAYS = 7;
+export const SOON_DAYS = 7;
 
 const STR: Schema = { type: 'string' };
 const AKTEN: Schema = {

@@ -23,7 +23,7 @@ import { GOLD } from './eval/gold.ts';
 vi.mock('#lib/server/briefing/llm.ts', () => ({ callLlm: vi.fn() }));
 
 const KANZLEIEN = ['kanzlei-berlin', 'kanzlei-muenchen'];
-const EMAILS = KANZLEIEN.flatMap((kanzlei) => loadInbox(kanzlei));
+const EMAILS = KANZLEIEN.flatMap((kanzlei) => loadInbox(kanzlei).emails);
 
 function records() {
 	return readdirSync(REPLAY).map((file) => ({
@@ -34,7 +34,7 @@ function records() {
 
 describe('the fake data', () => {
 	it.each(KANZLEIEN)('%s has 14 emails', (kanzlei) => {
-		expect(loadInbox(kanzlei)).toHaveLength(14);
+		expect(loadInbox(kanzlei).emails).toHaveLength(14);
 	});
 });
 
@@ -110,7 +110,7 @@ describe('the gold labels', () => {
 	const emails = (kanzlei: string) => Object.values(GOLD[kanzlei].emails);
 
 	it.each(KANZLEIEN)('%s labels every email and no other', (kanzlei) => {
-		const ids = loadInbox(kanzlei).map((email) => email.id).sort();
+		const ids = loadInbox(kanzlei).emails.map((email) => email.id).sort();
 		expect(Object.keys(GOLD[kanzlei].emails).sort()).toEqual(ids);
 	});
 

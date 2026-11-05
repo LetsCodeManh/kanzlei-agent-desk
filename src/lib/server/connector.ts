@@ -5,9 +5,9 @@
  * body.content), so a Graph connector maps one to one. `channel` (bea or email) is ours.
  */
 import { readdirSync, readFileSync, statSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { Channel, Day, Email, Kanzlei } from '../types.ts';
+import type { Channel, Day, Email, Kanzlei, NotRead } from '../types.ts';
 import { parseDay } from './briefing/frist.ts';
 import { errors, type Schema } from './briefing/schema.ts';
 
@@ -99,19 +99,36 @@ function toEmail(raw: GraphMessage): Email {
 	};
 }
 
-/** Every email in the Kanzlei's inbox, oldest first. */
-export function loadInbox(kanzlei: string, data = DATA): Email[] {
+export interface Inbox {
+	emails: Email[];
+	notRead: NotRead[];
+}
+
+/** Every email in the Kanzlei's inbox, oldest first. A file that cannot be read is listed, and the others still load. */
+export function loadInbox(kanzlei: string, data = DATA): Inbox {
 	const inbox = join(kanzleiDir(kanzlei, data), 'inbox');
-	const emails = readdirSync(inbox)
-		.filter((file) => file.endsWith('.json'))
-		.sort()
-		.map((file) => toEmail(readChecked<GraphMessage>(join(inbox, file), MESSAGE)));
+	const emails: Email[] = [];
+	const notRead: NotRead[] = [];
+	for (const file of readdirSync(inbox).filter((name) => name.endsWith('.json')).sort()) {
+		try {
+			emails.push(toEmail(readChecked<GraphMessage>(join(inbox, file), MESSAGE)));
+		} catch (error) {
+			const detail = error instanceof Error ? error.message : String(error);
+			notRead.push({ id: basename(file, '.json'), sender: '', subject: '', reason: 'Datei nicht lesbar', detail });
+		}
+	}
 	if (new Set(emails.map((email) => email.id)).size !== emails.length) {
 		throw new Error(`Duplicate email ids in ${inbox}`);
 	}
-	return emails.sort(
-		(a, b) => Date.parse(a.received) - Date.parse(b.received) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
-	);
+	emails.sort((a, b) => Date.parse(a.received) - Date.parse(b.received) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+	return { emails, notRead };
+}
+
+/** Every folder with a `kanzlei.json`, because `data/` also holds `replay/`. */
+export function listKanzleien(data = DATA): string[] {
+	return readdirSync(data)
+		.filter((name) => statSync(join(data, name, 'kanzlei.json'), { throwIfNoEntry: false })?.isFile())
+		.sort();
 }
 
 export function loadKanzlei(kanzlei: string, data = DATA): Kanzlei {
