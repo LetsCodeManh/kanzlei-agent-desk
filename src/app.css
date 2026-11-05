@@ -67,6 +67,50 @@ a {
 	line-height: 18px;
 }
 
+.quiet,
+.primary {
+	display: inline-grid;
+	place-items: center;
+	flex: none;
+	border-radius: 8px;
+	font: inherit;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.quiet:active,
+.primary:active {
+	transform: scale(0.97);
+}
+
+.quiet:disabled,
+.primary:disabled {
+	cursor: progress;
+}
+
+.quiet {
+	height: 32px;
+	padding-inline: var(--space-3);
+	border: 1px solid var(--line);
+	background: var(--surface);
+	color: inherit;
+	font-size: 13px;
+}
+
+.quiet:hover {
+	background: var(--surface-hover);
+}
+
+.primary {
+	height: 36px;
+	padding-inline: var(--space-4);
+	border: 0;
+	background: var(--accent);
+	color: var(--on-accent);
+	font-weight: 500;
+}
+
 .tag {
 	display: inline-block;
 	color: var(--ink-2);

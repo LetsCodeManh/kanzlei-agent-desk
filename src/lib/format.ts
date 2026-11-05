@@ -3,6 +3,7 @@ import type { Coverage, Day, Frist, Item } from './types.ts';
 
 const WEEKDAYS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 const MONTHS = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+const LONG_DAY = new Intl.DateTimeFormat('de-DE', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
 const GERMAN_DAY = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Berlin' });
 const GERMAN_TIME = new Intl.DateTimeFormat('de-DE', { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit' });
 
@@ -18,6 +19,16 @@ export const TIER_LABELS: Record<number, string> = {
 /** `21.11.`, the short form for a line on the screen. */
 export function shortGerman(day: Day): string {
 	return `${day.slice(8, 10)}.${day.slice(5, 7)}.`;
+}
+
+/** `Mo 02.11.`, the date on a row. */
+export function weekdayGerman(day: Day): string {
+	return `${WEEKDAYS[new Date(`${day}T00:00:00Z`).getUTCDay()]} ${shortGerman(day)}`;
+}
+
+/** `Montag, 2. November`, above the day's answer. */
+export function longGerman(day: Day): string {
+	return LONG_DAY.format(new Date(`${day}T00:00:00Z`));
 }
 
 /** `Mo 2 Nov`. */
@@ -43,4 +54,9 @@ export function fileLabel(item: Item): string {
 
 export function coverageLine({ read, notRead }: Coverage): string {
 	return `${read} ${read === 1 ? 'E-Mail' : 'E-Mails'} gelesen, ${notRead} nicht gelesen`;
+}
+
+/** `14 von 14 E-Mails gelesen`, in the header. */
+export function readLine({ read, notRead }: Coverage): string {
+	return `${read} von ${read + notRead} E-Mails gelesen`;
 }

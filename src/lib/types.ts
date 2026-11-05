@@ -137,18 +137,36 @@ export interface Coverage {
 	notRead: number;
 }
 
-export interface HeuteLine {
-	text: string;
-	/** Empty for a line from `akten.json`, which has no email. */
+export type Tone = 'danger' | 'warn' | null;
+
+/** One line on the day's screen. */
+export interface DayRow {
+	id: string;
+	title: string;
+	sub: string;
+	notes: string[];
+	date: string | null;
+	when: string;
+	days: number | null;
+	tone: Tone;
+	/** The emails behind it, the first one opens. Empty: from the case list, with nothing to open. */
 	emailIds: string[];
+	unsure: boolean;
+	warning: boolean;
 }
 
-export interface Heute {
-	termine: HeuteLine[];
-	/** On screen: "Heute tun". A Wiedervorlage is not always a call. */
-	tun: HeuteLine[];
-	pruefen: HeuteLine[];
-	bald: HeuteLine[];
+/** Each thing sits in one place, and every item lands somewhere. */
+export interface DayScreen {
+	/** Hearings today and tomorrow, from the case list. */
+	termineSoon: DayRow[];
+	/** Hearings a court's mail names. */
+	termineNew: DayRow[];
+	/** On screen: "Heute tun". The only rows with a tick: a Frist is struck after its check, not by a tick. */
+	aufgaben: DayRow[];
+	pruefen: DayRow[];
+	bald: DayRow[];
+	spaeter: DayRow[];
+	rest: DayRow[];
 }
 
 /** `data/<kanzlei>/out/briefing.json`. The screens read this. */
@@ -159,6 +177,6 @@ export interface Briefing {
 	model: string;
 	coverage: Coverage;
 	notRead: Omit<NotRead, 'detail'>[];
-	heute: Heute;
+	day: DayScreen;
 	items: RankedItem[];
 }

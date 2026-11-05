@@ -1,90 +1,92 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import BriefingPane from '#lib/components/BriefingPane.svelte';
-	import { coverageLine, dayLabel } from '#lib/format.ts';
+	import Connect from '#lib/components/Connect.svelte';
+	import DayPage from '#lib/components/DayPage.svelte';
+	import ReadForm from '#lib/components/ReadForm.svelte';
+	import { readLine } from '#lib/format.ts';
 	import type { LayoutProps } from './$types';
 
 	let { data, children }: LayoutProps = $props();
 
-	let starting = $state(false);
-	let emailPane: HTMLElement | undefined = $state();
+	let panel: HTMLElement | undefined = $state();
 
-	// The panes scroll by themselves, so the router does not reset them. A new email opens at its top.
+	const open = $derived(page.params.email !== undefined);
+	const dayHref = $derived(resolve('/[kanzlei]', { kanzlei: data.kanzlei }));
+
+	// The panel scrolls by itself, so the router does not reset it. A new email opens at its top.
 	afterNavigate(({ from, to }) => {
-		if (emailPane && from?.params?.email !== to?.params?.email) emailPane.scrollTop = 0;
+		if (panel && from?.params?.email !== to?.params?.email) panel.scrollTop = 0;
 	});
+
+	function onkeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape' && open) goto(dayHref, { reset: false });
+	}
 </script>
 
-<div class="app">
-	<header>
-		<div class="status">
-			<div class="name">
-				<strong>{data.info.name}</strong>
-				<a href={resolve('/')}>Kanzlei wechseln</a>
-			</div>
-			{#if data.briefing}
-				<p class="sub">
-					{dayLabel(data.briefing.today)} · Postfach: simuliert · {coverageLine(data.briefing.coverage)}
-				</p>
-				{#if data.briefing.notRead.length > 0}
-					<ul class="not-read">
-						{#each data.briefing.notRead as email (email.id)}
-							<li>
-								Nicht gelesen: {[email.sender || email.id, email.subject].filter(Boolean).join(', ')}. {email.reason}. Bitte
-								im Postfach selbst prüfen.
-							</li>
-						{/each}
-					</ul>
-				{/if}
-			{:else}
-				<p class="sub">Postfach: simuliert · noch kein Lauf</p>
-			{/if}
-		</div>
-		<form
-			method="POST"
-			action={resolve('/[kanzlei]', { kanzlei: data.kanzlei })}
-			use:enhance={() => {
-				starting = true;
-				return async ({ update }) => {
-					await update();
-					starting = false;
-				};
-			}}
-		>
-			{#if data.failed}
-				<p class="run-error" role="alert">
-					Tageslauf fehlgeschlagen.{data.briefing ? ' Unten steht der letzte Lauf.' : ''}
-				</p>
-			{/if}
-			<button disabled={starting}>{starting ? 'Tageslauf läuft' : 'Tageslauf starten'}</button>
-		</form>
-	</header>
+<svelte:window {onkeydown} />
 
-	<div class="panes">
-		<div class="left">
-			{#if data.briefing}
-				<BriefingPane briefing={data.briefing} kanzlei={data.kanzlei} selected={page.params.email} />
-			{:else}
-				<div class="no-run">
-					<strong>Noch kein Lauf.</strong>
-					<p class="sub">Das Postfach wurde noch nicht gelesen. Das heißt nicht, dass es leer ist. „Tageslauf starten“ liest es.</p>
+<div class="app">
+	<div class="top">
+		<div class="demo">
+			<span>Demo · erfundene Daten</span>
+			<a href={resolve('/')}>Kanzlei wechseln</a>
+		</div>
+		{#if data.briefing}
+			<header>
+				<div class="who">
+					<strong>{data.info.name}</strong>
+					<span class="sub">{data.info.anwalt.name}</span>
 				</div>
+				<div class="mailbox">
+					<div class="mailbox-text">
+						<span class="mailbox-line">Outlook verbunden (simuliert): {data.info.anwalt.address}</span>
+						<span class="sub">{readLine(data.briefing.coverage)}</span>
+					</div>
+					<ReadForm kanzlei={data.kanzlei} label="Neu lesen" />
+				</div>
+			</header>
+			{#if data.failed}
+				<p class="run-error" role="alert">Das Postfach konnte nicht gelesen werden. Unten steht der letzte Stand.</p>
 			{/if}
-		</div>
-		<div class="right" bind:this={emailPane}>
-			{@render children()}
-		</div>
+		{/if}
 	</div>
+
+	{#if data.briefing}
+		<DayPage briefing={data.briefing} kanzlei={data.kanzlei} ticked={data.ticked} selected={page.params.email} />
+		<aside class={['panel', open && 'panel-open']} inert={!open} aria-label="Quelle" bind:this={panel}>
+			{#if open}
+				<a class="quiet close" href={dayHref} data-sveltekit-reset="false">Schließen</a>
+			{/if}
+			{@render children()}
+		</aside>
+	{:else}
+		<Connect kanzlei={data.kanzlei} info={data.info} failed={data.failed} />
+	{/if}
 </div>
 
 <style>
 	.app {
 		display: grid;
 		grid-template-rows: auto minmax(0, 1fr);
-		height: 100dvh;
+		min-height: 100dvh;
+	}
+
+	.demo {
+		display: flex;
+		justify-content: center;
+		gap: var(--space-3);
+		padding: var(--space-1) var(--space-5);
+		background: var(--surface-2);
+		color: var(--ink-2);
+		font-size: 12px;
+		line-height: 16px;
+	}
+
+	.demo a {
+		text-decoration: underline;
+		text-underline-offset: 2px;
 	}
 
 	header {
@@ -96,93 +98,67 @@
 		border-bottom: 1px solid var(--line);
 	}
 
-	.status {
+	.who,
+	.mailbox-text {
 		display: grid;
 		gap: 2px;
 		min-width: 0;
 	}
 
-	.name {
-		display: flex;
-		align-items: baseline;
-		gap: var(--space-3);
-		min-width: 0;
-	}
-
-	strong {
-		font-size: 15px;
+	.who strong {
 		font-weight: 600;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 
-	.name a {
-		flex: none;
-		color: var(--ink-2);
-		font-size: 13px;
-		text-decoration: underline;
-		text-underline-offset: 2px;
-	}
-
-	.not-read {
-		color: var(--danger);
-		font-size: 13px;
-		line-height: 18px;
-		font-weight: 600;
-	}
-
-	form {
+	.mailbox {
 		display: flex;
 		align-items: center;
-		gap: var(--space-3);
-		flex: none;
+		gap: var(--space-4);
+		min-width: 0;
+		text-align: right;
+	}
+
+	.mailbox-line {
+		font-size: 13px;
+		line-height: 18px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.run-error {
+		padding: var(--space-2) var(--space-5);
+		background: var(--warn-bg);
 		color: var(--danger);
-		font-size: 13px;
-		line-height: 18px;
+		font-weight: 600;
 	}
 
-	button {
-		height: 36px;
-		min-width: 148px; /* the same width with either label, so the header does not move */
-		padding-inline: var(--space-4);
-		border: 0;
-		border-radius: 8px;
-		background: var(--accent);
-		color: var(--on-accent);
-		font: inherit;
-		font-weight: 500;
-		white-space: nowrap;
-		cursor: pointer;
-	}
-
-	button:disabled {
-		cursor: progress;
-	}
-
-	.panes {
-		display: grid;
-		grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
-		min-height: 0;
-	}
-
-	.left {
-		overflow: auto;
-	}
-
-	.right {
-		overflow: auto;
+	/* The source slides in over the page. The list stays where it was. */
+	.panel {
+		position: fixed;
+		z-index: 2;
+		inset-block: 0;
+		right: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-4);
+		width: min(560px, 92vw);
 		padding: var(--space-5);
+		overflow: auto;
 		border-left: 1px solid var(--line);
 		background: var(--surface-2);
+		box-shadow: -8px 0 24px rgb(0 0 0 / 0.06);
+		transform: translateX(100%);
+		transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
 	}
 
-	.no-run {
-		display: grid;
-		gap: var(--space-2);
-		padding: var(--space-5);
+	.panel-open {
+		transform: translateX(0);
+	}
+
+	.close {
+		align-self: flex-end;
 	}
 </style>

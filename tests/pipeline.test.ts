@@ -52,12 +52,12 @@ describe('run', () => {
 		await expect(run('kanzlei-berlin', { live: false })).rejects.toThrow(TypeError);
 	});
 
-	it('a clean run: every email counted as read, and "Heute" built', async () => {
+	it('a clean run: every email counted as read, and the day built', async () => {
 		vi.mocked(extract).mockImplementation((email, options) => real.extract(email, options));
 		const result = await run('kanzlei-muenchen', { live: false });
 		expect(result.coverage).toEqual({ read: 14, notRead: 0 });
 		expect(result.notRead).toEqual([]);
-		expect(result.heute.termine).toHaveLength(1);
+		expect(result.day.termineSoon).toHaveLength(1);
 	});
 
 	it('live: runs at most 4 calls at a time, and keeps the inbox order', async () => {

@@ -1,17 +1,18 @@
-/** The pipeline: inbox, one LLM call per email, quote check, Fristen, decision table, ranked items, "Heute". */
+/** The pipeline: inbox, one LLM call per email, quote check, Fristen, decision table, ranked items, the day's screen. */
 import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { coverageLine } from '../../format.ts';
-import type { Briefing, Coverage, Day, Email, Facts, Heute, Kanzlei, NotRead, RankedItem } from '../../types.ts';
+import type { Briefing, Coverage, Day, DayScreen, Email, Facts, Kanzlei, NotRead, RankedItem } from '../../types.ts';
 import { DATA, kanzleiDir, listKanzleien, loadInbox, loadKanzlei } from '../connector.ts';
 import { loadAkten, matchAkte, soon } from './akte.ts';
+import { buildDay } from './day.ts';
 import { DEFAULT_MODEL, extract, isLive, SCHEMA } from './extract.ts';
 import { parseDay } from './frist.ts';
-import { buildHeute } from './heute.ts';
 import { akteItem, buildItem } from './items.ts';
 import { LlmError, type LlmMeta } from './llm.ts';
 import { rank } from './rank.ts';
 import { errors } from './schema.ts';
+import { readTicks } from './ticks.ts';
 import { check } from './verify.ts';
 
 const LIVE_WORKERS = 4;
@@ -32,7 +33,7 @@ export interface Run {
 	items: RankedItem[];
 	notRead: NotRead[];
 	coverage: Coverage;
-	heute: Heute;
+	day: DayScreen;
 }
 
 interface RunOptions {
@@ -110,7 +111,7 @@ export async function run(
 		items: ranked,
 		notRead,
 		coverage: { read: rows.length, notRead: notRead.length },
-		heute: buildHeute(ranked, akten, day)
+		day: buildDay(ranked, akten, day)
 	};
 }
 
@@ -132,7 +133,7 @@ export async function saveBriefing(kanzlei: string, options: RunOptions = {}): P
 			model: result.model,
 			coverage: result.coverage,
 			notRead: result.notRead.map(({ detail: _, ...rest }) => rest),
-			heute: result.heute,
+			day: result.day,
 			items: result.items
 		};
 		// A rename, so a run that dies on the way leaves the last whole briefing, not half a file.
@@ -151,15 +152,19 @@ export interface StoredBriefing {
 	briefing: Briefing | null;
 	/** The last run failed. `briefing` is then an older run's, if there is one. */
 	failed: boolean;
+	/** The rows of "Heute tun" the lawyer has ticked today. */
+	ticked: string[];
 }
 
 /** What the screens read. A broken `briefing.json` throws: it must not look like no run. */
 export function readBriefing(kanzlei: string, data = DATA): StoredBriefing {
 	const out = join(kanzleiDir(kanzlei, data), 'out');
 	const path = join(out, 'briefing.json');
+	const briefing = existsSync(path) ? (JSON.parse(readFileSync(path, 'utf-8')) as Briefing) : null;
 	return {
-		briefing: existsSync(path) ? (JSON.parse(readFileSync(path, 'utf-8')) as Briefing) : null,
-		failed: existsSync(join(out, FAILED_MARK))
+		briefing,
+		failed: existsSync(join(out, FAILED_MARK)),
+		ticked: briefing ? readTicks(kanzlei, briefing.today, data) : []
 	};
 }
 

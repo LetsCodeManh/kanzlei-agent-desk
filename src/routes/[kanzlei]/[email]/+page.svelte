@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { receivedLabel, shortGerman, shownEnd, TIER_LABELS } from '#lib/format.ts';
+	import { receivedLabel, shownEnd, TIER_LABELS, weekdayGerman } from '#lib/format.ts';
 	import type { Frist } from '#lib/types.ts';
 	import type { PageProps } from './$types';
 
@@ -21,7 +21,7 @@
 <article>
 	<div class="facts">
 		<div class="sub">
-			<div>Stufe {item.tier}: {TIER_LABELS[item.tier]}</div>
+			<div>{TIER_LABELS[item.tier]}</div>
 			{#if akte}
 				<div>{akte.aktenzeichen} · {akte.az_gericht} · {akte.mandant.name} ./. {akte.gegenseite.name}</div>
 			{/if}
@@ -42,13 +42,14 @@
 		{#each item.fristen as frist, index (index)}
 			{@const end = shownEnd(frist)}
 			<div class="fact">
-				<div class="fact-date">{end ? shortGerman(end) : 'offen'}</div>
+				<div class="fact-date">{end ? weekdayGerman(end) : 'offen'}</div>
 				<div class="fact-text">
 					<div class="fact-title">
 						{frist.what}
 						{#if !frist.quoteOk}<span class="tag tag-danger">unsicher</span>{/if}
 					</div>
-					<div class="sub">{end ? `berechnet, bitte prüfen${daysText(frist)}` : frist.reason}</div>
+					{#if end}<div class="sub">berechnet, bitte prüfen{daysText(frist)}</div>{/if}
+					{#if frist.reason}<div class="sub">{frist.reason}</div>{/if}
 					{#if frist.hint}<div class="sub">{frist.hint}</div>{/if}
 					{#if !frist.quoteOk}<div class="sub">Das Zitat steht nicht in dieser E-Mail. Bitte die E-Mail selbst lesen.</div>{/if}
 				</div>
@@ -104,14 +105,14 @@
 
 	.fact {
 		display: grid;
-		grid-template-columns: 64px minmax(0, 1fr);
+		grid-template-columns: 76px minmax(0, 1fr);
 		column-gap: var(--space-3);
 	}
 
 	.fact-date {
-		font-family: var(--mono);
 		font-weight: 600;
 		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
 	}
 
 	.fact-text {

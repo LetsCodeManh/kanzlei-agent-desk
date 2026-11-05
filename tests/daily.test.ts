@@ -30,7 +30,7 @@ describe('runDaily', () => {
 		expect(await runDaily(data)).toBe(true);
 		const written = JSON.parse(readFileSync(briefing(data, 'kanzlei-muenchen'), 'utf-8'));
 		expect(written.coverage).toEqual({ read: 14, notRead: 0 });
-		expect(written.heute.termine).toHaveLength(1);
+		expect(written.day.termineSoon).toHaveLength(1);
 		expect(written.items.length).toBeGreaterThan(0);
 		expect(written).not.toHaveProperty('rows');
 		expect(existsSync(briefing(data, 'kanzlei-berlin'))).toBe(true);
@@ -64,7 +64,7 @@ describe('runDaily', () => {
 		vi.spyOn(console, 'log').mockImplementation(() => {});
 		vi.spyOn(console, 'error').mockImplementation(() => {});
 		const data = copyOfData();
-		expect(readBriefing('kanzlei-berlin', data)).toEqual({ briefing: null, failed: false });
+		expect(readBriefing('kanzlei-berlin', data)).toEqual({ briefing: null, failed: false, ticked: [] });
 
 		expect(await runDaily(data)).toBe(true);
 		const last = readBriefing('kanzlei-berlin', data);
@@ -75,7 +75,7 @@ describe('runDaily', () => {
 		const good = readFileSync(akten, 'utf-8');
 		writeFileSync(akten, '{ not json');
 		expect(await runDaily(data)).toBe(false);
-		expect(readBriefing('kanzlei-berlin', data)).toEqual({ briefing: last.briefing, failed: true });
+		expect(readBriefing('kanzlei-berlin', data)).toEqual({ briefing: last.briefing, failed: true, ticked: [] });
 		expect(readBriefing('kanzlei-muenchen', data).failed).toBe(false);
 
 		writeFileSync(akten, good);
