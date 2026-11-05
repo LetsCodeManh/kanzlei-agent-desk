@@ -25,7 +25,9 @@ export default defineConfig({
 				test: {
 					name: 'server',
 					environment: 'node',
-					include: ['tests/**/*.test.ts']
+					include: ['tests/**/*.test.ts'],
+					// `pnpm test` never reaches a model, and never overwrites a recorded reply.
+					env: { BRIEFING_LIVE: '0' }
 				}
 			}
 		]

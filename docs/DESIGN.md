@@ -130,7 +130,7 @@ planted canary `CLAUDE.md` and the input token count:
 
 `callLlm` uses both switches, `--tools ""`, `--no-session-persistence` and `--strict-mcp-config`. It runs in an empty
 temp directory, because this repo holds `AGENTS.md` and `CLAUDE.md`. `tests/context.test.ts` repeats the canary check.
-It is live, so it is skipped by default. The account email and the working directory still reach the call. That is one
+It is live, so it is skipped unless `BRIEFING_CONTEXT_CHECK=1`. `pnpm test` itself cannot go live: `vite.config.ts` turns `BRIEFING_LIVE` off for it. The account email and the working directory still reach the call. That is one
 more reason the SDK replaces `claude -p` in production.
 
 ## Folders
