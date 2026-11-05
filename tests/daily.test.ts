@@ -30,7 +30,7 @@ describe('runDaily', () => {
 		expect(await runDaily(data)).toBe(true);
 		const written = JSON.parse(readFileSync(briefing(data, 'kanzlei-muenchen'), 'utf-8'));
 		expect(written.coverage).toEqual({ read: 14, notRead: 0 });
-		expect(written.day.termineSoon).toHaveLength(1);
+		expect(written.day.termineAkte).toHaveLength(1);
 		expect(written.items.length).toBeGreaterThan(0);
 		expect(written).not.toHaveProperty('rows');
 		expect(existsSync(briefing(data, 'kanzlei-berlin'))).toBe(true);

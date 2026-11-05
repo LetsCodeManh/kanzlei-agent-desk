@@ -1,0 +1,26 @@
+/* Motion: springy, precise, little or no overshoot (principles.md, "Motion is a wave").
+   A press goes in fast on the ease-out and comes back on the spring. A morph (a frame growing into
+   its detail) grows in on the spring and goes back faster on the ease-out: exit faster than enter.
+   The glint (a light rolling round the metal's rim) runs on --ease-glint: it gathers, then
+   slides home.
+   Everything else takes one of four, on a 50ms ladder (2026-10-25): what answers the pointer
+   or focus (a colour, a fill, a ring, a hint shown) on --duration-hover; a part fading in place
+   or a chevron turning on --duration-fade; a layer arriving (a popover, a menu, a toast, a tick
+   drawn) on --duration-enter and leaving on --duration-exit, faster. A drawing with its own
+   time (the glint, a shake, the entrance's rise and stagger) says so where it is. */
+:root {
+  /* A damped spring (ζ 0.85, ωn 8.76 over the duration, 0.6% overshoot), its step response
+     sampled into linear(): stops placed where it bends, each within 0.002 of the spring. */
+  --ease-spring: linear(0, 0.0016 0.7%, 0.0061 1.3%, 0.0132 1.9%, 0.0236 2.6%, 0.0365 3.4%, 0.0526 4.1%, 0.0722 4.9%, 0.0953 5.8%, 0.1143 6.4%, 0.1359 7.1%, 0.1868 8.6%, 0.2406 10.2%, 0.36 13.6%, 0.4127 15%, 0.4673 16.7%, 0.5148 18.1%, 0.5647 19.7%, 0.6115 21.3%, 0.6553 22.9%, 0.6945 24.4%, 0.7307 26%, 0.7639 27.6%, 0.795 29.1%, 0.8231 30.8%, 0.8491 32.4%, 0.8722 34.1%, 0.8932 35.8%, 0.9126 37.5%, 0.9302 39.5%, 0.9455 41.4%, 0.959 43.5%, 0.9707 45.6%, 0.9805 47.9%, 0.9884 50.3%, 0.9947 52.9%, 0.9996 55.8%, 1.0026 58.4%, 1.0047 61.2%, 1.0063 67.9%, 1);
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  --ease-glint: cubic-bezier(.45, 0, .2, 1);
+
+  --duration-press: 100ms;      /* in, on --ease-out */
+  --duration-release: 400ms;    /* back, on --ease-spring */
+  --duration-morph-in: 460ms;   /* on --ease-spring */
+  --duration-morph-out: 300ms;  /* on --ease-out */
+  --duration-hover: 150ms;      /* on --ease-out */
+  --duration-fade: 200ms;       /* on --ease-out */
+  --duration-enter: 250ms;      /* on --ease-out */
+  --duration-exit: 150ms;       /* on --ease-out */
+}

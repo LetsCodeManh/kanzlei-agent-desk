@@ -1,0 +1,43 @@
+/* Fold (Fold.svelte, decisions/fold.md): a quiet row that opens what is under it. A <details>: the
+   keys, find-in-page and screen readers are the browser's. Its head a mono row in caps, 40 high,
+   gray until hovered, the mark turning; what is under it opens by its grid row (0fr to 1fr) on
+   the spring and shuts faster on the ease-out, so it moves in every browser, not only where
+   interpolate-size is. The inside fades in and out in place. */
+.fold::details-content {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-morph-out) var(--ease-out), content-visibility var(--duration-morph-out) allow-discrete;
+}
+.fold[open]::details-content {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--duration-morph-in) var(--ease-spring), content-visibility var(--duration-morph-in) allow-discrete;
+}
+
+/* the head's fill reaches 8 past the text on each side, so the words line up with what is around it */
+.fold-head {
+  display: flex; align-items: center; gap: var(--space-2);
+  height: 40px; margin: 0 calc(-1 * var(--space-2)); padding: 0 var(--space-2);
+  border-radius: var(--radius-small); list-style: none; cursor: pointer;
+  font: 400 12px/16px var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-900);
+  transition: background-color var(--duration-hover) var(--ease-out), color var(--duration-hover) var(--ease-out);
+  scroll-margin-block: var(--fold-scroll-margin, 0px);  /* in a body with a band stuck to its top (a list's months), focus stops clear of it */
+}
+.fold-head::-webkit-details-marker { display: none; }
+.fold-head:hover { background: var(--gray-alpha-100); color: var(--gray-1000); }
+.fold-head:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+.fold-mark {
+  flex: none; width: 12px; height: 12px;
+  transition: rotate var(--duration-fade) var(--ease-out);
+}
+.fold[open] > .fold-head .fold-mark { rotate: 90deg; }
+.fold-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fold-count { flex: none; }
+
+/* the row's clip reaches 8 past the inside on each side, as the head's fill: a hover or ring
+   drawn at the inside's edge is not cut */
+.fold-body {
+  min-height: 0; overflow: hidden;
+  margin-inline: calc(-1 * var(--space-2)); padding-inline: var(--space-2);
+  opacity: 0; transition: opacity var(--duration-fade) var(--ease-out);
+}
+.fold[open] > .fold-body { opacity: 1; }
+

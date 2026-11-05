@@ -1,0 +1,140 @@
+/* Card: a titled panel of a screen (an inbox, a calendar, the cases). Needs tokens/index.css,
+   and button.css for a .plain in the head. CSS only.
+
+   <section class="card" aria-labelledby="log-title">
+     <header class="card-head">
+       <h3 class="card-title" id="log-title">Log</h3>
+       <span class="card-count">3 <span class="card-count-unit">emails</span></span>
+     </header>
+     <div class="card-body">
+       <div class="card-row"><span class="card-row-name">Hearing<span class="card-row-what">Room 214</span></span><span class="card-row-meta">10:00</span></div>
+     </div>
+   </section>
+
+   The head is a band, as the modal's title bar: background-200 over a hairline, the title at
+   the left; at the right a sub (.card-sub), a count (.card-count) or actions (.card-actions:
+   a .plain and .card-more). A badge (.card-badge, with .card-dot for live) sits beside the
+   title. The body is a List (list.css) on background-100, a .list-group heading a run of rows; a row's
+   hairline runs to the card's edges, its text 16px in. No hover: the card
+   is not a control. Every global name here starts with card. */
+
+.card {
+  --card-pad: var(--space-4);
+  display: flex; flex-direction: column; box-sizing: border-box; min-width: 0; overflow: clip;
+  border-radius: var(--radius-large); background: var(--background-100); box-shadow: 0 0 0 1px var(--gray-alpha-400);
+  color: var(--gray-1000); font-family: var(--font-sans); letter-spacing: var(--tracking);
+}
+
+.card-head {
+  display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; min-height: 48px; padding: 0 var(--card-pad);
+  background: var(--background-200); border-bottom: 1px solid var(--gray-alpha-400);
+}
+/* the title fills the head, pushing the rest right; its own margin reset where a page sets a heading's */
+/* a long title (a project's name) wraps, read whole, and leaves the count and the actions their place;
+   the head grows a line rather than pushing them out of the card */
+.card-head > .card-title {
+  display: flex; flex: 1; align-items: center; gap: var(--space-2); min-width: 6em; margin: 0; padding-block: var(--space-2); overflow-wrap: anywhere;
+  font-size: 14px; line-height: 20px; font-weight: 500; color: var(--gray-1000);
+}
+.card-sub, .card-count { color: var(--gray-900); font-size: 13px; line-height: 18px; }
+/* A sub or a count that does not fit beside the title goes under it, and the title takes the whole
+   width: the title's basis is its text, so the line breaks before the sub rather than squeezing both
+   into thin columns. The actions go with it, at the right. Where they fit, one line as before: the
+   sub's padding makes it 30 tall, less than the title's 36, so the line's height does not change. */
+.card-head:has(> :is(.card-sub, .card-count)) { flex-wrap: wrap; row-gap: 0; }
+.card-head:has(> :is(.card-sub, .card-count)) > .card-title { flex: 1 1 auto; }
+.card-head:has(> :is(.card-sub, .card-count)) > .card-actions { margin-left: auto; }
+.card-head > :is(.card-sub, .card-count) { padding-block: var(--space-1-5); }
+.card-count { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.card-count-unit { font-weight: 400; }
+.card-badge {
+  display: inline-flex; align-items: center; gap: var(--space-1-5); flex: none;
+  color: var(--green-900); font-size: 12px; line-height: 16px; font-weight: 500;
+}
+.card-dot { width: 6px; height: 6px; border-radius: 999px; background: var(--green-900); }
+
+/* actions sit nearer the edge: the more button's round hover is the edge's padding */
+.card-actions { display: flex; align-items: center; gap: var(--space-1); margin-right: calc(-1 * var(--space-2)); }
+.card-actions .plain { height: 28px; padding: 0 var(--space-3); font-size: 13px; }
+.card-more {
+  display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 999px;
+  background: none; color: var(--gray-900); cursor: pointer;
+  transition: background-color var(--duration-release) var(--ease-out), color var(--duration-release) var(--ease-out);
+}
+.card-more:hover { background: var(--gray-alpha-200); color: var(--gray-1000); }
+.card-more:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+.card-body { display: flex; flex-direction: column; min-width: 0; padding: var(--space-1) var(--card-pad) var(--space-2); }
+/* A group in a body: parts that belong together (a ListGroup with its List, the link under them), a gap
+   apart; a body of groups has its own gap between them. A group's heading and its rows go in a
+   .card-group-rows, nothing between them but their own padding (their hairlines still run to the card's
+   edges, list.css). The last group keeps the space under its last line: the body's padding-bottom.
+   <div class="card-body"><div class="card-group"><div class="card-group-rows"><div class="list-group">…</div>
+     <ul class="list">…</ul></div><p>A link under the rows</p></div> <div class="card-group">…</div></div> */
+.card-body:has(> .card-group) { gap: var(--space-5); padding-bottom: var(--space-5); }
+.card-group { display: flex; flex-direction: column; gap: var(--space-2); }
+/* fill: the body takes what the card's height leaves under the head (a calendar's tiles, a map) */
+.card-body[data-fill] { flex: 1; min-height: 0; }
+/* a hero keeps its own padding (its title 20 under the head), so the body gives up its own */
+.card-body:has(> .card-hero) { padding: 0; }
+/* Classic only, until FootFramed moves onto List: the apps' rows are List's
+   (list.css), its hairlines to the card's edges in a card's body, since 2026-10-26 */
+.card-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--card-pad);
+  margin-inline: calc(-1 * var(--card-pad));  /* the hairline runs to the card's edges */
+  font-size: 14px; line-height: 20px;
+}
+.card-row + .card-row { border-top: 1px solid var(--gray-alpha-200); }
+.card-row-name { display: flex; flex-direction: column; min-width: 0; }
+.card-row-what { color: var(--gray-900); font-size: 13px; line-height: 18px; }
+.card-row-meta { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--gray-900); font-size: 13px; }
+
+/* a segmented control in the head sits nearer the edge, as the actions do (its pill's side) */
+.card-head .segmented { margin-right: calc(-1 * var(--space-1-5)); }
+
+/* A body that scrolls inside its card (a screen that is the window, grid.css .grid-window): the
+   card takes the height it is given, the body what is left under the head. Once rows pass
+   under the head, it casts --shadow-sticky; a list's own head (.data-list-head) is held at the
+   top instead and casts it. At the foot, while more are below, the rows fade 40px into the
+   card's edge (a hairline there would sit on that edge). card.js (Card.attach) says which:
+   data-scrolled, data-more. A row reached by Tab stops clear of that fade (scroll-padding). */
+.card:has(> .card-scroll) { min-height: 0; }
+.card-scroll { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; scroll-padding-bottom: 40px; --card-fade: 1; mask-image: linear-gradient(to bottom, #000 calc(100% - 40px), rgb(0 0 0 / var(--card-fade))); }
+.card-scroll[data-more] { --card-fade: 0; }
+.card-scroll > * { flex: none; }  /* its rows keep their height; the body scrolls */
+.card-scroll > .empty-state { margin-block: auto; }
+.card:has(> .card-scroll[data-scrolled]) > .card-head { position: relative; z-index: 1; box-shadow: var(--shadow-sticky); }
+.card:has(> .card-scroll > .data-list-head) > .card-head { box-shadow: none; }  /* :has() can't nest, so not a :not() above */
+.card-scroll:has(> .data-list-head) { padding-top: 0; }
+.card-scroll > .data-list-head { position: sticky; top: 0; z-index: 1; background: var(--background-100); }
+.card-scroll[data-scrolled] > .data-list-head { box-shadow: var(--shadow-sticky); }
+
+/* A hero body: one thing the card is about, large (today's hearing): its title, a line on why,
+   and a foot with its figures at the left and its one action at the right.
+   <div class="card-hero"><div><h3 class="card-hero-title text-heading-32">Hearing at 10:00</h3>
+     <p class="card-hero-line">Room 214, <b>Landgericht</b>…</p></div>
+     <div class="card-hero-foot"><dl class="stat-figures">…</dl><button class="plain">…</button></div></div> */
+/* one column that may shrink; the foot wraps when the figures and the button no longer fit (a phone) */
+.card-hero { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); padding: var(--space-5) var(--card-pad) var(--card-pad); }
+.card-hero-title { margin: 0; }
+.card-hero > :has(> .card-hero-line) { display: grid; gap: var(--space-1); }  /* the title, its line 4 under */
+.card-hero-line { margin: 0; color: var(--gray-900); font-size: 14px; line-height: 20px; }
+.card-hero-line b { color: var(--gray-1000); font-weight: 500; }
+.card-hero-foot { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-4); }
+
+/* An inset: a box inside a body or a detail, for a part that must not read as what is beside
+   it (an email beside its facts). The surface a step down and its edge; a head
+   in the mono label, a count at its right; a foot with one action, full width.
+   <section class="card-inset"><h3 class="card-inset-head">Documents <span>2 missing</span></h3>
+     <div class="card-inset-body">…rows… <footer class="card-inset-foot"><button class="plain" data-size="medium">Add</button></footer></div></section>
+   The head and the body are two groups, a gap apart; the body's parts have their own. */
+.card-inset { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-2); border-radius: var(--radius-medium); background: var(--background-200); box-shadow: 0 0 0 1px var(--gray-alpha-400); }
+.card-inset-head { display: flex; justify-content: space-between; gap: var(--space-2); margin: 0; font: 400 11px/1.4 var(--font-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--gray-900); }
+.card-inset-body { display: flex; flex-direction: column; gap: var(--space-2); }
+.card-inset-head > span { font: inherit; }
+.card-inset-head > [data-tone="warning"] { color: var(--amber-900); }
+.card-inset-head > [data-tone="error"] { color: var(--red-900); }
+/* the foot's hairline bleeds to the inset's edges */
+.card-inset-foot { margin: 0 calc(-1 * var(--space-4)); padding: var(--space-3) var(--space-4) var(--space-1); border-top: 1px solid var(--gray-alpha-400); }
+.card-inset-foot .plain { width: 100%; }
+

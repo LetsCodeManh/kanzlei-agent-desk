@@ -1,0 +1,12 @@
+/* An icon: outlines in the text's colour, 2.25 on the 24px grid, so 1.5 at 16px (the stroke scales with the size) */
+.icon-glyph {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* a solid glyph (play, pause, stop, the dot) is filled as well, its outline rounding the corners */
+.icon-glyph-solid {
+  fill: currentColor;
+}

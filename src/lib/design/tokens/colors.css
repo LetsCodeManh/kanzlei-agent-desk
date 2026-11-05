@@ -1,0 +1,224 @@
+/* Colors: Geist's structure on our surf base (decisions/foundations.md, "Structure follows Geist").
+   Each scale has ten steps with fixed roles:
+     100–300  background: default, hover, active
+     400–600  border: default, hover, active
+     700–800  high-contrast background, and its hover
+     900      secondary text and icons
+     1000     primary text and icons
+   Gray by default; gray-alpha only where the surface should show through. Each gray-alpha
+   step is black (light) or white (dark) at the opacity that lands on the solid step over
+   background-100.
+
+   Light is the default; data-theme="dark" on <html> or any element switches what is under it.
+   Sources are noted per value. "derived" means no specimen has used that step yet: it sits
+   where Geist's step sits relative to our sourced neighbours. Re-check these when a real use
+   turns up.
+
+   Contrast (WCAG): gray-900 is 5.6:1 light and 6.3:1 dark, gray-1000 is 16.6:1 and 17.7:1
+   (on background-100; on background-200 within 0.3 of those). White on blue-700 is 4.7:1.
+   Blue-900 is 5.6:1 light and 9.2:1 dark. White on red-700 is 4.75:1; red-900 is 5.5:1 light
+   and 6.6:1 dark. Amber's fill (700) takes ink, not white (white 1.8:1): ink on amber-700 is 9.8:1,
+   and amber-900 is 5.2:1 light and 9.3:1 dark. Green's fill is darkened to hold white (4.7:1);
+   green-900 is 5.7:1 light and 9.0:1 dark. */
+
+:root {
+  /* The accent fill and its hover hold in both themes. */
+  --blue-700: #0077cc;                                  /* surf base, primary fill */
+  --blue-800: color-mix(in oklab, #0077cc 86%, black);  /* buttons.html, B hover */
+  /* Red: the hex palette in Geist's CSS (research/geist/colors.json, "hex"), not the softer
+     red its colors page renders (700 #e5484d, white 3.9:1). Its 700 (#fc0035) holds white at
+     4.05:1, so the fill is its 800, 4.75:1; the hover is darkened like blue's. */
+  --red-700: #e70022;
+  --red-800: color-mix(in oklab, #e70022 86%, black);
+  /* Amber: Geist's hex palette. Its 700 (#ffb200) is bright, so the fill takes ink, not white
+     (white 1.8:1, ink 9.8:1). The ink is fixed, not gray-1000, which turns light in dark
+     mode and would fail on the same fill. The hover is darkened like blue's. */
+  --amber-700: #ffb200;
+  --amber-800: color-mix(in oklab, #ffb200 86%, black);
+  --on-amber: #17181a;                                  /* the label on amber-700, both themes */
+  /* Green: Geist's 700 (#28a948) holds white at 3.1:1 and its 800 (#279141) at 4.0:1, so the
+     fill is 800 darkened to #158538, 4.7:1, white label as blue and red. Ink on green would
+     read muddy; the hover is darkened like blue's. */
+  --green-700: #158538;
+  --green-800: color-mix(in oklab, #158538 86%, black);
+}
+
+:root, [data-theme="light"] {
+  color-scheme: light;
+
+  --background-100: #f7f7f6;  /* bencho's warm grey: page background in every specimen */
+  --background-200: #f2f2f1;  /* derived: Geist's 2% step below background-100 */
+
+  --gray-100: #ebebe9;   /* plain button, card frame */
+  --gray-200: #e1e1df;   /* plain button hover */
+  --gray-300: #dcdcdb;   /* derived */
+  --gray-400: #e6e6e5;   /* the card frame's edge, black 7% */
+  --gray-500: #cbcbca;   /* derived */
+  --gray-600: #b2b2b1;   /* derived */
+  --gray-700: #a1a1a0;   /* derived */
+  --gray-800: #949494;   /* derived */
+  --gray-900: #636362;   /* surf's black 60%. The specimens' 55% is 3.9:1 and fails */
+  --gray-1000: #17181a;  /* bencho's ink */
+
+  --gray-alpha-100: rgb(0 0 0 / .05);
+  --gray-alpha-200: rgb(0 0 0 / .09);
+  --gray-alpha-300: rgb(0 0 0 / .11);
+  --gray-alpha-400: rgb(0 0 0 / .07);   /* the card frame's edge */
+  --gray-alpha-500: rgb(0 0 0 / .18);
+  --gray-alpha-600: rgb(0 0 0 / .28);
+  --gray-alpha-700: rgb(0 0 0 / .35);
+  --gray-alpha-800: rgb(0 0 0 / .40);
+  --gray-alpha-900: rgb(0 0 0 / .60);   /* surf's secondary text */
+  --gray-alpha-1000: rgb(0 0 0 / .90);  /* surf's primary text */
+
+  /* 100–500 derived: as far below background-100 as Geist's sit below white (OKLab L),
+     Geist's chroma, #0077cc's hue. Geist's own lightness here hid blue-100 on our page. */
+  --blue-100: #e8eff7;
+  --blue-200: #e2ecf7;
+  --blue-300: #d8e7f7;
+  --blue-400: #c6def8;
+  --blue-500: #91c4f7;
+  --blue-600: #52b7ff;   /* derived */
+  --blue-900: #0065ad;   /* derived: blue-700 fails as text here (4.3:1) */
+  --blue-1000: #002d4d;  /* derived */
+
+  /* 100–500 sit below background-100 as Geist's sit below white (our page is not white) */
+  --red-100: #f7e6e8;
+  --red-200: #f7e1e2;
+  --red-300: #f7dcdd;
+  --red-400: #f7d0cf;
+  --red-500: #f7adae;
+  --red-600: #ff6a6e;
+  --red-900: #cb0014;    /* errors as text, 5.5:1. Geist's #d60020, darkened as 100–300 were, so it holds on them (4.7:1 on 200) */
+  --red-1000: #46000c;
+
+  /* 100–500 placed on our page by research/geist/anchor.mjs; 600–1000 Geist's hex palette */
+  --amber-100: #f7eed9;
+  --amber-200: #f7eccc;
+  --amber-300: #f7e9c0;
+  --amber-400: #f7d57c;
+  --amber-500: #f7c056;
+  --amber-600: #fa0;
+  --amber-900: #a64f00;  /* warnings as text, 5.2:1; Geist's, holds on 200 (4.8:1) and 300 (4.65:1) */
+  --amber-1000: #541c00;
+
+  --green-100: #e4f5e4;
+  --green-200: #ddf4df;
+  --green-300: #cbf2c9;
+  --green-400: #b1edb4;
+  --green-500: #7ae385;
+  --green-600: #4ce15e;
+  --green-900: #0d7230;  /* success as text, 5.7:1 on background-100. Geist's #107d32 is 4.3:1 on 300; darkened so it holds there (4.9:1) */
+  --green-1000: #00370d;
+
+  --focus-ring: var(--blue-700);  /* every specimen's light focus ring */
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background-100: #0a0a0a;  /* page background in every dark specimen */
+  --background-200: #000;     /* bencho's deepest dark */
+
+  --gray-100: #1c1c1c;   /* plain button */
+  --gray-200: #262626;   /* plain button hover */
+  --gray-300: #2f2f2f;   /* derived */
+  --gray-400: #2c2c2c;   /* Geist's dark border, white 14%. The specimens' 8% hid on gray-100 */
+  --gray-500: #363636;   /* derived */
+  --gray-600: #787878;   /* derived */
+  --gray-700: #808080;   /* derived */
+  --gray-800: #6e6e6e;   /* derived */
+  --gray-900: #919191;   /* the specimens' secondary text, white 55% */
+  --gray-1000: #f2f2f2;  /* the specimens' ink */
+
+  --gray-alpha-100: rgb(255 255 255 / .07);
+  --gray-alpha-200: rgb(255 255 255 / .11);
+  --gray-alpha-300: rgb(255 255 255 / .15);
+  --gray-alpha-400: rgb(255 255 255 / .14);   /* Geist's dark border */
+  --gray-alpha-500: rgb(255 255 255 / .18);
+  --gray-alpha-600: rgb(255 255 255 / .45);
+  --gray-alpha-700: rgb(255 255 255 / .48);
+  --gray-alpha-800: rgb(255 255 255 / .41);
+  --gray-alpha-900: rgb(255 255 255 / .55);   /* the specimens' secondary text */
+  --gray-alpha-1000: rgb(255 255 255 / .95);
+
+  --blue-100: #0f212e;   /* derived: Geist's dark steps at our hue */
+  --blue-200: #102a3d;   /* derived */
+  --blue-300: #0f3957;   /* derived */
+  --blue-400: #0d4268;   /* derived */
+  --blue-500: #0a4f80;   /* derived */
+  --blue-600: #0095ff;   /* derived; surf's measured blue is #0099ff */
+  --blue-900: #5cb8ff;   /* the metal's rim tint, the dark focus ring */
+  --blue-1000: #ebf7ff;  /* derived */
+
+  /* Geist's dark page is ours, so its dark steps hold as they are */
+  --red-100: #330a11;
+  --red-200: #440d13;
+  --red-300: #5d0e17;
+  --red-400: #6f101b;
+  --red-500: #88151f;
+  --red-600: #f32e40;
+  --red-900: #ff5e63;    /* 6.6:1 */
+  --red-1000: #ffeaed;
+
+  /* Geist's dark steps as they are (amber-700 and green-700 are the same in both themes) */
+  --amber-100: #291800;
+  --amber-200: #331b00;
+  --amber-300: #4f2900;
+  --amber-400: #573200;
+  --amber-500: #6c4100;
+  --amber-600: #e99c00;
+  --amber-900: #f90;     /* 9.3:1 */
+  --amber-1000: #fff3d9;
+
+  --green-100: #00250a;
+  --green-200: #003110;
+  --green-300: #003814;
+  --green-400: #004616;
+  --green-500: #00661d;
+  --green-600: #009431;
+  --green-900: #00ca52;  /* 9.0:1 */
+  --green-1000: #daffe5;
+
+  --focus-ring: var(--blue-900);  /* every specimen's dark focus ring */
+}
+
+/* Lagoon: notes read on a map, picked from Dusk, Embers and Lagoon by the user,
+   2026-10-31. The ground round a note read and its dot, 1 the last read, cooling to 3: teal, aqua, slate. Each ground
+   stands 40 or more off background-100 in a channel; each mark holds 3:1 on its ground and on background-100 (PAIRS). */
+:root, [data-theme="light"] {
+  --lagoon-ground-1: #a8ecdc;
+  --lagoon-ground-2: #c2e2ee;
+  --lagoon-ground-3: #c9d1de;
+  --lagoon-mark-1: #0f766e;
+  --lagoon-mark-2: #2b7a90;
+  --lagoon-mark-3: #5b6b80;
+}
+[data-theme="dark"] {
+  --lagoon-ground-1: #0b4038;
+  --lagoon-ground-2: #14343f;
+  --lagoon-ground-3: #212a36;
+  --lagoon-mark-1: #2dd4bf;
+  --lagoon-mark-2: #67b8cc;
+  --lagoon-mark-3: #8b98ab;
+}
+
+/* Metal: the chrome rim's surface (components/button, the modal, the stat ring), and a card's Play.
+   Where a value is a scale step it points there; the rest are the metal's own. */
+:root {
+  --metal-tint: #5cb8ff;  /* the blue in the chrome, both themes */
+}
+:root, [data-theme="light"] {
+  --metal-body: #fbfbfa;
+  --metal-ink: var(--gray-1000);
+  --metal-sheen: rgb(255 255 255 / .9);
+  --metal-well: rgb(0 0 0 / .08);
+  --metal-glint: var(--blue-700);
+}
+[data-theme="dark"] {
+  --metal-body: #0d0d0e;
+  --metal-ink: #f4f4f5;
+  --metal-sheen: rgb(255 255 255 / .1);
+  --metal-well: rgb(0 0 0 / .9);
+  --metal-glint: #fff;
+}

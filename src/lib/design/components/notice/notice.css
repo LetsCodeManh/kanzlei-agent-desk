@@ -1,0 +1,24 @@
+/* Notice: a short message in the flow of a page (a note above a list, a form that did not save).
+   Needs tokens/index.css. CSS only.
+
+   <div class="notice" role="note">Nothing here yet. <a href="#">Add one</a></div>
+
+   Neutral: a box, gray-alpha-100 with a 1px inset ring, gray-900 text. data-tone="error": the same
+   box on red-200 with a red-400 ring and red-900 text. An action sits at the end, beside the text.
+   Every global name here starts with notice. */
+
+.notice {
+  display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; min-height: 44px;
+  padding: var(--space-3) var(--space-4); border-radius: var(--radius-medium);
+  background: var(--gray-alpha-100); box-shadow: inset 0 0 0 1px var(--gray-alpha-400); color: var(--gray-900);
+  font-family: var(--font-sans); font-size: 14px; line-height: 20px; letter-spacing: var(--tracking);
+}
+.notice[data-tone="error"] { background: var(--red-200); box-shadow: inset 0 0 0 1px var(--red-400); color: var(--red-900); }
+.notice-text { flex: 1; min-width: 0; margin: 0; }
+.notice :is(strong, a) { color: var(--gray-1000); }
+.notice strong { font-weight: 600; }
+.notice a { text-underline-offset: 3px; }
+.notice[data-tone="error"] :is(strong, a) { color: var(--red-900); }
+.notice-action { flex: none; display: inline-flex; align-items: center; }
+/* a small button (28) in the 44 box: 8 above and below, the text centred beside it */
+.notice:has(> .notice-action) { padding-block: var(--space-2); }

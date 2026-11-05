@@ -1,0 +1,140 @@
+/* Tree nav: a sidebar of headings, branches and leaves, as a file tree. Needs tokens/index.css,
+   and tree-nav.js for the drawers and the marker (TreeNav.attach).
+
+   <nav class="tree-nav" aria-label="…">
+     <section>
+       <a class="tree-nav-heading text-label-12-mono" href="…">Heading</a>
+       <ul><li>
+         <button class="tree-nav-branch text-label-14" type="button" aria-expanded="false" aria-controls="ID">
+           <svg class="tree-nav-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 4l4 4-4 4"/></svg>
+           <span class="tree-nav-name">Branch</span><span class="tree-nav-count text-label-12-mono">4</span>
+         </button>
+         <div class="tree-nav-drawer" id="ID" inert><div class="tree-nav-clip"><ul class="tree-nav-leaves">
+           <li><a class="text-label-14" href="…" aria-current="page"><span class="tree-nav-name">Leaf</span></a></li>
+         </ul></div></div>
+       </li></ul>
+     </section>
+   </nav>
+
+   A name is one line ending in an ellipsis (.tree-nav-name; a heading is its own name). A row
+   whose text a page lets wrap keeps its chevron, dot, key and count on the first line.
+
+   A heading that folds is a Fold (fold.css) in place of the <section>: <details class="fold
+   tree-nav-fold">, its <summary class="fold-head"> the heading, its .fold-body the same list.
+
+   A branch is a button, not a link: anywhere on it opens or shuts its drawer. Every leaf is
+   one line high (--tree-nav-row), so the marker finds its row by index.
+   A leaf may end in its key (a go-to shortcut): <kbd class="kbd kbd-small tree-nav-key"
+   aria-hidden="true">C</kbd> after the name (kbd.css), the link's aria-keyshortcuts saying it.
+   The keys show while an ancestor has data-tree-nav-keys, which the page sets (its G).
+   Ship the current leaf's drawer open (tree-nav-open, aria-expanded="true", no inert) and
+   tree-nav-here on its branch, so it doesn't open on every page load.
+
+   Leaves that stand alone, an app's few screens: <ul class="tree-nav-alone"> in place of the clip,
+   no guide line and no marker. The current one is filled. An icon may lead each. */
+
+/* no padding: the sidebar it sits in places it */
+.tree-nav { display: flex; flex-direction: column; gap: var(--space-6); min-width: 0; }
+:where(.tree-nav) ul { margin: 0; padding: 0; list-style: none; }
+.tree-nav a {
+  display: flex; align-items: center; gap: var(--space-2); min-width: 0;
+  color: var(--gray-900); text-decoration: none; border-radius: var(--radius-small);
+  transition: background-color var(--duration-hover) var(--ease-out), color var(--duration-hover) var(--ease-out);
+}
+/* inset: the drawer clips anything outside its leaves */
+.tree-nav a:focus-visible, .tree-nav-branch:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+/* a section: its heading over its list, 8 apart; the heading 8 in from the left (pushed to the end, narrower by the 8) */
+.tree-nav > section { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+.tree-nav-heading { justify-self: end; width: calc(100% - var(--space-2)); text-transform: uppercase; }
+/* one line, cut with an ellipsis. Block, not the link's flex: a bare text in a flex row cannot be cut
+   (.tree-nav .x beats .tree-nav a). Same 16px line as before; a span heading is now a block too,
+   so it is a grid item like the link */
+.tree-nav .tree-nav-heading { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tree-nav .tree-nav-heading[aria-current="page"] { color: var(--gray-1000); }
+/* a heading that folds (fold.css): Fold's row, filling the nav's width as a branch does, its mark
+   on the guide line's centre (10 = 16 less half the 12px mark), so its name lines up with the
+   branches' and leaves'. Folds one after another stack as rows. */
+.tree-nav-fold > .fold-head { margin-inline: 0; padding-left: 10px; }
+.tree-nav-fold > .fold-head .fold-count { margin-left: auto; }
+.tree-nav-fold > .fold-body { margin-inline: 0; padding-inline: 0; }
+/* its branches a step in, each chevron under the heading's name, so the tree shows they are inside it;
+   leaves straight under it hang from its mark, as a branch's do */
+.tree-nav-fold > .fold-body > ul { padding-left: var(--space-4); }
+.tree-nav-fold + .tree-nav-fold { margin-top: calc(-1 * var(--space-6)); }
+
+/* a branch: one button, chevron, name and count, that opens its leaves here */
+.tree-nav-branch {
+  display: flex; align-items: start; gap: var(--space-2); width: 100%; min-width: 0; padding: var(--space-1-5) var(--space-2) var(--space-1-5) calc(var(--space-1) + 5px);  /* the 5 puts the chevron centred over the leaves' line, 16 in */
+  border: 0; border-radius: var(--radius-small); background: none; color: var(--gray-900); text-align: left; cursor: pointer;
+  transition: background-color var(--duration-hover) var(--ease-out), color var(--duration-hover) var(--ease-out);
+}
+.tree-nav-branch:hover { background: var(--gray-alpha-100); }
+.tree-nav-branch:hover, .tree-nav-branch[aria-expanded="true"] { color: var(--gray-1000); }
+.tree-nav-branch.tree-nav-here { font-weight: 500; }
+.tree-nav-count {
+  flex: none; margin-left: auto; color: var(--gray-900); font-weight: 400;
+  translate: 0 2px;  /* start-aligned so a wrapped name leaves it on the first line: 2 = (20px line - 16px mono line) / 2, where centring put it */
+}
+.tree-nav-chevron {
+  flex: none; width: 14px; height: 14px; translate: 0 3px;  /* 3 = (20px line - 14px) / 2: mid first line, as centring put it */
+  color: var(--gray-900);
+  transition: color var(--duration-hover) var(--ease-out), rotate var(--duration-morph-out) var(--ease-out);
+}
+.tree-nav-branch:hover .tree-nav-chevron { color: var(--gray-1000); }
+.tree-nav-branch[aria-expanded="true"] .tree-nav-chevron { rotate: 90deg; transition: color var(--duration-hover) var(--ease-out), rotate var(--duration-morph-in) var(--ease-spring); }
+
+/* the leaves: open on the spring, shut faster on the ease-out */
+.tree-nav-drawer {
+  display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 0fr; opacity: 0;  /* the track never sizes to a long name */
+  transition: grid-template-rows var(--duration-morph-out) var(--ease-out), opacity var(--duration-fade) var(--ease-out);
+}
+.tree-nav-drawer.tree-nav-open {
+  grid-template-rows: 1fr; opacity: 1;
+  transition: grid-template-rows var(--duration-morph-in) var(--ease-spring), opacity 300ms var(--ease-out);
+}
+/* the leaves sit 16 in, 2 under the top and 6 above the foot. Tracks, not padding: the clip folds to 0 high */
+.tree-nav-clip {
+  --tree-nav-row: 30px; position: relative; min-height: 0; overflow: hidden;
+  display: grid; grid-template-columns: var(--space-4) minmax(0, 1fr); grid-template-rows: var(--space-0-5) auto var(--space-1-5);
+}
+/* the guide line runs under the chevron's centre (16px in) */
+.tree-nav-leaves { grid-area: 2 / 2; padding-left: var(--space-2); border-left: 1px solid var(--gray-alpha-400); }
+.tree-nav-leaves a { align-items: start; height: var(--tree-nav-row); padding: 5px var(--space-2); }  /* 5 = (30px row - 20px line) / 2: one line sits mid-row as centring put it; a wrapped one starts at the top, its key and dot on the first line */
+/* a status dot at a leaf's end: mid first line, (20px line - its size) / 2 down (7 for the 6px default) */
+.tree-nav-leaves a .status-dot { translate: 0 calc((20px - var(--status-dot-size)) / 2); }
+.tree-nav-leaves a:hover { background: var(--gray-alpha-100); color: var(--gray-1000); }
+.tree-nav-leaves a[aria-current="page"] { color: var(--gray-1000); font-weight: 500; }
+/* a leaf with nowhere to go yet (a screen not built): in the list, not a link */
+.tree-nav-leaves a:not([href]) { color: var(--gray-700); cursor: default; }
+.tree-nav-leaves a:not([href]):hover { background: none; }
+.tree-nav-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* leaves that stand alone: the same 30px row, 8 in, with nothing to hang from, so the current one is filled */
+.tree-nav-alone { display: grid; gap: var(--space-0-5); }
+.tree-nav-alone a { align-items: start; height: 30px; padding: 5px var(--space-2); }  /* 5 as a leaf's */
+.tree-nav-alone a:hover { background: var(--gray-alpha-100); color: var(--gray-1000); }
+.tree-nav-alone a[aria-current="page"] { background: var(--gray-alpha-200); color: var(--gray-1000); font-weight: 500; }
+.tree-nav-icon { flex: none; translate: 0 2px; }  /* 2 = (20px line - 16px icon) / 2 */
+/* a leaf's key: in quickly, sliding 4px from the right; out at once, the next key already acting */
+.tree-nav-key { flex: none; margin-left: auto; opacity: 0; translate: 4px 0; pointer-events: none; transition: opacity var(--duration-exit) var(--ease-out); }
+[data-tree-nav-keys] .tree-nav-key { opacity: 1; translate: 0 0; transition: opacity var(--duration-hover) var(--ease-out), translate var(--duration-hover) var(--ease-out); }
+/* the current leaf: an ink stroke on the guide line, sliding to the next one on the spring */
+.tree-nav-marker {
+  position: absolute; top: calc(2px + 7px); left: 15.5px; width: 2px; height: calc(var(--tree-nav-row) - 14px);
+  border-radius: 1px; background: var(--gray-1000); pointer-events: none;
+  translate: 0 calc(var(--tree-nav-at) * var(--tree-nav-row));
+  transition: translate var(--duration-morph-in) var(--ease-spring), scale var(--duration-morph-in) var(--ease-spring), opacity var(--duration-fade) var(--ease-out);
+}
+@starting-style { .tree-nav-marker { opacity: 0; scale: 1 0.3; } }
+
+/* carried between pages (data-tree-nav-carry, tree-nav.js; the page opts in to cross-document
+   view transitions). Along the same guide line it slides on the spring; to another drawer it
+   goes out quickly, then grows in there. A carried one is just there on a load: the transition
+   moves it. Nothing where a page doesn't opt in. */
+[data-tree-nav-carry] .tree-nav-marker { view-transition-class: tree-nav-marker; }
+@starting-style { [data-tree-nav-carry] .tree-nav-marker { opacity: 1; scale: 1; } }
+@keyframes tree-nav-marker-out { to { opacity: 0; scale: 1 0.3; } }
+@keyframes tree-nav-marker-in { from { opacity: 0; scale: 1 0.3; } }
+::view-transition-group(*.tree-nav-marker) { animation-duration: var(--duration-morph-in); animation-timing-function: var(--ease-spring); }
+::view-transition-old(*.tree-nav-marker):only-child { animation: tree-nav-marker-out var(--duration-exit) var(--ease-out) both; }
+::view-transition-new(*.tree-nav-marker):only-child { animation: tree-nav-marker-in var(--duration-morph-in) var(--ease-spring) 100ms both; }
+

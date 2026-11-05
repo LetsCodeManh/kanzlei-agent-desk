@@ -1,18 +1,18 @@
 /**
- * The day's screen, built from the ranked items and the case list. Each thing sits in one place, and every item lands
- * somewhere: a silently dropped email is the worst failure. No LLM call. Short titles come from checked facts, by code.
+ * The day's screen and the Postfach, built from the ranked items and the case list. Every email has a row in the
+ * Postfach: a silently dropped email is the worst failure. No LLM call. Short titles come from checked facts, by code.
  *
  * A sender known as `other` stays out of the tasks and the Fristen, as in the tiers: text in an email cannot put a
  * newsletter's "letzte Frist" or an unknown sender's demand there. An unsure role stays in: rank higher, never lower.
  */
 import { fileLabel, weekdayGerman, shownEnd } from '../../format.ts';
-import type { Akte, Day, DayRow, DayScreen, Frist, RankedItem } from '../../types.ts';
+import type { Akte, Day, DayRow, DayScreen, Email, Frist, ItemEvent, MailLabel, MailRow, RankedItem } from '../../types.ts';
 import { SOON_DAYS } from './akte.ts';
-import { daysBetween, parseDay } from './frist.ts';
+import { addDays, daysBetween, parseDay } from './frist.ts';
 
-function whenLabel(days: number | null): string {
+function whenLabel(days: number | null, past = 'abgelaufen'): string {
 	if (days === null) return '';
-	if (days < 0) return 'abgelaufen';
+	if (days < 0) return past;
 	if (days === 0) return 'heute';
 	if (days === 1) return 'morgen';
 	return `in ${days} Tagen`;
@@ -44,6 +44,8 @@ function fristRow(item: RankedItem, itemIndex: number, frist: Frist, index: numb
 		sub: `${whoLabel(item)} · ${sourceLabel(item)}`,
 		notes,
 		date: end ? weekdayGerman(end) : null,
+		iso: end,
+		time: null,
 		when: whenLabel(frist.daysLeft),
 		days: frist.daysLeft,
 		tone: frist.daysLeft !== null && frist.daysLeft <= 1 ? 'danger' : end === null || frist.relative ? 'warn' : null,
@@ -71,6 +73,8 @@ function aufgabeRow(item: RankedItem): DayRow {
 		sub: item.wvToday ? `Wiedervorlage · ${whoLabel(item)}` : fileLabel(item),
 		notes: event && !item.wvToday ? [`${event.what}, ${event.date_text}`] : [],
 		date: null,
+		iso: null,
+		time: null,
 		when: '',
 		days: null,
 		tone: null,
@@ -80,23 +84,55 @@ function aufgabeRow(item: RankedItem): DayRow {
 	};
 }
 
-function hearingRows(item: RankedItem, itemIndex: number, today: Day): DayRow[] {
+const STATED_DAY = /(\d{2})\.(\d{2})\.(\d{4})/;
+/** `14 Uhr`, `9:00 Uhr`, `8 bis 12 Uhr` (its start) or a bare `10:30`. Not the end of a date. */
+const CLOCK = /(?<![\d.:])(\d{1,2})(?::(\d{2}))?(?:\s*(?:bis|-|–)\s*\d{1,2}(?::\d{2})?)?\s*Uhr|(?<![\d.:])(\d{1,2}):(\d{2})/;
+/** Counted from the day the email arrived, not from today. `übermorgen` holds `morgen`, so it comes first. */
+const RELATIVE_DAYS: [string, number][] = [
+	['übermorgen', 2],
+	['morgen', 1],
+	['heute', 0]
+];
+
+/** `date_text` is unchecked: a date counts only if an email holds it. None: the row keeps the words, to be checked. */
+function eventDay(event: ItemEvent, emails: Email[]): Day | null {
+	const stated = STATED_DAY.exec(event.date_text);
+	if (stated) return emails.some((email) => email.body.includes(stated[0])) ? `${stated[3]}-${stated[2]}-${stated[1]}` : null;
+	const relative = RELATIVE_DAYS.find(([word]) => event.date_text.includes(word));
+	if (!relative) return null;
+	const holder = emails.find((email) => email.body.includes(relative[0]));
+	if (!holder) return null;
+	return addDays(holder.receivedDay, relative[1]);
+}
+
+/** `what` is unchecked too: a time counts only if an email holds it. */
+function eventTime(event: ItemEvent, emails: Email[]): string | null {
+	const match = CLOCK.exec(`${event.date_text} ${event.what}`);
+	if (!match || !emails.some((email) => email.body.includes(match[0]))) return null;
+	const hour = Number(match[1] ?? match[3]);
+	const minute = Number(match[2] ?? match[4] ?? 0);
+	if (hour > 23 || minute > 59) return null;
+	return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
+}
+
+function eventRows(item: RankedItem, itemIndex: number, today: Day): DayRow[] {
 	return item.events.map((event, index) => {
-		const match = /(\d{2})\.(\d{2})\.(\d{4})/.exec(event.date_text);
-		const day = match ? `${match[3]}-${match[2]}-${match[1]}` : null;
+		const day = eventDay(event, item.emails);
 		const days = day ? daysBetween(today, parseDay(day)) : null;
-		// `what` is unchecked: a time counts only if the email holds it, and the title stops before any date in it.
-		const time = /\d{1,2}:\d{2}/.exec(`${event.date_text} ${event.what}`)?.[0];
-		const checkedTime = time && item.emails.some((email) => email.body.includes(time)) ? time : null;
+		const time = eventTime(event, item.emails);
 		const notes = event.oldDate ? [`Verlegt, vorher ${event.oldDate}`] : [];
-		if (!day) notes.push(event.date_text); // no date to show in its column, so the words stay
+		// No date or no time to place it by, so the words stay: "morgen früh".
+		if (!day || !time) notes.push(event.date_text);
 		return {
 			id: `termin-${itemIndex}-${index}`,
+			// The title stops before any date in `what`.
 			title: event.what.split(/[(,;]/)[0].trim(),
-			sub: [checkedTime && `${checkedTime} Uhr`, whoLabel(item), sourceLabel(item)].filter(Boolean).join(' · '),
+			sub: [whoLabel(item), sourceLabel(item)].filter(Boolean).join(' · '),
 			notes,
 			date: day ? weekdayGerman(day) : null,
-			when: whenLabel(days),
+			iso: day,
+			time,
+			when: whenLabel(days, 'vorbei'),
 			days,
 			tone: event.oldDate ? 'warn' : null,
 			emailIds: emailIds(item),
@@ -106,25 +142,26 @@ function hearingRows(item: RankedItem, itemIndex: number, today: Day): DayRow[] 
 	});
 }
 
-/** Hearings today and tomorrow, by day and then time. */
-function termineSoon(akten: Akte[], today: Day): DayRow[] {
+/** Every hearing in the case list, by day and then time. */
+function termineAkte(akten: Akte[], today: Day): DayRow[] {
 	return akten
 		.flatMap((akte) =>
 			akte.termine.flatMap((termin) => {
 				const days = daysBetween(today, parseDay(termin.date));
-				if (days !== 0 && days !== 1) return [];
 				const file = akte.az_gericht || akte.aktenzeichen;
 				return [{ sortKey: `${termin.date} ${termin.time}`, termin, days, file, mandant: akte.mandant.name }];
 			})
 		)
 		.sort((a, b) => (a.sortKey < b.sortKey ? -1 : a.sortKey > b.sortKey ? 1 : 0))
 		.map(({ termin, days, file, mandant }, index) => ({
-			id: `soon-${index}`,
+			id: `akte-termin-${index}`,
 			title: termin.what,
-			sub: `${termin.time} Uhr · ${file} (${mandant}), ${termin.room} · aus der Akte`,
+			sub: `${file} (${mandant}), ${termin.room} · aus der Akte`,
 			notes: [],
 			date: weekdayGerman(termin.date),
-			when: whenLabel(days),
+			iso: termin.date,
+			time: termin.time,
+			when: whenLabel(days, 'vorbei'),
 			days,
 			tone: days === 0 ? 'danger' : null,
 			emailIds: [],
@@ -137,62 +174,73 @@ function byDays(a: DayRow, b: DayRow): number {
 	return (a.days ?? 0) - (b.days ?? 0);
 }
 
+function mailRows(item: RankedItem, labels: MailLabel[]): MailRow[] {
+	return item.emails.map((email) => ({
+		id: email.id,
+		channel: email.channel,
+		received: email.received,
+		sender: email.senderName || email.senderAddress,
+		subject: email.subject,
+		summary: item.summary,
+		labels,
+		unsure: item.unsicher.length > 0,
+		warning: item.injection
+	}));
+}
+
+function newestFirst(a: MailRow, b: MailRow): number {
+	return Date.parse(b.received) - Date.parse(a.received) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
+}
+
 export function buildDay(items: RankedItem[], akten: Akte[], today: Day): DayScreen {
 	const day: DayScreen = {
-		termineSoon: termineSoon(akten, today),
+		termineAkte: termineAkte(akten, today),
 		termineNew: [],
+		ereignisse: [],
 		aufgaben: [],
 		pruefen: [],
 		bald: [],
 		spaeter: [],
-		rest: []
+		postfach: []
 	};
 
 	items.forEach((item, itemIndex) => {
-		let placed = false;
+		const labels: MailLabel[] = [];
 		const counted = !(item.role === 'other' && item.roleSure);
 
 		if (counted && (item.wvToday || (item.urgent && (item.role === 'client' || !item.roleSure)))) {
 			day.aufgaben.push(aufgabeRow(item));
-			placed = true;
+			labels.push('Aufgabe');
 		}
 
-		// By `counted`, not by tier: an internal Frist has tier 6 and must not sit in a collapsed list.
-		if (counted) {
+		// By `counted`, not by tier: an internal Frist has tier 6 and must not stay in the Postfach alone.
+		if (counted && item.fristen.length > 0) {
 			item.fristen.forEach((frist, index) => {
 				const row = fristRow(item, itemIndex, frist, index);
 				const near = frist.daysLeft !== null && frist.daysLeft <= SOON_DAYS;
 				if (frist.end === null || (frist.relative && !near)) day.pruefen.push(row);
 				else if (near) day.bald.push(row);
 				else day.spaeter.push(row);
-				placed = true;
 			});
+			labels.push('Frist');
 		}
 
 		if (item.role === 'court' && item.events.length > 0) {
-			day.termineNew.push(...hearingRows(item, itemIndex, today));
-			placed = true;
+			day.termineNew.push(...eventRows(item, itemIndex, today));
+			labels.push('Termin');
+		} else if (counted && !item.injection && item.events.length > 0) {
+			// Text in an email cannot put a thing on the calendar from an unknown sender or a suspect mail.
+			day.ereignisse.push(...eventRows(item, itemIndex, today));
+			labels.push('Termin');
 		}
 
-		if (!placed) {
-			day.rest.push({
-				id: `rest-${itemIndex}`,
-				title: item.emails[0]?.senderName || item.emails[0]?.senderAddress || fileLabel(item),
-				sub: item.summary,
-				notes: [],
-				date: null,
-				when: '',
-				days: null,
-				tone: null,
-				emailIds: emailIds(item),
-				unsure: item.unsicher.length > 0,
-				warning: item.injection
-			});
-		}
+		day.postfach.push(...mailRows(item, labels));
 	});
 
 	day.bald.sort(byDays);
 	day.spaeter.sort(byDays);
 	day.termineNew.sort(byDays);
+	day.ereignisse.sort(byDays);
+	day.postfach.sort(newestFirst);
 	return day;
 }

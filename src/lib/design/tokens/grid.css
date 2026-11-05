@@ -1,0 +1,11 @@
+/* Grid: the page's frame. Measured from the screens (visual's Screen.svelte: 1200 wide,
+   32 at the sides) and a reading site (a 720px reading column, 20 at the sides on a
+   phone) (decisions/foundations.md, "Grid, decided"). The classes are components/grid/. */
+:root {
+  --page-width: 1200px;
+  --page-margin: var(--space-8);
+  --reading-width: 720px;
+}
+@media (max-width: 760px) {
+  :root { --page-margin: var(--space-5); }
+}

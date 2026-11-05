@@ -14,7 +14,7 @@
 		<ul>
 			{#each data.kanzleien as { id, info } (id)}
 				<li>
-					<a href={resolve('/[kanzlei]', { kanzlei: id })}>
+					<a href={resolve('/[kanzlei]/(heute)', { kanzlei: id })}>
 						<span class="name">{info.name}</span>
 						<span class="sub">{info.anwalt.name}</span>
 					</a>
@@ -53,21 +53,21 @@
 	ul {
 		display: flex;
 		flex-direction: column;
-		border-block: 1px solid var(--line);
+		border-block: 1px solid var(--gray-alpha-400);
 	}
 
 	li + li {
-		border-top: 1px solid var(--line);
+		border-top: 1px solid var(--gray-alpha-400);
 	}
 
 	a {
 		display: grid;
-		gap: 2px;
+		gap: var(--space-0-5);
 		padding: var(--space-3) var(--space-2);
 	}
 
 	a:hover {
-		background: var(--surface-hover);
+		background: var(--gray-alpha-100);
 	}
 
 	.name {

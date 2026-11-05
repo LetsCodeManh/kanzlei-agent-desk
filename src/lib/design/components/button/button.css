@@ -1,0 +1,128 @@
+/* Button. Needs tokens/index.css.
+   .plain  the everyday pill: gray fill, a press that sinks and springs back. 44px; data-size
+           "medium" 36, "small" 28 (a row's Details, a toggle among many). Its key at the end:
+             <button class="plain" data-size="medium" type="button" aria-keyshortcuts="?">
+               Show shortcuts<kbd class="kbd kbd-small" aria-hidden="true">?</kbd></button>
+           A toggle (aria-pressed): off reads gray-900, on is ink.
+   Busy and disabled (aria-busy, aria-disabled, never the native disabled: both stay focusable).
+           Busy: a .button-spinner takes the label's place; the label stays, hidden, so the button
+           keeps its size and its name. Disabled: gray, the label kept. Neither presses.
+   The rim (.metal-rim.one, .metal-rim.two) is shared: the modal and the stat ring use it.
+   Every global name here (classes, keyframes, registered properties) starts with metal or button. */
+
+/* The rim's colours (--metal-glint, --metal-tint) are tokens, in
+   tokens/colors.css. The rim's chrome stops below are a recipe, not colours anyone reuses. */
+
+/* ---------- Plain ---------- */
+.plain {
+  height: 44px; padding: 0 var(--space-5); border: 0; border-radius: 999px;
+  background: var(--gray-100); color: var(--gray-1000);
+  font: 500 14px/1 var(--font-sans); letter-spacing: var(--tracking); cursor: pointer;
+  transition: background-color var(--duration-hover) var(--ease-out), color var(--duration-hover) var(--ease-out), transform var(--duration-release) var(--ease-spring);
+}
+.plain:hover { background: var(--gray-200); }
+/* a link in the pill (Button's href): its label centred, no underline */
+a.plain { display: inline-flex; align-items: center; box-sizing: border-box; text-decoration: none; }
+/* 36px, where 44 would crowd (a box's foot); side 16 */
+.plain[data-size="medium"] { height: 36px; padding: 0 var(--space-4); font-size: 13px; }
+/* 28px, among a row's text or as one of many toggles; side 12 */
+.plain[data-size="small"] { height: 28px; padding: 0 var(--space-3); font-size: 12px; }
+/* an icon alone (Button's icon, no label): as wide as tall at each size, the icon in its middle */
+.plain.button-square { display: inline-grid; place-items: center; aspect-ratio: 1; padding: 0; }
+/* a key at its end (kbd.css), 8 from the label, at the far end if the button is wider; :where so a page's own display wins */
+:where(.plain:has(> .kbd)) { display: inline-flex; align-items: center; gap: var(--space-2); }
+.plain > .kbd:last-child { margin-left: auto; }
+/* a toggle: off quieter than a button, on in ink */
+.plain[aria-pressed="false"] { color: var(--gray-900); }
+.plain[aria-pressed="false"]:hover { color: var(--gray-1000); }
+.plain[aria-pressed="true"] { background: var(--gray-1000); color: var(--background-100); }
+.plain:active { transform: scale(.97); transition-duration: var(--duration-press); }
+.plain:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* ---------- The rim ----------
+   Two chrome rings turn at different speeds; where they cross, the highlights slide like
+   liquid. The base's blue is one of the hues.
+   The ring is a mask; what turns is a square under it, as wide as the rim's diagonal, carrying
+   the conic gradient. A conic gradient is the same at every distance from its centre, so turning
+   the square draws what turning the gradient's start would, and the compositor turns it with no
+   paint (animating the start angle repainted every rim every frame, off-screen too). The rim
+   holds the turn's timing and the square inherits it, so a rule that pauses a rim or speeds it
+   up stays on .metal-rim. */
+@keyframes metal-turn { to { rotate: 360deg; } }
+.metal-rim {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  padding: 1.5px;  /* the ring's width, not a space */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  container-type: size;
+  overflow: clip;  /* the turned square's corners: masked from sight, but they would still widen the page */
+  animation: 7s linear infinite;  /* no name: the square runs it */
+}
+.metal-rim:is(.one, .two)::before {
+  content: "";
+  position: absolute; left: 50%; top: 50%;
+  width: calc(hypot(100cqw, 100cqh) + 8px);  /* the content box's diagonal, and the ring's width round it */
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  animation: inherit;
+  animation-name: metal-turn;
+}
+.metal-rim.one::before {
+  background: conic-gradient(
+    #fff 0deg, #8b9099 35deg, #24272c 75deg, #d7dbe1 120deg, #f2c79e 155deg,
+    #33363c 200deg, var(--metal-tint) 245deg, #1a1c20 290deg, #e9edf3 330deg, #fff 360deg);
+}
+.metal-rim.two::before {
+  background: conic-gradient(
+    transparent 0deg, rgb(255 255 255 / .9) 30deg, transparent 70deg,
+    rgb(255 214 240 / .7) 150deg, transparent 190deg,
+    rgb(190 255 236 / .6) 260deg, transparent 300deg);
+}
+.metal-rim.two {
+  mix-blend-mode: screen;
+  animation-duration: 11s;
+  animation-direction: reverse;
+}
+
+/* The glint: a bright head rolls once round the rim from the press, lighting the rim
+   behind it; then the whole lit rim cools away. Shared like the rim: a third ring,
+   .metal-rim.glint, dark until metal-roll and metal-cool run on it (the modal as it opens). */
+@property --metal-glint-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.metal-rim.glint {
+  padding: var(--space-0-5);
+  opacity: 0;
+  animation: none;
+  background: conic-gradient(from var(--g0, 0deg),
+    color-mix(in srgb, var(--metal-glint) 15%, transparent) 0deg,
+    color-mix(in srgb, var(--metal-glint) 55%, transparent) calc(var(--metal-glint-angle) - 24deg),
+    var(--metal-glint) var(--metal-glint-angle), transparent calc(var(--metal-glint-angle) + .5deg));
+}
+@keyframes metal-roll { from { --metal-glint-angle: 0deg; opacity: 1; } to { --metal-glint-angle: 360deg; opacity: 1; } }
+@keyframes metal-cool { from { opacity: 1; } to { opacity: 0; } }
+
+/* ---------- Busy and disabled ----------
+   The spinner is centred over the label, which stays (hidden) so the button holds its size.
+   A plain's label is bare text, so it is hidden with transparent ink; the spinner keeps the ink. */
+.button-spinner {
+  position: absolute; inset: 0; margin: auto; z-index: 1; pointer-events: none;
+  width: 16px; height: 16px;
+  color: var(--gray-1000); stroke: currentColor; stroke-width: 1.6; stroke-linecap: round;  /* 1.6 in the 16px viewBox */
+  animation: button-spin .9s steps(8) infinite;
+}
+.plain[aria-pressed="false"] > .button-spinner { color: var(--gray-900); }
+.plain[aria-pressed="true"] > .button-spinner { color: var(--background-100); }
+.plain[data-size="small"] > .button-spinner { width: 12px; height: 12px; }  /* small is 28 tall */
+@keyframes button-spin { to { transform: rotate(360deg); } }
+
+.plain[aria-busy="true"] { position: relative; cursor: progress; }
+.plain[aria-busy="true"], .plain[aria-busy="true"]:hover { color: transparent; }
+.plain[aria-busy="true"] > .kbd { visibility: hidden; }
+.plain[aria-busy="true"]:hover:not([aria-pressed="true"]) { background: var(--gray-100); }
+.plain[aria-busy="true"]:active { transform: none; }
+
+.plain[aria-disabled="true"], .plain[aria-disabled="true"]:hover {
+  background: var(--gray-100); color: var(--gray-700); cursor: not-allowed;
+}
+.plain[aria-disabled="true"]:active { transform: none; }
+

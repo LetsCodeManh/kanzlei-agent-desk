@@ -1,0 +1,147 @@
+/* Shell: an app's frame, a sidebar of its screens beside the page. Needs tokens/index.css,
+   grid.css (the page) and tree-nav.css (the screens); segmented.css for a switch in its foot.
+   CSS only: the app writes the sidebar.
+
+   <div class="shell">
+     <aside class="shell-side">
+       <p class="shell-brand text-label-14">Kanzlei</p>
+       <nav class="tree-nav" aria-label="Screens">…</nav>
+       <div class="shell-foot"><p class="shell-note text-label-13"><b>12°</b> Cloudy, Berlin</p>
+         <div class="segmented" data-size="small" role="radiogroup" aria-label="Theme">…</div></div>
+     </aside>
+     <main class="grid-page grid-full">…</main>
+   </div>
+
+   The sidebar is no panel: the same ground as the page (background-200, so the cards on 100
+   stand out), held while the page scrolls. Its foot is at the bottom: a note (the weather, a
+   sync) and a switch. The page's foot is its head's 32, not the reading frame's 96: a screen
+   fits the window. --shell-side is the sidebar's width, 216 unless names need more (the docs,
+   with a status on each, take 248). Every global name here starts with shell.
+
+   Narrow (900 and under), the sidebar is a bar over the page: the brand, and the menu button (an icon) at its right
+   end, no line under it. The bar stays on the window, on the page's ground, as the page scrolls.
+   The button opens the screens and the foot over the page from under the bar, as tall as the window
+   leaves: the foot held at its bottom and the screens scrolling above it, as wide; it fades and drops 8px into place, back up
+   faster. Shell.svelte writes the bar (.shell-bar, .shell-toggle) and the menu (.shell-menu,
+   .shell-clip); wide, they are display: contents, so the sidebar is as it was. What else the bar
+   holds (.shell-bar-more: a title as it is read, a search) fills it between the brand and the button,
+   narrow alone. A page written by hand, without them, has its sidebar stacked over the page.
+   With hideOnScroll, narrow, the bar slides up and fades while the page scrolls down (see the block in the media query).
+   Wide, and in the open menu narrow, the brand (.shell-bar) and the foot are held and only the screens (.shell-side-scroll) scroll between
+   them, fading out under the brand once scrolled and above the foot while there is more below
+   (Shell.svelte sets data-side-scrolled and data-side-more on the side). The room inside the side is
+   --shell-side-gap (brand to screens, screens to foot), --shell-side-pl and --shell-side-pr.
+   The brand is one line and ends in an ellipsis when it is wider than its room.
+   --shell-ground is the narrow bar's and menu's ground, the page's (background-200 unless the page is on another). */
+
+.shell { display: grid; grid-template-columns: var(--shell-side, 216px) minmax(0, 1fr); min-height: 100vh; }
+.shell > .grid-page { padding-bottom: var(--space-8); }
+
+.shell-side {
+  position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: var(--space-6);
+  box-sizing: border-box; padding: var(--space-8) var(--shell-side-pr, var(--space-3)) var(--space-6) var(--shell-side-pl, var(--space-5));
+  /* never sideways: the screens scroll up and down (.shell-side-scroll, wide), which turns x to auto too, so
+     anything wider than the side could be dragged. With y scrolling, clip computes to hidden: no user scroll. Narrow: visible, below */
+  overflow-x: clip;
+}
+.shell-brand { min-width: 0; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--gray-1000); text-decoration: none;
+  flex: none; }  /* a link home, often. flex: none: overflow hidden makes its minimum height 0, so a long tree in the column shrank it away */
+/* with the agent's circle (Mark), its glow reaches past it: the brand clips nothing, it
+   was cut to a box; the name after the circle takes the ellipsis */
+.shell-brand:has(> .mark) { display: flex; align-items: center; gap: var(--space-3); overflow: visible; }
+.shell-brand > .mark ~ * { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.shell-foot { display: grid; gap: var(--space-3); margin-top: auto; padding-left: var(--space-2); }
+/* a foot of buttons (an icon, a name, a key) takes no inset: the button's own padding is it, as a search sidebar's */
+.shell-foot:has(> button) { padding-left: 0; }
+.shell-note { margin: 0; color: var(--gray-900); }
+.shell-note b { color: var(--gray-1000); font-weight: 500; }
+.shell-foot .segmented { justify-self: start; }
+
+/* wide: the bar and the fold are no boxes, the menu button and what else the bar holds are not there */
+.shell-bar, .shell-menu, .shell-clip { display: contents; }
+.shell-toggle, .shell-bar-more { display: none; }
+
+/* both widths (wide the side, narrow the open menu): the brand and the foot are held, the screens scroll between them
+   in their own box, never under either, so neither needs a ground or a shadow: the screens fade out at an end while
+   there is more past it, as the command menu's list does (--space-5 under the brand once scrolled, --space-8 above a
+   foot). A hand-written sidebar without the markup (no .shell-bar) is as it was */
+@property --shell-side-fade-top { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --shell-side-fade { syntax: "<length>"; inherits: false; initial-value: 0px; }
+.shell-side-scroll {
+  flex: 1; min-height: 0; overflow-y: auto; overflow-x: clip; scrollbar-width: none; overscroll-behavior: contain;
+  /* the fades come and go over --duration-fade (the registered lengths move); none at an end */
+  mask-image: linear-gradient(to bottom, transparent, #000 var(--shell-side-fade-top), #000 calc(100% - var(--shell-side-fade)), transparent);
+  transition: --shell-side-fade-top var(--duration-fade) var(--ease-out), --shell-side-fade var(--duration-fade) var(--ease-out);
+}
+.shell-side[data-side-scrolled] .shell-side-scroll { --shell-side-fade-top: var(--space-5); }
+.shell-side[data-side-more] .shell-side-scroll:has(+ .shell-foot) { --shell-side-fade: var(--space-8); }
+@media (min-width: 901px) {
+  .shell-side:has(> .shell-bar) { gap: 0; }
+  .shell-bar { display: flex; flex-direction: column; flex: none; padding: 0 0 var(--shell-side-gap, var(--space-6)) var(--space-2); }  /* the brand 8 in, its line with the tree's leaves */
+  /* the side's own room is the scroller's, so a focus ring or a hover at the tree's edge is not clipped */
+  .shell-side-scroll {
+    margin-inline: calc(-1 * var(--shell-side-pl, var(--space-5))) calc(-1 * var(--shell-side-pr, var(--space-3)));
+    padding-inline: var(--shell-side-pl, var(--space-5)) var(--shell-side-pr, var(--space-3)); padding-bottom: var(--shell-side-gap, var(--space-6));
+  }
+}
+
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }  /* a code block scrolls, it never widens the page */
+  /* the side is the bar alone, on the window; the menu is laid over the page under it (100% is the bar's
+     padding box), as tall as the window leaves. The side never clips it: .shell > for the weight to beat a page
+     that scrolls its sidebar (docs.css's .shell-side, loaded after), or the menu scrolls inside the bar */
+  .shell > .shell-side {
+    position: sticky; top: 0; z-index: 20; height: auto; gap: 0; overflow: visible; background: var(--shell-ground, var(--background-200));
+    padding: var(--space-3) var(--page-margin);  /* the brand and the button on the page's margins, as its text below */
+  }
+  /* held over the page: once the page runs under the bar it fades out under it (the open menu's screens fade on their own), as wide's
+     screens under the brand (--space-5 of the bar's ground to none), nothing at the top. Not --shadow-sticky: the user
+     found the shell's shadow wrong (2026-10-26). Drawn after the menu, so the open menu, the bar's child, never paints over it */
+  .shell > .shell-side::after {
+    content: ""; position: absolute; top: 100%; left: 0; right: 0; height: var(--space-5); pointer-events: none;
+    background: linear-gradient(var(--shell-ground, var(--background-200)), transparent);
+    opacity: 0; transition: opacity var(--duration-fade) var(--ease-out);
+  }
+  .shell[data-scrolled] > .shell-side::after { opacity: 1; }
+  /* hideOnScroll (Shell.svelte sets data-hidden): scrolling down slides the bar up by its own height and fades it,
+     back on any scroll up, at the top, with the menu open (never hidden then) or with focus in it. Transform and opacity alone */
+  .shell > .shell-side {
+    /* the whole bar moving its height: the morph's pair, not a popover's enter and exit (too quick for it) */
+    transition: translate var(--duration-morph-in) var(--ease-spring), opacity var(--duration-morph-in) var(--ease-out);
+  }
+  .shell[data-hidden] > .shell-side {
+    translate: 0 -100%; opacity: 0; pointer-events: none;
+    /* leaving, it eases in and out, as long as it takes to come back: on the ease-out the fade was nearly done
+       in a third of the time, so the bar seemed to vanish. Not a layer dismissed: the reader never asked it to go */
+    transition: translate var(--duration-morph-in) var(--ease-glint), opacity var(--duration-morph-in) var(--ease-glint);
+  }
+  .shell[data-hidden] > .shell-side:focus-within { translate: 0 0; opacity: 1; pointer-events: auto; }
+  /* above the fade and the open menu, both from the bar's bottom on the page's ground: the mark's glow reaches past
+     the bar, and under them it ended in a straight line (the user, 2026-10-26) */
+  .shell-bar { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .shell-brand { flex: 0 1 auto; }  /* in the bar's row it gives way to the button, its ellipsis taking what is left; no 8 in, wide's line with the tree's leaves */
+  .shell-toggle { display: block; flex: none; }
+  .shell-menu {
+    position: absolute; top: 100%; left: 0; right: 0; height: calc(100dvh - 100%); display: flex; flex-direction: column;
+    background: var(--shell-ground, var(--background-200));
+    visibility: hidden; opacity: 0; translate: 0 calc(-1 * var(--space-2));
+    transition: opacity var(--duration-exit) var(--ease-out), translate var(--duration-exit) var(--ease-out), visibility 0s var(--duration-exit);
+  }
+  .shell-menu.shell-open {
+    visibility: visible; opacity: 1; translate: 0 0;
+    transition: opacity var(--duration-enter) var(--ease-out), translate var(--duration-enter) var(--ease-out), visibility 0s;
+  }
+  /* what is in it takes the height, the screens scrolling inside over the held foot; the bar's sides. The scroller
+     reaches to the menu's edges, so a hover or a ring at the tree's edge is not clipped */
+  .shell-clip { display: flex; flex-direction: column; flex: 1; min-height: 0; padding: 0 var(--page-margin); }
+  .shell-side-scroll { margin-inline: calc(-1 * var(--page-margin)); padding: var(--space-6) var(--page-margin); }
+  .shell-foot { margin-top: 0; padding-bottom: var(--space-3); }
+  .shell-bar-more { display: flex; flex: 1; align-items: center; justify-content: flex-end; gap: var(--space-1); min-width: 0; }
+}
+
+/* Skip to the page: Tab's first stop, out of the grid, seen only while it has focus; over the
+   brand, on the page's background, as a menu is. The page it focuses shows no ring of its own */
+.shell-skip { position: fixed; z-index: 10; top: var(--space-3); left: var(--space-3); }
+.shell-skip.plain { background: var(--background-100); box-shadow: var(--shadow-menu); }
+.shell-skip:not(:focus) { clip-path: inset(50%); }
+.shell > :is(main, .shell-side + *)[tabindex="-1"]:focus { outline: none; }

@@ -1,0 +1,57 @@
+/* Grid: a page's frame and the two layouts inside it. Needs tokens/index.css.
+   No 12-column grid: a template gets one when it needs one. Below 900px everything is one
+   column (as the docs' own break). */
+.grid-page {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);  /* one wide child can't widen every section */
+  align-content: start;  /* in a frame taller than its sections (a shell at 100vh), they stay stacked at the top */
+  gap: var(--space-6);
+  width: 100%;
+  max-width: calc(var(--page-width) + 2 * var(--page-margin));
+  margin-inline: auto;
+  /* 96 below: the last section never sits on the window's edge */
+  padding: var(--space-8) var(--page-margin) 96px;
+}
+
+/* Tool tier (a dashboard): the whole window, the same margins */
+.grid-page.grid-full { max-width: none; }
+
+/* a screen's head: its title and line at the left, its tools at the right (a period, a search) */
+.grid-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-4); }
+.grid-head h1, .grid-head p { margin: 0; }
+.grid-head > :has(> h1) { display: grid; gap: var(--space-1); }  /* the title, its line 4 under */
+.grid-head p { color: var(--gray-900); }
+.grid-head-tools { display: flex; flex: 1; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-3); }
+/* The screen is the window (a tool's screen): the page as tall as the window, its sections at
+   their height but one, .grid-fill, which takes what is left and scrolls inside (a card's
+   .card-scroll); .grid-fit is as tall as it needs until the window is short, then gives way.
+   The page sets the least a fill keeps (min-height), below which the page scrolls instead. A
+   .grid-split in it is a fill whose sides are .grid-column, each the same again. */
+.grid-page.grid-window { display: flex; flex-direction: column; height: 100vh; }
+.grid-window > *, .grid-window .grid-column > * { flex: none; }
+.grid-window .grid-fill, .grid-window .grid-split { flex: 1 1 0; min-height: 0; }
+.grid-window .grid-fit { flex: 0 1 auto; min-height: 0; }
+.grid-window .grid-split { align-items: stretch; }
+.grid-column { display: flex; flex-direction: column; gap: var(--space-4); min-height: 0; }
+/* main and side: the side a third, or what --grid-split-main and --grid-split-side make it */
+.grid-split {
+  display: grid;
+  grid-template-columns: minmax(0, var(--grid-split-main, 2fr)) minmax(0, var(--grid-split-side, 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* as many 240px tiles as fit; min() keeps one tile inside a narrower column */
+.grid-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+  gap: var(--space-4);
+}
+
+/* running text: a line stays readable */
+.grid-reading { max-width: var(--reading-width); }
+
+@media (max-width: 900px) {
+  .grid-split { grid-template-columns: minmax(0, 1fr); }
+}

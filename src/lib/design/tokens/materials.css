@@ -1,0 +1,50 @@
+/* Materials: Geist's presets, each a radius, a shadow and a background.
+   Surface (sits in the page): base, small, medium, large.
+   Floating (above the page): tooltip, menu, modal, fullscreen.
+   Radii are decided (decisions/foundations.md). Every shadow starts with the edge, a 1px ring of
+   gray-alpha-400, so a material holds its outline in dark where drop shadows vanish.
+   Drops: small is the segmented switch's pressed pill, modal was the catalog detail's frame (the catalog card, removed 2026-10-26);
+   the rest are derived from Geist's ladder until a specimen uses them.
+   The card frame is medium; a dialog is modal.
+   A stack is cards that float as one object (the chat over its composer): its outer corners
+   are --radius-stack and the corners where two of its cards meet --radius-medium.
+   --shadow-metal is the metal's well and drop: the metal button and the composer.
+   --shadow-sticky is a head that rows scroll beneath, once they do: a soft layered drop, no ring
+   and no line (menu's drops without its edge), darker in dark. Not fainter: a short faint one read as nothing. */
+
+:root {
+  --radius-base: 6px;
+  --radius-small: 6px;
+  --radius-medium: 12px;
+  --radius-large: 12px;
+  --radius-tooltip: 6px;
+  --radius-menu: 12px;
+  --radius-modal: 12px;
+  --radius-fullscreen: 16px;
+  --radius-stack: 24px;
+}
+
+/* Declared where the theme is, so the edge follows it. */
+:root, [data-theme] {
+  --shadow-base: 0 0 0 1px var(--gray-alpha-400);
+  --shadow-small: var(--shadow-base), 0 1px 2px rgb(0 0 0 / .12);
+  --shadow-medium: var(--shadow-base), 0 2px 2px rgb(0 0 0 / .04), 0 8px 8px -8px rgb(0 0 0 / .04);   /* derived */
+  --shadow-large: var(--shadow-base), 0 2px 2px rgb(0 0 0 / .04), 0 8px 16px -4px rgb(0 0 0 / .04);   /* derived */
+  --shadow-tooltip: var(--shadow-base), 0 1px 1px rgb(0 0 0 / .02), 0 4px 8px rgb(0 0 0 / .04);       /* derived */
+  --shadow-menu: var(--shadow-base), 0 1px 1px rgb(0 0 0 / .02), 0 4px 8px -4px rgb(0 0 0 / .04), 0 16px 24px -8px rgb(0 0 0 / .06);  /* derived */
+  --shadow-modal: var(--shadow-base), 0 30px 80px -30px rgb(0 0 0 / .45);
+  --backdrop-modal: rgb(0 0 0 / .4);   /* the page dimmed behind a modal, in both themes */
+  --shadow-sticky: 0 1px 2px rgb(0 0 0 / .03), 0 4px 8px -4px rgb(0 0 0 / .06), 0 12px 24px -12px rgb(0 0 0 / .1);   /* a hairline and a short .12 drop read as harsh, then as nothing: this */
+  --shadow-metal: inset 0 0 0 2px var(--metal-well), 0 10px 30px -12px rgb(0 0 0 / .6);
+  --shadow-fullscreen: var(--shadow-base), 0 1px 1px rgb(0 0 0 / .02), 0 8px 16px -4px rgb(0 0 0 / .04), 0 24px 32px -8px rgb(0 0 0 / .06);  /* derived */
+}
+[data-theme="dark"] { --shadow-sticky: 0 1px 2px rgb(0 0 0 / .2), 0 4px 8px -4px rgb(0 0 0 / .3), 0 12px 24px -12px rgb(0 0 0 / .5); }
+
+.material-base       { border-radius: var(--radius-base);       box-shadow: var(--shadow-base);       background: var(--background-100); }
+.material-small      { border-radius: var(--radius-small);      box-shadow: var(--shadow-small);      background: var(--background-100); }
+.material-medium     { border-radius: var(--radius-medium);     box-shadow: var(--shadow-medium);     background: var(--background-100); }
+.material-large      { border-radius: var(--radius-large);      box-shadow: var(--shadow-large);      background: var(--background-100); }
+.material-tooltip    { border-radius: var(--radius-tooltip);    box-shadow: var(--shadow-tooltip);    background: var(--background-100); }
+.material-menu       { border-radius: var(--radius-menu);       box-shadow: var(--shadow-menu);       background: var(--background-100); }
+.material-modal      { border-radius: var(--radius-modal);      box-shadow: var(--shadow-modal);      background: var(--background-100); }
+.material-fullscreen { border-radius: var(--radius-fullscreen); box-shadow: var(--shadow-fullscreen); background: var(--background-100); }

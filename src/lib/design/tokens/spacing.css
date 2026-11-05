@@ -1,0 +1,23 @@
+/* Spacing: padding, gap and margin. Measured from the components (2026-10-17): mostly a 4px
+   grid, 2px steps below 8 (decisions/foundations.md, "Spacing, decided").
+   Named as Geist's: the number is the multiple of its 4px space (--geist-space-2x is our
+   --space-2). The two half steps take Tailwind's numbers, which Geist's own markup uses
+   (space-y-0.5, space-y-1.5).
+   Above 32: 40, 48, 64, 96, Geist's (2026-10-25: two apps used them).
+   A literal outside this scale carries a comment saying why: a ring's width, a line centred
+   on a control, a pill's side (half its height less 2px). */
+:root {
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-1-5: 6px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+}

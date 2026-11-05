@@ -1,0 +1,18 @@
+/* Tag: a short label on a tone, beside what it qualifies (a channel, a status,
+   a stale file, overdue). Needs tokens/index.css. CSS only.
+
+   <span class="tag" data-tone="success">On time</span>
+
+   Geist's subtle badge: a 20px pill on the tone's 200 with its 900 text (holds 4.5:1 by the
+   scale's rule); neutral is gray-200 with gray-1000. data-tone: neutral, success, warning,
+   error. Not a control: no hover. Every global name here starts with tag. */
+
+.tag {
+  display: inline-flex; align-items: center; flex: none; box-sizing: border-box; height: 20px; padding: 0 var(--space-2);
+  border-radius: 999px; background: var(--gray-200); color: var(--gray-1000);
+  font-family: var(--font-sans); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: var(--tracking);
+  white-space: nowrap;
+}
+.tag[data-tone="success"] { background: var(--green-200); color: var(--green-900); }
+.tag[data-tone="warning"] { background: var(--amber-200); color: var(--amber-900); }
+.tag[data-tone="error"] { background: var(--red-200); color: var(--red-900); }

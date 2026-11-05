@@ -1,0 +1,105 @@
+/* Modal: a dialog over the page, ringed by the metal's chrome rim. Needs tokens/index.css,
+   components/button/button.css (the rim and its glint) and modal.js (Modal.attach: × and a
+   click on the backdrop close it).
+
+   <dialog class="modal" aria-labelledby="keys-title">
+     <span class="metal-rim one" aria-hidden="true"></span><span class="metal-rim two" aria-hidden="true"></span>
+     <span class="metal-rim glint" aria-hidden="true"></span>
+     <header class="modal-head">
+       <h2 class="modal-title text-heading-20" id="keys-title">Keys</h2>
+       <button class="modal-close" type="button" aria-label="Close"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8"/></svg></button>
+     </header>
+     <div class="modal-body">…</div>
+     <footer class="modal-foot">…</footer>
+   </dialog>
+
+   The sheet in the page's theme: a title bar, the body, a footer band. The stack's corners;
+   the rim turns round it, and as it opens the glint rolls once round the rim. It scales in from
+   96% on the spring and leaves faster on the ease-out, the backdrop fading with it.
+   showModal() and close() open and shut it; the browser gives Escape, keeps focus inside and
+   hands it back on close. data-size="wide": 560. data-place="side": a sheet along the right
+   edge, the page still there at its left (a person's whole file). Every global name here
+   starts with modal. */
+
+.modal {
+  box-sizing: border-box; width: min(400px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px);
+  padding: 0; border: 0; overflow: hidden; isolation: isolate;
+  border-radius: var(--radius-stack); background: var(--background-100); box-shadow: var(--shadow-modal);
+  color: var(--gray-1000); font: 14px/20px var(--font-sans); letter-spacing: var(--tracking);
+  /* closing: out on the ease-out, then gone from the top layer */
+  opacity: 0; scale: .97;
+  transition: opacity var(--duration-morph-out) var(--ease-out), scale var(--duration-morph-out) var(--ease-out),
+    display var(--duration-morph-out) allow-discrete, overlay var(--duration-morph-out) allow-discrete;
+}
+.modal[open] {
+  display: flex; flex-direction: column; opacity: 1; scale: 1;
+  transition: opacity var(--duration-morph-in) var(--ease-spring), scale var(--duration-morph-in) var(--ease-spring),
+    display var(--duration-morph-in) allow-discrete, overlay var(--duration-morph-in) allow-discrete;
+}
+@starting-style { .modal[open] { opacity: 0; scale: .96; } }
+.modal::backdrop {
+  background: var(--backdrop-modal); opacity: 0;
+  transition: opacity var(--duration-morph-out) var(--ease-out),
+    display var(--duration-morph-out) allow-discrete, overlay var(--duration-morph-out) allow-discrete;
+}
+.modal[open]::backdrop { opacity: 1; }
+@starting-style { .modal[open]::backdrop { opacity: 0; } }
+
+/* the rim over the sheet's edge; the glint over the rim, rolling once as it opens */
+.modal > .metal-rim { z-index: 2; }
+.modal > .metal-rim.glint { z-index: 3; }
+.modal[open] > .metal-rim.glint { animation: metal-roll 1.1s .15s var(--ease-glint) forwards, metal-cool 1.4s 1.05s var(--ease-out) forwards; }
+
+.modal-head { display: flex; align-items: start; justify-content: space-between; gap: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-3) var(--space-6); border-bottom: 1px solid transparent; }
+/* the title's first line centred on the 32px ×: the head aligned to its top keeps a wrapped title's × in
+   the corner, on its first line (a long source's title, 2026-11-01); with no × the head keeps the same height */
+.modal-title { margin: calc((32px - 1lh) / 2) 0; }
+.modal-head:not(:has(> .modal-close)) { padding-right: var(--space-6); }
+.modal-close {
+  flex: none; display: grid; place-items: center; width: 32px; height: 32px; padding: 0;
+  border: 0; border-radius: 999px; background: none; color: var(--gray-900); cursor: pointer;
+  transition: background-color var(--duration-hover) var(--ease-out);
+}
+.modal-close:hover { background: var(--gray-100); color: var(--gray-1000); }
+.modal-close svg { width: 16px; height: 16px; }
+.modal :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.modal:focus { outline: none; }  /* the dialog holds focus as it opens (Modal.svelte); its rim is its edge */
+/* 20 over the body's first row, as before: 12 of it in the head, so its edge sits under the × */
+.modal-body { display: grid; gap: var(--space-4); min-height: 0; padding: var(--space-2) var(--space-6) var(--space-6); overflow-y: auto; scrollbar-width: none; }
+/* scrolled, a hairline under the title bar, so rows go under an edge, not cut under the × (the
+   user, on a shortcuts sheet). Drawn by the body's scroll; a browser with no scroll
+   timeline keeps no edge, as before */
+@supports (animation-timeline: scroll()) {
+  .modal { timeline-scope: --modal-scroll; }
+  .modal-body { scroll-timeline: --modal-scroll y; }
+  .modal-head { animation: modal-edge linear both; animation-timeline: --modal-scroll; animation-range: 0 8px; }
+}
+@keyframes modal-edge { to { border-bottom-color: var(--gray-alpha-400); } }
+/* wide: 560 for rows with fields in them (what was answered); a sub under the title */
+.modal[data-size="wide"] { width: min(560px, calc(100vw - 32px)); }
+.modal[data-size="wide"] .modal-body { gap: var(--space-6); }
+/* side: 16 in from the right edge, top and bottom, 480 wide. It slides the whole way in from
+   past the edge, solid, on the spring both ways (out shorter): the ease-out took half its 500px
+   in the first 30ms, a snap rather than a slide */
+.modal[data-place="side"] {
+  --modal-side-off: calc(100% + var(--space-4));
+  width: min(480px, calc(100vw - 2 * var(--space-4))); height: calc(100dvh - 2 * var(--space-4)); max-height: none;
+  margin: 0; inset: var(--space-4) var(--space-4) var(--space-4) auto;
+  opacity: 1; scale: 1; translate: var(--modal-side-off) 0;
+  transition: translate var(--duration-morph-out) var(--ease-spring), display var(--duration-morph-out) allow-discrete, overlay var(--duration-morph-out) allow-discrete;
+}
+.modal[data-place="side"][open] {
+  translate: 0 0;
+  transition: translate var(--duration-morph-in) var(--ease-spring), display var(--duration-morph-in) allow-discrete, overlay var(--duration-morph-in) allow-discrete;
+}
+@starting-style { .modal[data-place="side"][open] { opacity: 1; scale: 1; translate: var(--modal-side-off) 0; } }
+.modal[data-place="side"][open]::backdrop { transition: opacity var(--duration-morph-in) var(--ease-out), display var(--duration-morph-in) allow-discrete, overlay var(--duration-morph-in) allow-discrete; }
+.modal[data-place="side"] .modal-body { gap: var(--space-6); flex: 1; align-content: start; }
+.modal-sub { color: var(--gray-900); font-size: 13px; line-height: 18px; }
+/* the foot's actions, side by side at its right (36px pills there: data-size="medium") */
+.modal-actions { display: flex; gap: var(--space-2); }
+.modal-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: auto; padding: var(--space-3) var(--space-4) var(--space-3) var(--space-6);
+  border-top: 1px solid var(--gray-alpha-400); background: var(--background-200); color: var(--gray-900); font-size: 13px;
+}
+

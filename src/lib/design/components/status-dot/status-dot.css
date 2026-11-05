@@ -1,0 +1,27 @@
+/* Status dot: a small circle that marks a state, or that something is there (a row read, a day
+   with an entry, a rail's stop). Needs tokens/index.css. CSS only.
+
+   <span class="status-dot" data-tone="success" data-size="8"><span class="status-dot-label">Done</span></span>
+
+   data-size: 4, 6 (default), 8, set by --space-1, --space-1-5, --space-2. data-tone: neutral (ink,
+   gray-1000, "it is here"), muted (gray-900, "quiet"), success and error (their 700, the fill step),
+   warning (amber-900: amber-700 is 1.7:1 on a light page, 900 holds 5.2:1 light and 9.3 dark). Each holds 3:1
+   on the page in both themes. A dot is not a control. Its colour is never alone: the label is the words for
+   a screen reader, or the dot is aria-hidden. Every global name here starts with status-dot. */
+
+.status-dot {
+  --status-dot-size: var(--space-1-5); --status-dot-color: var(--gray-1000);
+  display: inline-block; flex: none; box-sizing: border-box; vertical-align: middle;
+  width: var(--status-dot-size); height: var(--status-dot-size); border-radius: 50%;
+  background: var(--status-dot-color);
+}
+.status-dot[data-size="4"] { --status-dot-size: var(--space-1); }
+.status-dot[data-size="8"] { --status-dot-size: var(--space-2); }
+.status-dot[data-tone="muted"] { --status-dot-color: var(--gray-900); }
+.status-dot[data-tone="success"] { --status-dot-color: var(--green-700); }
+.status-dot[data-tone="warning"] { --status-dot-color: var(--amber-900); }
+.status-dot[data-tone="error"] { --status-dot-color: var(--red-700); }
+
+.status-dot-label {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}

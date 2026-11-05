@@ -57,7 +57,7 @@ describe('run', () => {
 		const result = await run('kanzlei-muenchen', { live: false });
 		expect(result.coverage).toEqual({ read: 14, notRead: 0 });
 		expect(result.notRead).toEqual([]);
-		expect(result.day.termineSoon).toHaveLength(1);
+		expect(result.day.termineAkte).toHaveLength(1);
 	});
 
 	it('live: runs at most 4 calls at a time, and keeps the inbox order', async () => {

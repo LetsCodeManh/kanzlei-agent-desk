@@ -1,0 +1,55 @@
+/* Typography: Geist's named presets, text-<category>-<size>, set in our faces.
+   heading  titles, 600
+   button   a button's label, 500
+   label    single lines (menus, metadata, form labels), 400; -mono for numbers and ids
+   copy     running text, more than one line, 400
+   <strong> inside any preset is Strong (600).
+   Sizes and line heights are Geist's. Tracking is ours: surf sets Inter Tight headings at
+   -0.02 to -0.03em (40–56px), the catalog detail's title was 32px at -0.025em (removed 2026-10-26), and every
+   smaller line in the specimens runs at -0.01em (--tracking). Mono is never tracked. */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter+Tight:wght@400..600&display=swap");
+
+:root {
+  --font-sans: "Inter Tight", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --tracking: -0.01em;
+}
+
+[class^="text-"], [class*=" text-"] { font-family: var(--font-sans); letter-spacing: var(--tracking); }
+
+.text-heading-72 { font-size: 72px; line-height: 72px; font-weight: 600; letter-spacing: -0.03em; }
+.text-heading-64 { font-size: 64px; line-height: 64px; font-weight: 600; letter-spacing: -0.03em; }
+.text-heading-56 { font-size: 56px; line-height: 56px; font-weight: 600; letter-spacing: -0.03em; }
+.text-heading-48 { font-size: 48px; line-height: 56px; font-weight: 600; letter-spacing: -0.025em; }
+.text-heading-40 { font-size: 40px; line-height: 48px; font-weight: 600; letter-spacing: -0.025em; }
+.text-heading-32 { font-size: 32px; line-height: 40px; font-weight: 600; letter-spacing: -0.025em; }
+.text-heading-24 { font-size: 24px; line-height: 32px; font-weight: 600; letter-spacing: -0.02em; }
+.text-heading-20 { font-size: 20px; line-height: 26px; font-weight: 600; letter-spacing: -0.02em; }
+.text-heading-16 { font-size: 16px; line-height: 24px; font-weight: 600; }
+.text-heading-14 { font-size: 14px; line-height: 20px; font-weight: 600; }
+
+.text-button-16 { font-size: 16px; line-height: 20px; font-weight: 500; }
+.text-button-14 { font-size: 14px; line-height: 20px; font-weight: 500; }
+.text-button-12 { font-size: 12px; line-height: 16px; font-weight: 500; }
+
+.text-label-20 { font-size: 20px; line-height: 32px; font-weight: 400; }
+.text-label-18 { font-size: 18px; line-height: 20px; font-weight: 400; }
+.text-label-16 { font-size: 16px; line-height: 20px; font-weight: 400; }
+.text-label-14 { font-size: 14px; line-height: 20px; font-weight: 400; }
+.text-label-13 { font-size: 13px; line-height: 16px; font-weight: 400; }
+.text-label-12 { font-size: 12px; line-height: 16px; font-weight: 400; }
+
+.text-copy-24 { font-size: 24px; line-height: 36px; font-weight: 400; }
+.text-copy-20 { font-size: 20px; line-height: 36px; font-weight: 400; }
+.text-copy-18 { font-size: 18px; line-height: 28px; font-weight: 400; }
+.text-copy-16 { font-size: 16px; line-height: 24px; font-weight: 400; }
+.text-copy-14 { font-size: 14px; line-height: 20px; font-weight: 400; }
+.text-copy-13 { font-size: 13px; line-height: 18px; font-weight: 400; }
+
+.text-label-14-mono { font-size: 14px; line-height: 20px; }
+.text-label-13-mono { font-size: 13px; line-height: 20px; }
+.text-label-12-mono { font-size: 12px; line-height: 16px; }
+.text-copy-13-mono  { font-size: 13px; line-height: 18px; }
+[class*="-mono"]:is([class^="text-"], [class*=" text-"]) { font-family: var(--font-mono); font-weight: 400; letter-spacing: 0; }
+
+:is([class^="text-"], [class*=" text-"]) strong { font-weight: 600; }

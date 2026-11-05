@@ -1,0 +1,45 @@
+/* Empty state: what a card or a list says when it has nothing yet, or is still loading. Needs
+   tokens/index.css, and button.css for an action. CSS only.
+
+   <div class="empty-state" data-place="card">
+     <span class="empty-state-line">No emails today</span>
+     <span class="empty-state-hint">Connect an inbox to read its emails.</span>
+     <button class="plain empty-state-action" type="button">Connect an inbox</button>
+   </div>
+
+   <div class="empty-state" data-place="card" aria-busy="true">
+     <span class="empty-state-skeleton" aria-hidden="true"><i></i><i></i><i></i></span>
+     <span class="empty-state-caption">Loading emails…</span>
+   </div>
+
+   Geist's empty state, small: a 14px 500 line and a gray-900 hint, centred in the card's body
+   with 32px above and below; no art, no frame. The action, when there is a way out, is a 32px
+   plain button. data-place="inline" is the line alone, where a row would be, in gray-900.
+   Loading is three skeleton lines (one inline) shimmering, with aria-busy and a caption for
+   screen readers. Every global name here starts with empty-state. */
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; gap: var(--space-4); text-align: center;
+  color: var(--gray-1000); font-family: var(--font-sans); letter-spacing: var(--tracking);
+}
+.empty-state[data-place="card"] { padding: var(--space-8) var(--space-4); }
+.empty-state[data-place="inline"] { align-items: flex-start; padding: var(--space-3) 0; text-align: left; }
+.empty-state-text { display: flex; flex-direction: column; align-items: inherit; gap: var(--space-1); }
+.empty-state-line { font-size: 14px; line-height: 20px; font-weight: 500; }
+.empty-state[data-place="inline"] .empty-state-line { color: var(--gray-900); font-weight: 400; }
+.empty-state-hint { max-width: 32ch; color: var(--gray-900); font-size: 13px; line-height: 18px; }
+/* 36, a pill's height; its side, half that less 2px, is 16 */
+.empty-state .empty-state-action { height: 36px; padding: 0 var(--space-4); font-size: 13px; }
+
+.empty-state-skeleton { display: grid; gap: var(--space-2); width: 100%; }
+.empty-state-skeleton i {
+  height: 12px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--gray-alpha-100) 0 30%, var(--gray-alpha-200) 50%, var(--gray-alpha-100) 70%) 0 0 / 300% 100%;
+  animation: empty-state-shimmer 1.6s linear infinite;
+}
+.empty-state-skeleton i:nth-child(2) { width: 80%; }
+.empty-state-skeleton i:nth-child(3) { width: 60%; }
+.empty-state[data-place="inline"] .empty-state-skeleton i:nth-child(n+2) { display: none; }
+.empty-state-caption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@keyframes empty-state-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+

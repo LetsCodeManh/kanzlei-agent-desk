@@ -146,6 +146,10 @@ export interface DayRow {
 	sub: string;
 	notes: string[];
 	date: string | null;
+	/** The day it sits on in the calendar. None: no date could be read, so "Datum prüfen" holds it. */
+	iso: Day | null;
+	/** `09:30`, where the case list or the email holds one. It places the row on the day's timeline. */
+	time: string | null;
 	when: string;
 	days: number | null;
 	tone: Tone;
@@ -155,18 +159,37 @@ export interface DayRow {
 	warning: boolean;
 }
 
-/** Each thing sits in one place, and every item lands somewhere. */
+export type MailLabel = 'Aufgabe' | 'Frist' | 'Termin';
+
+/** One email in the Postfach. Every email read has one, so none can drop out of sight. */
+export interface MailRow {
+	id: string;
+	channel: Channel;
+	received: string;
+	sender: string;
+	subject: string;
+	summary: string;
+	/** Where the email also shows on "Heute". None: it stays in the Postfach alone. */
+	labels: MailLabel[];
+	unsure: boolean;
+	warning: boolean;
+}
+
+/** Each thing on "Heute" sits in one place, and every email read is in the Postfach. */
 export interface DayScreen {
-	/** Hearings today and tomorrow, from the case list. */
-	termineSoon: DayRow[];
+	/** Every hearing in the case list. */
+	termineAkte: DayRow[];
 	/** Hearings a court's mail names. */
 	termineNew: DayRow[];
+	/** Other dated things an email names, not the lawyer's own: a client's meeting, a server's maintenance. */
+	ereignisse: DayRow[];
 	/** On screen: "Heute tun". The only rows with a tick: a Frist is struck after its check, not by a tick. */
 	aufgaben: DayRow[];
 	pruefen: DayRow[];
 	bald: DayRow[];
 	spaeter: DayRow[];
-	rest: DayRow[];
+	/** Newest first. */
+	postfach: MailRow[];
 }
 
 /** `data/<kanzlei>/out/briefing.json`. The screens read this. */

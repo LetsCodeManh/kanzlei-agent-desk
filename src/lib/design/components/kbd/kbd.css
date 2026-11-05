@@ -1,0 +1,35 @@
+/* Keyboard key: a key to press, shown as a keycap. Needs tokens/index.css. CSS only.
+
+   <kbd class="kbd">N</kbd>
+   <kbd class="kbd kbd-small">/</kbd>
+   <span class="kbd-combo"><kbd class="kbd">⌘</kbd><kbd class="kbd">K</kbd></span>
+
+   background-100 with a hairline edge and a 2px lip underneath, a plain sans label. 24px
+   high, .kbd-small 20px; a key is at least as wide as it is high. The label is centred on the
+   face (the lip is not face), and in text the key on the line's middle, not on its baseline.
+   data-down shows it pressed (a page that echoes the keyboard sets it): it sinks 1px and scales .97 while the lip closes,
+   going in on the ease-out and coming back on the spring. Every global name here starts with kbd. */
+
+.kbd {
+  --kbd-h: 24px;
+  display: inline-grid; place-items: center; box-sizing: border-box; height: var(--kbd-h); min-width: var(--kbd-h);
+  padding: 0 calc(var(--kbd-h) / 4) 2px; /* the lip's 2px: the label centred on the face */ vertical-align: middle; white-space: nowrap; cursor: default; user-select: none;
+  border-radius: var(--radius-small); background: var(--background-100); color: var(--gray-1000);
+  box-shadow: 0 0 0 1px var(--gray-alpha-400), inset 0 -2px 0 var(--gray-alpha-300);
+  font: 500 12px/1 var(--font-sans); letter-spacing: 0;
+  transition: translate var(--duration-release) var(--ease-spring), scale var(--duration-release) var(--ease-spring),
+    background-color var(--duration-release) var(--ease-spring), box-shadow var(--duration-release) var(--ease-spring);
+}
+/* a key beside the thing it presses (aria-hidden: the control names it in aria-keyshortcuts) goes on a phone, narrow
+   or touch, which has no keys: Button's shortcut, a menu's row, the sidebar's foot (the user, 2026-10-26) */
+@media (max-width: 900px), (pointer: coarse) { :is(.kbd, .kbd-combo)[aria-hidden="true"] { display: none; } }
+/* the small key's side 4, not a quarter of 20 (5): on the scale */
+.kbd-small { --kbd-h: 20px; padding: 0 var(--space-1) 2px; /* the lip */ border-radius: calc(var(--radius-small) - 1px); font-size: 11px; }
+.kbd[data-down] {
+  translate: 0 1px; scale: .97; background: var(--background-200);
+  box-shadow: 0 0 0 1px var(--gray-alpha-400), inset 0 0 0 var(--gray-alpha-300);
+  transition-duration: var(--duration-press); transition-timing-function: var(--ease-out);
+}
+/* 4 apart: each key's 1px ring sits outside it, so 2 drew them touching; 4 leaves 2 of air */
+.kbd-combo { display: inline-flex; align-items: center; gap: var(--space-1); }
+

@@ -4,7 +4,7 @@ import { buildDay } from '#lib/server/briefing/day.ts';
 import { blankItem } from '#lib/server/briefing/items.ts';
 import { run } from '#lib/server/briefing/pipeline.ts';
 import { rank } from '#lib/server/briefing/rank.ts';
-import type { Akte, DayRow, DayScreen, Email, Frist, Item, Role } from '#lib/types.ts';
+import type { Akte, DayRow, Email, Frist, Item, Role } from '#lib/types.ts';
 
 const TODAY = '2026-11-02';
 
@@ -66,7 +66,7 @@ describe('the day on the two fake inboxes', () => {
 
 	it('Berlin: no Termin, the same-day tasks, b01 and b03 to check, and the Akte\'s Replik', async () => {
 		const { day } = await run('kanzlei-berlin', { live: false });
-		expect(day.termineSoon).toEqual([]);
+		expect(day.termineAkte).toEqual([]);
 		expect(ids(day.aufgaben)).toEqual(['b07', 'b08']);
 		expect(ids(day.pruefen)).toEqual(['b01', 'b03']);
 		expect(day.pruefen[0].date).toBeNull();
@@ -77,10 +77,10 @@ describe('the day on the two fake inboxes', () => {
 
 	it('München: tomorrow\'s hearing, the same-day tasks, the two near Fristen, and no injection mail', async () => {
 		const { day } = await run('kanzlei-muenchen', { live: false });
-		expect(day.termineSoon.map((row) => [row.title, row.sub, row.when])).toEqual([
-			['Mündliche Verhandlung', '09:30 Uhr · 172 C 3141/26 (Theo Theorie), Sitzungssaal B 214 · aus der Akte', 'morgen']
+		expect(day.termineAkte.map((row) => [row.title, row.sub, row.when])).toEqual([
+			['Mündliche Verhandlung', '172 C 3141/26 (Theo Theorie), Sitzungssaal B 214 · aus der Akte', 'morgen']
 		]);
-		expect(day.termineSoon[0].emailIds).toEqual([]);
+		expect(day.termineAkte[0].emailIds).toEqual([]);
 		expect(ids(day.aufgaben)).toEqual(['m07', 'm08']);
 		expect(day.pruefen).toEqual([]);
 		expect(ids(day.bald)).toEqual(['', 'm06']); // the Akte's Frist, 1 day, then m06, 4 days
@@ -89,35 +89,39 @@ describe('the day on the two fake inboxes', () => {
 });
 
 describe('every item lands somewhere', () => {
-	const rows = (day: DayScreen) => Object.values(day).flat();
-
-	it.each(['kanzlei-berlin', 'kanzlei-muenchen'])('%s: every email and every Akte Frist has a row', async (kanzlei) => {
+	it.each(['kanzlei-berlin', 'kanzlei-muenchen'])('%s: every email is in the Postfach, every Akte Frist on the day', async (kanzlei) => {
 		const { day, items } = await run(kanzlei, { live: false });
-		const shown = rows(day);
-		const opened = new Set(shown.flatMap((row) => row.emailIds));
+		const rows = [...day.pruefen, ...day.bald, ...day.spaeter];
 		for (const item of items) {
-			for (const { id } of item.emails) expect(opened).toContain(id);
-			if (item.emails.length === 0) expect(shown.map((row) => row.title)).toContain(item.fristen[0].what);
+			for (const { id } of item.emails) expect(day.postfach.map((mail) => mail.id)).toContain(id);
+			if (item.emails.length === 0) expect(rows.map((row) => row.title)).toContain(item.fristen[0].what);
 		}
 	});
 
-	it('an item with nothing to show, or kept out of the Fristen, is in the rest', () => {
+	it('an item with nothing to show, or kept out of the Fristen, stays in the Postfach with no label', () => {
 		const near = frist({ end: '2026-11-03', rawEnd: '2026-11-03', daysLeft: 1 });
 		const day = dayOf(item('other'), item('client'), item('other', { fristen: [near] }));
-		expect(day.rest).toHaveLength(3);
+		expect(day.postfach.map((mail) => mail.labels)).toEqual([[], [], []]);
+		expect([...day.aufgaben, ...day.bald]).toEqual([]);
+	});
+
+	it('the Postfach is newest first, and a forward has its own row', () => {
+		const old = { ...email('old'), received: '2026-11-01T08:00:00+00:00' };
+		const day = dayOf(item('court', { emails: [old, email('new')] }));
+		expect(day.postfach.map((mail) => mail.id)).toEqual(['new', 'old']);
 	});
 });
 
 describe('Termine', () => {
-	const rows = (...dates: string[]) => buildDay([], [akte(dates.map((date) => termin(date)))], TODAY).termineSoon;
+	const rows = (...dates: string[]) => buildDay([], [akte(dates.map((date) => termin(date)))], TODAY).termineAkte;
 
-	it('holds today and tomorrow, not yesterday and not the day after', () => {
-		expect(rows('2026-11-01', '2026-11-02', '2026-11-03', '2026-11-04').map((row) => row.when)).toEqual(['heute', 'morgen']);
+	it('holds every hearing, a past one as vorbei', () => {
+		expect(rows('2026-11-01', '2026-11-02', '2026-11-03', '2026-11-04').map((row) => row.when)).toEqual(['vorbei', 'heute', 'morgen', 'in 2 Tagen']);
 	});
 
 	it('sorts by day, then time', () => {
 		const day = buildDay([], [akte([termin('2026-11-03', '08:00'), termin(TODAY, '14:00'), termin(TODAY, '09:00')])], TODAY);
-		expect(day.termineSoon.map((row) => `${row.when} ${row.sub.slice(0, 5)}`)).toEqual(['heute 09:00', 'heute 14:00', 'morgen 08:00']);
+		expect(day.termineAkte.map((row) => `${row.when} ${row.time}`)).toEqual(['heute 09:00', 'heute 14:00', 'morgen 08:00']);
 	});
 
 	it('fails loudly on a date that does not exist', () => {
@@ -214,8 +218,8 @@ describe('a hearing from a court\'s mail', () => {
 		const held = { ...email('e'), body: 'Termin um 10:30 Uhr' };
 		const row = (emails: Email[]) =>
 			dayOf(item('court', { emails, events: [hearing('Güteverhandlung, Saal 2, 10:30 Uhr', 'am 04.12.2026')] })).termineNew[0];
-		expect(row([held]).sub).toContain('10:30 Uhr');
-		expect(row([email('e')]).sub).not.toContain('10:30');
+		expect(row([held]).time).toBe('10:30');
+		expect(row([email('e')]).time).toBeNull();
 		expect(row([held]).title).toBe('Güteverhandlung');
 	});
 
@@ -223,6 +227,39 @@ describe('a hearing from a court\'s mail', () => {
 		const row = dayOf(item('court', { events: [hearing('Termin', 'Anfang Dezember')] })).termineNew[0];
 		expect(row.date).toBeNull();
 		expect(row.notes).toContain('Anfang Dezember');
+	});
+});
+
+describe('a dated thing from an email', () => {
+	const said = (what: string, date_text: string) => ({ what, date_text, quote: 'q', oldDate: null });
+	const row = (body: string, what: string, date_text: string, over: Partial<Item> = {}, role: Role = 'client') =>
+		dayOf(item(role, { emails: [{ ...email('e'), body }], events: [said(what, date_text)], ...over })).ereignisse[0];
+
+	it('reads the start of a time span, not its end', () => {
+		const maintenance = row('am Samstag, 07.11.2026, von 8 bis 12 Uhr nicht erreichbar', 'Serverwartung', 'Samstag, 07.11.2026, 8 bis 12 Uhr');
+		expect([maintenance.iso, maintenance.time]).toEqual(['2026-11-07', '08:00']);
+	});
+
+	it('counts heute and morgen from the day the email arrived', () => {
+		const old = { emails: [{ ...email('e'), body: 'ich bin morgen 14 Uhr dort', receivedDay: '2026-10-30' }] };
+		expect(row('', 'Gespräch', 'morgen 14 Uhr', old)).toMatchObject({ iso: '2026-10-31', time: '14:00', when: 'vorbei' });
+	});
+
+	it('takes no date or time that the email does not hold, and keeps the words', () => {
+		const made = row('Bitte um Rückruf', 'Gespräch', 'am 09.11.2026, 14 Uhr');
+		expect([made.iso, made.time]).toEqual([null, null]);
+		expect(made.notes).toContain('am 09.11.2026, 14 Uhr');
+	});
+
+	it('keeps a day with no clock time on its day, with the words', () => {
+		const early = row('der Vermieter kommt morgen früh', 'Besichtigung', 'morgen früh');
+		expect([early.iso, early.time]).toEqual(['2026-11-03', null]);
+		expect(early.notes).toContain('morgen früh');
+	});
+
+	it('leaves out an unknown sender and a suspect mail: text in an email cannot put it on the calendar', () => {
+		expect(row('heute 14 Uhr', 'Termin', 'heute 14 Uhr', {}, 'other')).toBeUndefined();
+		expect(row('heute 14 Uhr', 'Termin', 'heute 14 Uhr', { injection: true })).toBeUndefined();
 	});
 });
 

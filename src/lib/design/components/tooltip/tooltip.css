@@ -1,0 +1,67 @@
+/* Tooltip. Needs tokens/index.css.
+   .tooltip-card     the card a trigger opens on hover and focus: menu material, 320 wide, fixed to the window
+                     (placed by Tooltip.svelte), in the flow when [data-pinned].
+   .tooltip-meta     kind and topic, small gray, above the title.
+   .tooltip-head     the title's row: the icon, when there is one, then the title.
+   .tooltip-title    the title.
+   .tooltip-icon     the glyph, 16, before the title and centred on its line.
+   .tooltip-summary  a line or two, gray, wrapping.
+   .tooltip-label    the card as a label: only a title (and a key). Auto width up to 240, wrapping past it, padding 4 by 8,
+                     12px text; below its trigger and centred as the card is.
+   Every global name here starts with tooltip. */
+
+.tooltip-card {
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-1);  /* over the popover's display:none: it is measured while hidden, and fades out; meta, title and summary 4 apart */
+  position: fixed;
+  inset: auto;  /* the popover's own centring (inset 0, margin auto) off: the card is placed by left and top */
+  margin: 0;
+  border: 0;
+  overflow: visible;
+  color: var(--gray-1000);  /* not the popover's CanvasText */
+  z-index: 20;
+  box-sizing: border-box;
+  width: min(320px, calc(100vw - 2 * var(--space-4)));
+  padding: var(--space-3) var(--space-4);
+  white-space: normal;
+  text-align: left;
+  opacity: 0;
+  scale: 0.96;
+  translate: 0 -4px;
+  visibility: hidden;
+  /* out: faster than in */
+  transition:
+    opacity var(--duration-exit) var(--ease-out),
+    scale var(--duration-exit) var(--ease-out),
+    translate var(--duration-exit) var(--ease-out),
+    visibility 0s var(--duration-exit);
+}
+.tooltip-card[data-flip] { translate: 0 4px; }
+.tooltip-card[data-open] {
+  opacity: 1;
+  scale: 1;
+  translate: 0 0;
+  visibility: visible;
+  transition:
+    opacity var(--duration-enter) var(--ease-out),
+    scale var(--duration-enter) var(--ease-out),
+    translate var(--duration-enter) var(--ease-out),
+    visibility 0s;
+}
+.tooltip-card[data-pinned] { position: relative; }  /* a docs specimen in the flow: its 8 under the trigger is the page's gap */
+/* a title with no meta over it keeps the 4 its head always had above it */
+.tooltip-card:not(.tooltip-label, :has(> .tooltip-meta)) { padding-top: var(--space-4); }
+:where(.tooltip-card > span) { display: block; }  /* :where, so .tooltip-head's flex wins */
+.tooltip-meta, .tooltip-summary { color: var(--gray-900); }
+.tooltip-head { display: flex; align-items: center; gap: var(--space-2); color: var(--gray-1000); }
+.tooltip-icon { flex: none; }
+
+.tooltip-label {
+  width: max-content;
+  max-width: min(240px, calc(100vw - 2 * var(--space-4)));
+  padding: var(--space-1) var(--space-2);
+  translate: 0 -2px;
+}
+.tooltip-label[data-flip] { translate: 0 2px; }
+.tooltip-label[data-open] { translate: 0 0; }
+.tooltip-label .tooltip-head { gap: var(--space-2); }
+

@@ -1,0 +1,132 @@
+/* Stat tile: one figure against its target, with a ring beside it. Needs tokens/index.css and
+   components/button/button.css (the rim and its glint). CSS only.
+
+   <div class="stat" data-state="on-track" style="--stat-value: 60; --stat-pace: 52">
+     <div class="stat-head"><span class="stat-label">Fristen</span><span class="stat-sub">60%</span></div>
+     <div class="stat-main">
+       <div class="stat-readout">
+         <div class="stat-fig-row"><span class="stat-fig">6</span><span class="stat-denom">/ 10</span></div>
+         <div class="stat-meta">Target 10</div>
+       </div>
+       <div class="stat-ring" role="progressbar" aria-label="Fristen" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60">
+         <svg viewBox="0 0 44 44" aria-hidden="true">
+           <circle class="stat-ring-track" cx="22" cy="22" r="18"/>
+           <circle class="stat-ring-arc" cx="22" cy="22" r="18" pathLength="100"/>
+           <g class="stat-ring-pace"><line class="stat-ring-pace-halo" x1="22" x2="22" y1="0" y2="8"/><line class="stat-ring-pace-tick" x1="22" x2="22" y1="0" y2="8"/></g>
+         </svg>
+         <span class="stat-ring-metal" aria-hidden="true"><span class="metal-rim one"></span><span class="metal-rim two"></span><span class="metal-rim glint"></span></span>
+       </div>
+     </div>
+   </div>
+
+   --stat-value (0–100) is how far round the arc reaches, drawn from 12 o'clock as the tile
+   mounts; --stat-pace (0–100) is where you should be by now, a tick across the ring (leave the
+   <g> out when there is no pace). data-state: on-track and behind (the tick says which), done
+   (the arc closes, then the metal rim fades in over it and the glint rolls once round), over
+   (red), empty (no arc, the figure quiet). data-current marks the tile of what the page shows now
+   (a period picked). A tile that rises (Stat.rise, stat.js) turns to metal
+   only after the arc is full: Stat.set marks it data-landed once the 800ms draw is over, and
+   the metal then fades in over 300ms and the glint rolls 150ms later; without it (a tile drawn
+   done) the metal comes at 700ms, inside the draw. data-size="hero" is larger.
+   Every global name here starts with stat. */
+
+.stat {
+  --stat-ring: 56px;
+  /* align-content: stretched beside a taller tile (the hero), the rows stay together at the top */
+  position: relative; display: grid; align-content: start; gap: var(--space-3); box-sizing: border-box; width: 100%; min-width: 0; padding: var(--space-5);
+  border-radius: var(--radius-medium); background: var(--background-100); box-shadow: var(--shadow-base);
+  color: var(--gray-1000); font-family: var(--font-sans); letter-spacing: var(--tracking);
+}
+.stat[data-size="hero"] { --stat-ring: 76px; }
+/* the tile of what the page shows now (a period picked): the hairline a calendar's today has */
+.stat { transition: box-shadow var(--duration-hover) var(--ease-out); }
+.stat[data-current] { box-shadow: var(--shadow-base), inset 0 0 0 1px var(--gray-alpha-600); }
+
+.stat-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); }
+.stat-label { font-size: 13px; line-height: 16px; color: var(--gray-900); }
+.stat-sub { font-size: 12px; line-height: 16px; color: var(--gray-900); font-variant-numeric: tabular-nums; }
+/* the ring beside the readout; a figure too wide for both (€10,000 in a narrow tile) puts the ring
+   under it rather than out of the tile or over the figure: nothing cut, nothing outside. At the
+   top, not centred: a denominator wrapped under its figure (€400 / €1,500 in a 202px tile) made
+   that tile's readout taller and dropped its ring below its neighbours' */
+.stat-main { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--space-3); min-width: 0; container-type: inline-size; }
+/* a narrow tile (four in a row at 1440) takes a smaller ring, so "€400 / €1,500" stays
+   on one line beside it; narrower still, the denominator wraps as above */
+@container (width < 220px) { .stat:not([data-size="hero"]) .stat-ring { --stat-ring: 44px; } }
+.stat-readout { display: grid; flex: 1 1 0; gap: var(--space-1-5); min-width: min-content; }
+.stat-fig-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2); }
+.stat-fig {
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+  font-size: 32px; line-height: 40px; font-weight: 600; letter-spacing: -0.025em; color: var(--gray-1000);
+}
+/* Stat.svelte: the figure as wide as the value it counts to (data-end), so the denominator beside it
+   and the rows under it hold still while it counts: counting up, "/ €1,500" wrapped mid-count and
+   the cards under the tiles jumped */
+.stat-fig[data-end] { display: inline-grid; }
+.stat-fig[data-end] > span, .stat-fig[data-end]::after { grid-area: 1 / 1; }
+.stat-fig[data-end]::after { content: attr(data-end); visibility: hidden; }
+.stat[data-size="hero"] .stat-fig { font-size: 40px; line-height: 48px; letter-spacing: -0.03em; }
+.stat-denom { white-space: nowrap; font-variant-numeric: tabular-nums; font-size: 14px; line-height: 20px; color: var(--gray-900); }
+.stat-meta { font-variant-numeric: tabular-nums; font-size: 13px; line-height: 16px; color: var(--gray-900); overflow-wrap: anywhere; }
+
+/* the ring: a 4px arc on a gray alpha track, round ends; the pace a tick across it, haloed in
+   the tile's background so it cuts the arc it crosses */
+.stat-ring { position: relative; flex: none; width: var(--stat-ring); height: var(--stat-ring); }
+.stat-ring svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.stat-ring circle { fill: none; stroke-width: 4; }
+.stat-ring-track { stroke: var(--gray-alpha-200); }
+.stat-ring-arc {
+  /* the round ends stand 2 units (--stat-cap of the 100) past each end of the dash: the dash is that
+     much shorter at each end and starts that much later, so the arc reaches its value, no further
+     (drawn as the value, 98% looked closed) */
+  --stat-cap: 1.77;
+  stroke: var(--gray-1000); stroke-linecap: round;
+  stroke-dasharray: max(0.01, var(--stat-value) - 2 * var(--stat-cap)) 100; stroke-dashoffset: calc(-1 * var(--stat-cap));
+  transform: rotate(-90deg); transform-origin: 22px 22px;
+  transition: stroke-dasharray 800ms var(--ease-out), stroke 300ms var(--ease-out), opacity 300ms var(--ease-out);
+  @starting-style { stroke-dasharray: 0.01 100; }
+}
+.stat-ring-pace { transform: rotate(calc(var(--stat-pace) * 3.6deg)); transform-origin: 22px 22px; }
+.stat-ring-pace line { stroke-linecap: round; }
+.stat-ring-pace-halo { stroke: var(--background-100); stroke-width: 4.5; }
+.stat-ring-pace-tick { stroke: var(--gray-1000); stroke-width: 2; }
+
+/* the metal that closes the ring: on the arc's path, as thick as the arc (4 of the 44 units) */
+.stat-ring-metal {
+  position: absolute; inset: calc(var(--stat-ring) * 2 / 44); border-radius: 50%; opacity: 0; pointer-events: none;
+  transition: opacity 400ms var(--ease-out);
+}
+.stat-ring-metal > .metal-rim, .stat-ring-metal > .metal-rim.glint { padding: calc(var(--stat-ring) * 4 / 44); }
+
+.stat[data-state="done"] .stat-ring-arc { opacity: 0; transition-delay: 700ms; }
+.stat[data-state="done"] .stat-ring-metal { opacity: 1; transition-delay: 700ms; }
+.stat[data-state="done"] .stat-ring-metal > .metal-rim.glint {
+  animation: metal-roll 1.1s .9s var(--ease-glint) forwards, metal-cool 1.4s 2s var(--ease-out) forwards;
+}
+/* done after the draw (data-landed): the arc is already full, so nothing waits. 300ms, 1.1s, 1.4s: no token */
+.stat[data-state="done"][data-landed] .stat-ring-arc { transition-delay: 0ms; }
+.stat[data-state="done"][data-landed] .stat-ring-metal { transition: opacity 300ms var(--ease-out); }
+.stat[data-state="done"][data-landed] .stat-ring-metal > .metal-rim.glint {
+  animation: metal-roll 1.1s .15s var(--ease-glint) forwards, metal-cool 1.4s 1.25s var(--ease-out) forwards;
+}
+.stat[data-state="over"] .stat-ring-arc { stroke: var(--red-700); }
+.stat[data-state="over"] :is(.stat-fig, .stat-sub, .stat-meta) { color: var(--red-900); }
+.stat[data-state="empty"] .stat-ring-arc { opacity: 0; }
+.stat[data-state="empty"] .stat-fig { color: var(--gray-900); }
+
+/* A row of tiles, the first wider (the day's total beside its parts): two across below 1100,
+   one below 600. data-even: four of a width, for a row with no hero (a day's, a week's figures) */
+.stat-row { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.stat-row[data-even] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1100px) { .stat-row, .stat-row[data-even] { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .stat-row, .stat-row[data-even] { grid-template-columns: minmax(0, 1fr); } }
+
+/* Figures: a stat's readout without its tile or ring, a number over its name, each in a column
+   of its own width (--stat-figure, 104), so a figure changing moves nothing beside it.
+   <dl class="stat-figures"><div><dt>A Kanzlei</dt><dd>14<small>emails</small></dd></div>…</dl> */
+.stat-figures { display: grid; grid-template-columns: repeat(4, minmax(0, var(--stat-figure, 104px))); margin: 0; }  /* minmax: narrower than four, the columns share what there is */
+.stat-figures > div { display: flex; flex-direction: column-reverse; gap: var(--space-0-5); }
+.stat-figures dt { color: var(--gray-900); font-size: 12px; line-height: 16px; }
+.stat-figures dd { margin: 0; font-size: 20px; line-height: 26px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.stat-figures dd small { margin-left: var(--space-0-5); color: var(--gray-900); font-size: 13px; font-weight: 400; letter-spacing: var(--tracking); }
+

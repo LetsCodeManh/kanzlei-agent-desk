@@ -22,7 +22,7 @@
 					<span class="title">E-Mail: Microsoft 365 / Outlook</span>
 					<span class="sub">{info.anwalt.address}. In dieser Demo ein simuliertes Postfach, ohne Anmeldung.</span>
 				</div>
-				<ReadForm {kanzlei} label="Demo-Postfach verbinden" primary />
+				<ReadForm {kanzlei} label="Demo-Postfach verbinden" />
 			</li>
 			<li>
 				<div class="texts">
@@ -70,14 +70,14 @@
 	}
 
 	.error {
-		color: var(--danger);
+		color: var(--red-900);
 		font-weight: 600;
 	}
 
 	ul {
 		display: flex;
 		flex-direction: column;
-		border-block: 1px solid var(--line);
+		border-block: 1px solid var(--gray-alpha-400);
 	}
 
 	li {
@@ -89,12 +89,12 @@
 	}
 
 	li + li {
-		border-top: 1px solid var(--line);
+		border-top: 1px solid var(--gray-alpha-400);
 	}
 
 	.texts {
 		display: grid;
-		gap: 2px;
+		gap: var(--space-0-5);
 		min-width: 0;
 	}
 
