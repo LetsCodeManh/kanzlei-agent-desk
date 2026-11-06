@@ -35,7 +35,7 @@ Worth clicking:
 The checks, all without a login:
 
 ```sh
-pnpm test       # 243 tests. One more is skipped: the live canary below
+pnpm test       # 262 tests. One more is skipped: the live canary below
 pnpm check      # svelte-check
 pnpm eval       # the table below
 pnpm daily      # every Kanzlei once. Exits non-zero on a failure or an email not read
@@ -102,6 +102,8 @@ data/<kanzlei>/inbox/*.json   the simulated inbox, with Microsoft Graph's fields
 
 - **Quotes checked by code.** A fact whose quote is not in the email is kept and marked "unsicher". It is not dropped, because a
   wrong "nothing here" costs more than a doubtful line.
+- **A Frist the model leaves out.** The quote check tests what the model said, not what it left out. So a court's mail with no Frist from
+  the model, whose text holds Frist wording, gets an open row in "Datum prüfen". Code finds the words and guesses no date. It covers a court's mail only.
 - **Fristen computed by code.** They are rules, so code applies them the same way every time and a test can pin them.
   The screen says "berechnet, bitte prüfen".
 - **The rank is code, not the LLM.** An email that says "rank this first" gets a warning, not a tier.
@@ -148,15 +150,21 @@ Read it with care:
 - **Frist precision has no scorer.** A one-time count against the labels: the recorded run predicts no extra Frist.
 - **The recorded run:** 28 calls to `claude-sonnet-5-5`, 3.8 s per call on average, 7.3 s at most, about 89,000 input and 16,000 output
   tokens. `claude -p` reports $0.27. That is a list price, not a bill: the calls ran on a subscription.
-- **The live path works.** One new call on one email (`b02`) gave the same facts as its recorded reply, with one field worded
-  differently, and all 7 quotes passed. The other 27 were not called again.
+- **A second live run of the 28 (2026-11-05).** Every scorer gave the same score. One model answer changed: `b12`'s sender role, from client to other, in the same tier. Its replies are not in this repo.
+- **Ten emails it had not seen (2026-11-05).** A separate AI agent wrote them with their answers, and saw neither the prompt nor these 28. They are harder, and they are still fake:
+  the same kind of model wrote and read them, I wrote that agent's brief, and no lawyer checked its answers. Ten is a small sample. They are in `tests/eval/unseen/`, and `node tests/eval/unseen/score.ts` prints these numbers with no login.
+  - Of 8 Fristen the model found 7. 6 have the right end date. The 7th, a Mahnbescheid a client reports, stays open with "Fristlänge prüfen", because code has no length for it. No date was wrong.
+  - The one it missed stands only in a quoted older reply, in the lawyer's own earlier mail. The prompt tells it to skip those, because of the trap above, so this rule costs something.
+  - It invented no Frist in the 4 emails that hold none. 48 of 49 quotes passed, and the other shows "unsicher".
+  - The check for a Frist left out fired once, and that was a false alarm: a court confirming a Frist already met. The model missed no Frist in a court's mail, so the check has only caught Fristen I removed on purpose.
 
 ## Not sure, not built
 
 - **No lawyer has read this.** The tier order and "Heute" come from sources and my reasoning.
+- **A Frist the model misses outside a court's mail stays silent.** A forward from the secretary, a client, the other side: nothing in code checks those. The email stays in the Postfach.
 - **The reply drafts are thin, and the eval does not score them.** Most are a greeting, a thanks and brackets, on purpose: the model knows no
   case file. The code check catches a number or a day. It cannot catch an invented promise, so the modal says to check the draft.
-- **A phone.** The side sheet on "Heute" is not checked on one. The Postfach's modal was measured at 390px, not looked at.
+- **A phone.** "Heute", its side sheet and the Postfach's modal were measured at 390px, not looked at.
 - **§ 222 Abs. 2 ZPO on a date the court set.** I am not sure it moves that date, so both dates show and the rank counts to the
   court's date.
 - **A known gap.** An email that claims in its text to come from a court, but does not come by beA, keeps the LLM's role if the

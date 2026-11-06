@@ -30,6 +30,7 @@ gates. Claude picked Python to keep the tested code. I reversed that the same da
 4. The screens: 3 variants at a mock with real content. I picked three bands, then the code. Once I saw them I asked for one day page,
    then two tabs, Heute and Postfach, with a month, from my design system.
 5. The Postfach as a mail client: simulated answers, icons, a modal, a recorded reply draft, and the reader's and the Eingang's look, each from 3 variants in the real screen. Then the connectors in a modal, with adding simulated.
+6. Whether it holds: I asked if it was foolproof. Claude's answer was no, because a Frist the model leaves out stayed silent. So came a code check for a court's mail, a second live run of the 28, and 10 emails written by a separate agent that had not seen the prompt. The README has the results, and `tests/eval/unseen/` the 10.
 
 ## What the AI suggested and I rejected
 
@@ -37,7 +38,7 @@ gates. Claude picked Python to keep the tested code. I reversed that the same da
 |---|---|---|
 | Python for the submission: 142 tests carry over, and a port rewrites tested code | SvelteKit only, ported | One language, one install, a UI. The twins and the eval gate guard the port. |
 | `tsx` to run the scripts outside Vite | Plain `node` | I asked why. Node runs `.ts` itself, so no new dependency. |
-| A large test suite: 226 tests, with more lines than the source | Cut to 171 | I read `pnpm eval`, and the list of checks meant nothing to me. Kept: the spike's twins, the port's traps, tests against a silently wrong Frist date, the `claude` call, Kanzlei isolation. The later steps added their own, so 243 today. |
+| A large test suite: 226 tests, with more lines than the source | Cut to 171 | I read `pnpm eval`, and the list of checks meant nothing to me. Kept: the spike's twins, the port's traps, tests against a silently wrong Frist date, the `claude` call, Kanzlei isolation. The later steps added their own, so 262 today. |
 | A test for each planted fault that survived | Cut 3 of the 5 | A surviving fault is no reason for a test by itself. |
 | An `add-email` skill and a separate `fake.ts` | Cut | Used once or twice. One connector needs no interface. |
 | A `prompt-history/` folder in the spike, from a line in the research | Not in this repo, and every top-level folder is now my call | I never chose it. |
@@ -74,7 +75,7 @@ lawyer. What they gave is in `DECISIONS.md`, and what waits is in `ROADMAP.md`.
 ## What nobody has checked
 
 - No lawyer has read it. The legal reasoning comes from the sources in `RESEARCH.md`.
-- The port has made two live model calls: one on `b02`, which gave the same facts as its recorded reply, and the canary, which passed.
-  The 28 replies were recorded by the spike, on 1 Nov.
+- The 28 recorded replies come from the spike's run on 1 Nov. The port's own live calls: `b02`, which gave the same facts as its recorded reply, the canary, which passed,
+  a second run of the 28 and the 10 unseen emails, each to its own folder, and the reply drafts.
 - The planted-fault run was not repeated after the tests were cut. Some code is now untested on purpose: `claude` exiting before it reads
   the prompt, a reply that is not JSON, most loud failures on bad files.

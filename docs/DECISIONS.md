@@ -102,6 +102,9 @@ monitoring included, the vendor says [8]) keeps it. This app reads the same mail
 
 ## Choices made during the build
 
+- **A check for a Frist the model leaves out.** Nothing caught one: a court's mail with no Frist from the model fell to tier 6, with no warning. Now code looks for Frist wording
+  in a court's mail. It needs no model call, and the eval did not change. It is wide on purpose, and it gave one false alarm in the 10 unseen emails. I did not tune it to that email, so the
+  10 stay a test. It covers a court's mail only.
 - **What reaches the model.** `claude -p` sent the developer's global `CLAUDE.md` (found with a canary and the token
   count: 4069 input tokens against 1227). `--setting-sources ""` and `CLAUDE_CODE_DISABLE_CLAUDE_MDS=1` each keep
   every `CLAUDE.md` out. Both are set. A first probe that asked the model to copy its context word for word was

@@ -235,6 +235,8 @@ data/<kanzlei>/inbox/*.json   loadInbox, the connector
 3. Code computes each end date, with the Land's holidays typed in by hand. Every date shows "berechnet, bitte prüfen".
    No trigger date: "Frist nicht berechenbar, Zustellungsdatum prüfen", never a guess.
 4. A beA court mail with no Zustellung date adds "eEB abgeben. Fristende 16.11. nur wenn eEB heute" (my reasoning).
+5. A court's mail with no Frist from the model, whose text outside a quoted reply holds Frist wording, gets an open Frist with no date: tier 1, "Datum prüfen".
+   An email marked as an injection does not. A false alarm costs one look at an email.
 
 ### When a run fails
 
