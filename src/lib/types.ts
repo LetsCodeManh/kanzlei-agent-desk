@@ -175,6 +175,24 @@ export interface MailRow {
 	warning: boolean;
 }
 
+export type SentKind = 'reply' | 'forward';
+
+/** An answer written in the Postfach. Simulated: it is kept in `out/`, and no email leaves. */
+export interface SentMail {
+	emailId: string;
+	kind: SentKind;
+	to: string;
+	subject: string;
+	body: string;
+}
+
+/** `data/<kanzlei>/out/mailbox.json`. */
+export interface Mailbox {
+	read: string[];
+	archived: string[];
+	sent: SentMail[];
+}
+
 /** Each thing on "Heute" sits in one place, and every email read is in the Postfach. */
 export interface DayScreen {
 	/** Every hearing in the case list. */

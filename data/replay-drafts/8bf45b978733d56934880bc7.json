@@ -1,0 +1,15 @@
+{
+ "email_id": "b07",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrter Herr Testmann,\n\nvielen Dank für Ihre Nachricht zum Personalgespräch bei Ihrem Arbeitgeber.\n\n[Rückruf-Zeitpunkt]\n\n[Einschätzung und Rückfragen]\n\nMit freundlichen Grüßen\n\nClara Fiktiv\nRechtsanwältin"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2233,
+  "cost_usd": 0.0054455,
+  "input_tokens": 1817,
+  "output_tokens": 175
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "email_id": "b13",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Liebes Büroteam,\n\nvielen Dank für Ihre Nachricht zur Urlaubsplanung im Dezember.\n\nIch trage meine Urlaubswünsche in den Kalender ein.\n\n[Eigene Anmerkungen]\n\nMit freundlichen Grüßen\nClara Fiktiv"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3231,
+  "cost_usd": 0.0048874999999999995,
+  "input_tokens": 1720,
+  "output_tokens": 158
+ }
+}

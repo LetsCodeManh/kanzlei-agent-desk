@@ -1,0 +1,15 @@
+{
+ "email_id": "m12",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrter Herr Hypothese,\n\nvielen Dank für Ihre Nachricht zum Mietvertrag.\n\n[Einschätzung und Rückfragen]\n\nIch melde mich bis [Datum] bei Ihnen.\n\nMit freundlichen Grüßen\n\nRA Jonas Erfunden"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 1347,
+  "cost_usd": 0.0050095,
+  "input_tokens": 1748,
+  "output_tokens": 159
+ }
+}

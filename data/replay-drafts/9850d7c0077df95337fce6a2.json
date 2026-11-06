@@ -1,0 +1,15 @@
+{
+ "email_id": "m04",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrter Herr Hypothese,\n\nvielen Dank für Ihre Nachricht zur Nebenkostenabrechnung 2025.\n\n[Einschätzung und Rückfragen]\n\nIch melde mich bis [Datum] bei Ihnen.\n\nMit freundlichen Grüßen\n\nJonas Erfunden"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2369,
+  "cost_usd": 0.0055375,
+  "input_tokens": 1865,
+  "output_tokens": 165
+ }
+}

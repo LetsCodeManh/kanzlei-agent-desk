@@ -2,6 +2,13 @@
 import { error } from '@sveltejs/kit';
 import type { Briefing } from '../types.ts';
 import { markSegments, quotedFacts } from './briefing/verify.ts';
+import { listKanzleien } from './connector.ts';
+
+/** An action runs no load, so it checks the URL's Kanzlei itself. */
+export function knownKanzlei(kanzlei: string): string {
+	if (!listKanzleien().includes(kanzlei)) error(404, 'Diese Kanzlei gibt es nicht.');
+	return kanzlei;
+}
 
 export function emailSource(briefing: Briefing | null, id: string) {
 	const item = briefing?.items.find((candidate) => candidate.emails.some((email) => email.id === id));

@@ -1,0 +1,15 @@
+{
+ "email_id": "m07",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrte Frau Muster,\n\nvielen Dank für Ihre Nachricht zur geplanten Besichtigung der Wohnung durch den Vermieter.\n\nIch habe Ihr Anliegen und Ihre Bitte um einen Rückruf zur Kenntnis genommen. [Rückruf: Zeitpunkt]\n\n[Einschätzung und Rückfragen]\n\nMit freundlichen Grüßen\n\nRA Jonas Erfunden"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 3636,
+  "cost_usd": 0.0055775,
+  "input_tokens": 1760,
+  "output_tokens": 211
+ }
+}

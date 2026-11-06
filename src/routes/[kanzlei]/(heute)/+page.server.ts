@@ -1,7 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import { readBriefing, saveBriefing } from '#lib/server/briefing/pipeline.ts';
 import { setTick } from '#lib/server/briefing/ticks.ts';
-import { listKanzleien } from '#lib/server/connector.ts';
+import { knownKanzlei } from '#lib/server/source.ts';
 import type { Actions } from './$types';
 
 /** A second click during a run waits for that run. A live run costs model calls, and both would write one file. */
@@ -20,11 +20,6 @@ function runOnce(kanzlei: string): Promise<void> {
 		running.set(kanzlei, current);
 	}
 	return current;
-}
-
-function knownKanzlei(kanzlei: string): string {
-	if (!listKanzleien().includes(kanzlei)) error(404, 'Diese Kanzlei gibt es nicht.');
-	return kanzlei;
 }
 
 export const actions: Actions = {

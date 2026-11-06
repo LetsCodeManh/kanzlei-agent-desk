@@ -1,0 +1,15 @@
+{
+ "email_id": "b12",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrter Herr Anfrage,\n\nvielen Dank für Ihre Anfrage zur Abmahnung durch Ihren Arbeitgeber und für Ihr Interesse an einer Erstberatung.\n\n[Übernahme des Mandats]\n\n[Einschätzung und Rückfragen]\n\nIch melde mich bis [Datum] bei Ihnen.\n\nMit freundlichen Grüßen\nClara Fiktiv"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2344,
+  "cost_usd": 0.005603500000000001,
+  "input_tokens": 1789,
+  "output_tokens": 202
+ }
+}

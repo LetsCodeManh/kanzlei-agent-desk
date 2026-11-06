@@ -1,0 +1,15 @@
+{
+ "email_id": "b14",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrte Frau Kollegin, sehr geehrter Herr Kollege,\n\nvielen Dank für Ihre Nachricht zum Schriftsatz in der Sache Musterfrau ./. Fiktiv Logistik GmbH (12 Ca 3456/26).\n\n[Einschätzung und Rückfragen]\n\nIch melde mich bis [Datum] bei Ihnen.\n\nMit freundlichen Grüßen\nClara Fiktiv"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2595,
+  "cost_usd": 0.0058615,
+  "input_tokens": 1831,
+  "output_tokens": 211
+ }
+}

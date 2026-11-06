@@ -1,0 +1,7 @@
+/* Avatar: who wrote or who it is, as letters in a gray circle. Needs tokens/index.css.
+   CSS only here; Avatar.svelte writes it: <span class="avatar" aria-hidden="true">MM</span>
+   36px, gray-alpha-200, 12px semibold. No picture and no colour per person. */
+.avatar {
+  display: inline-grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--gray-alpha-200); color: var(--gray-1000); font-size: 12px; line-height: 1; font-weight: 600;
+}

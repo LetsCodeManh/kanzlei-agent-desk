@@ -1,5 +1,5 @@
 /** How facts read on a screen and on the command line. No node imports: the browser loads this. */
-import type { Channel, Coverage, Day, Frist, Item } from './types.ts';
+import type { Channel, Coverage, Day, Frist, Item, SentKind } from './types.ts';
 
 const WEEKDAYS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
 const MONTHS = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
@@ -57,6 +57,11 @@ export function monthGerman(month: string): string {
 /** Where an email came from, in the Postfach. */
 export function channelLabel(channel: Channel): string {
 	return channel === 'bea' ? 'beA' : 'Outlook';
+}
+
+/** `AW: Zaun des Nachbarn`. A subject that already has a prefix keeps it. */
+export function answerSubject(kind: SentKind, subject: string): string {
+	return /^(AW|WG|RE|FW):/i.test(subject) ? subject : `${kind === 'reply' ? 'AW' : 'WG'}: ${subject}`;
 }
 
 /** The date `daysLeft` counts to: a stated date may not move, so it shows unmoved. */

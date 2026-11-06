@@ -1,0 +1,15 @@
+{
+ "email_id": "b03",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrte Frau Probe,\n\nvielen Dank für Ihre Nachricht zur erhaltenen Kündigung.\n\n[Einschätzung und Rückfragen]\n\nIch melde mich bis [Datum] bei Ihnen.\n\nMit freundlichen Grüßen\nClara Fiktiv"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 1949,
+  "cost_usd": 0.005161499999999999,
+  "input_tokens": 1786,
+  "output_tokens": 159
+ }
+}

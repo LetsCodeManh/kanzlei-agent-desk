@@ -1,0 +1,15 @@
+{
+ "email_id": "m13",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrte Damen und Herren,\n\nvielen Dank für Ihre Nachricht zur Mängelanzeige Wohnung Muster und die Bestätigung des Eingangs.\n\nIch habe zur Kenntnis genommen, dass sich ein Handwerker zur Terminabsprache melden wird.\n\n[Einschätzung und Rückfragen]\n\nIch melde mich bis [Datum] bei Ihnen.\n\nMit freundlichen Grüßen\nRA Jonas Erfunden"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2116,
+  "cost_usd": 0.0037526,
+  "input_tokens": 1789,
+  "output_tokens": 224
+ }
+}

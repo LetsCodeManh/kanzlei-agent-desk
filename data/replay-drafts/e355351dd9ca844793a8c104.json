@@ -1,0 +1,15 @@
+{
+ "email_id": "b08",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Guten Tag,\n\nvielen Dank für die Wiedervorlage-Erinnerung zur Akte B-26-101 Musterfrau ./. Fiktiv Logistik GmbH.\n\nIch werde die Wiedervorlage zum Eingang der Lohnabrechnungen bearbeiten.\n\n[Stand und nächste Schritte]\n\nMit freundlichen Grüßen\n\nClara Fiktiv"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2183,
+  "cost_usd": 0.0054895000000000005,
+  "input_tokens": 1783,
+  "output_tokens": 193
+ }
+}

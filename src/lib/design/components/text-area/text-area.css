@@ -1,0 +1,27 @@
+/* Text area: words typed over several lines (a draft, a note, a file's text). Needs tokens/index.css.
+   CSS only here; TextArea.svelte writes it:
+   <div class="text-area"><textarea rows="4" aria-label="Note" aria-invalid="true" aria-describedby="note-error"></textarea>
+     <p class="text-area-error" id="note-error" role="alert">Not saved: the file is locked.</p></div>
+
+   On background-100 inside a gray-alpha-400 edge, 14/22 in the sans (data-mono: 13/22 in the mono,
+   for a file as it is on disk); 8px above and below the words, 12px at the sides. `rows` sets
+   how tall it is and it scrolls past that; data-grow makes it as tall as what it holds (never under
+   `rows`). The error is red-900 13/20, 8px under the field.
+   Every global name here starts with text-area. */
+
+.text-area { display: grid; gap: var(--space-2); }
+.text-area textarea {
+  box-sizing: border-box; display: block; width: 100%; margin: 0; padding: var(--space-2) var(--space-3); border: 0; border-radius: var(--radius-base);
+  background: var(--background-100); box-shadow: inset 0 0 0 1px var(--gray-alpha-400); color: var(--gray-1000);
+  font: 400 14px/22px var(--font-sans); letter-spacing: var(--tracking); resize: vertical;
+}
+.text-area[data-mono] textarea { font: 400 13px/22px var(--font-mono); letter-spacing: 0; }
+.text-area[data-grow] textarea { field-sizing: content; min-height: calc(var(--text-area-rows) * 22px + 2 * var(--space-2)); resize: none; }  /* 22: the line */
+.text-area[data-flush] { width: calc(100% + 2 * var(--space-2)); margin-inline: calc(-1 * var(--space-2)); }  /* the words stay where the text was */
+.text-area[data-flush] textarea { padding: 0 var(--space-2); }
+.text-area[data-flush][data-grow] textarea { min-height: calc(var(--text-area-rows) * 22px); }
+.text-area textarea:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+.text-area[data-bare] textarea { background: transparent; box-shadow: none; }
+.text-area[data-bare] textarea:focus-visible { outline: none; }  /* the caret says where it is */
+.text-area textarea:disabled { color: var(--gray-900); box-shadow: inset 0 0 0 1px var(--gray-alpha-200); resize: none; }
+.text-area-error { margin: 0; color: var(--red-900); font-size: 13px; line-height: 20px; }

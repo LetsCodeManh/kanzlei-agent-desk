@@ -35,7 +35,7 @@
 {#if source}
 	{#key source.id}
 		<Modal place="side" title={TIER_LABELS[source.item.tier]} closeLabel="Schließen" bind:open={() => open, setOpen}>
-			<EmailSource item={source.item} emails={source.emails} sheet />
+			<EmailSource item={source.item} emails={source.emails} />
 		</Modal>
 	{/key}
 {/if}

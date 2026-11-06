@@ -1,0 +1,15 @@
+{
+ "email_id": "b04",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Hallo Paul,\n\nvielen Dank für deine Information zur Berufungsbegründung im Verfahren 7 Sa 1111/26.\n\n[Einschätzung und Rückfragen]\n\nViele Grüße\nClara"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 1797,
+  "cost_usd": 0.0027841,
+  "input_tokens": 1804,
+  "output_tokens": 127
+ }
+}

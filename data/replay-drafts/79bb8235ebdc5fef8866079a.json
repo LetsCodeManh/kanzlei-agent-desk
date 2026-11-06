@@ -1,0 +1,15 @@
+{
+ "email_id": "b09",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrte Frau Musterfrau,\n\nvielen Dank für Ihre Nachricht zu den Unterlagen.\n\n[Einschätzung und Rückfragen]\n\nIch melde mich bis [Datum] bei Ihnen.\n\nMit freundlichen Grüßen\nClara Fiktiv"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 5214,
+  "cost_usd": 0.0050515000000000004,
+  "input_tokens": 1761,
+  "output_tokens": 158
+ }
+}

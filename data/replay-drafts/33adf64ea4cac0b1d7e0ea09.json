@@ -1,0 +1,15 @@
+{
+ "email_id": "m06",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrter Herr Kollege Hausverwalter,\n\nvielen Dank für Ihr Schreiben zum Mietrückstand und zur gesetzten Zahlungsfrist.\n\nIch werde den Sachverhalt mit meiner Mandantschaft besprechen.\n\n[Einschätzung und Rückfragen]\n\nIch melde mich bis [Datum] bei Ihnen.\n\nMit freundlichen Grüßen\nJonas Erfunden"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2260,
+  "cost_usd": 0.0060015,
+  "input_tokens": 1866,
+  "output_tokens": 211
+ }
+}

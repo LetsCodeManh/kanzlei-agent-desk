@@ -1,0 +1,15 @@
+{
+ "email_id": "b06",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrter Herr Kollege Dr. Schein,\n\nvielen Dank für Ihren Vergleichsvorschlag im Verfahren Mustermann ./. Probe Bau GmbH.\n\nIch werde den Vorschlag mit meiner Mandantschaft besprechen. Ich melde mich bis [Datum] bei Ihnen.\n\n[Einschätzung und Rückfragen]\n\nMit freundlichen Grüßen\nClara Fiktiv\nRechtsanwältin"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2203,
+  "cost_usd": 0.009802,
+  "input_tokens": 1894,
+  "output_tokens": 223
+ }
+}

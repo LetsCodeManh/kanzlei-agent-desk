@@ -1,0 +1,15 @@
+{
+ "email_id": "m02",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Guten Tag,\n\nvielen Dank für die Weiterleitung des Versäumnisurteils im Verfahren 123 C 4567/26.\n\nDie Frist ist zum [Fristende] zu notieren.\n\n[Einschätzung und Rückfragen]\n\nMit freundlichen Grüßen\nJonas Erfunden"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 4410,
+  "cost_usd": 0.0087975,
+  "input_tokens": 1990,
+  "output_tokens": 441
+ }
+}

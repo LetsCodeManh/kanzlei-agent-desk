@@ -11,7 +11,7 @@
 		<div class="head">
 			<p class="sub">{info.anwalt.name} · {info.name}</p>
 			<h1>Postfach verbinden</h1>
-			<p>Das Briefing entsteht aus Ihrem Postfach. Es liest nur: Es sendet nichts, verschiebt nichts und löscht nichts.</p>
+			<p>Das Briefing entsteht aus Ihrem Postfach. Es liest nur: Von selbst sendet, verschiebt und löscht es nichts.</p>
 		</div>
 		{#if failed}
 			<p class="error" role="alert">Das Postfach konnte nicht gelesen werden. Bitte noch einmal versuchen.</p>

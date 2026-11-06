@@ -1,0 +1,15 @@
+{
+ "email_id": "m08",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v1",
+ "output": {
+  "text": "Sehr geehrte Damen und Herren,\n\nvielen Dank für die Wiedervorlage-Erinnerung zur Sache M-26-202 Gedacht ./. Beispiel Bau KG.\n\nIch werde die Mandantschaft über das Urteil informieren und die Berufung mit ihr besprechen.\n\n[Einschätzung und Rückfragen]\n\nIch melde mich bis [Datum] dazu.\n\nMit freundlichen Grüßen\n\nRA Jonas Erfunden"
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 2167,
+  "cost_usd": 0.005719500000000001,
+  "input_tokens": 1773,
+  "output_tokens": 220
+ }
+}
