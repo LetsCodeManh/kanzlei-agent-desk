@@ -50,10 +50,17 @@ HEUTE      Guten Morgen, Mo 2 Nov
 SHEET      a row with an email opens it in a side sheet: the rank as its title, the Akte, a Verlauf
            (emails, Frist, Termin, in order, when there are two or more), the emails with quotes marked
 
-POSTFACH   every email, newest first, and the one picked with its quotes marked
+POSTFACH   4 figures: Verbundenes Konto, E-Mails, Ungelesen, Auf Heute
+  1/3      Eingang, every email, newest first. Archiv in a Fold under it
+  2/3      the email: who wrote, the model's line, what code checked, the words with quotes marked, what was answered
+  icons    Antworten, KI-Entwurf, Weiterleiten, Ungelesen, Archivieren. An answer opens in a modal, the email quoted under it
 ```
 
-In this version a lawyer only reads the screen, on the fake inbox. A real mailbox and a schedule: `ROADMAP.md`.
+In this version a lawyer reads the fake inbox and can answer by simulation: every action writes `out/mailbox.json`, the inbox's files never
+change, and nothing is sent. A real mailbox and a schedule: `ROADMAP.md`.
+
+A reply draft (the ✦) is recorded by `scripts/record-drafts.ts`, in `data/replay-drafts/`, with its own prompt and key. It is free text, so nothing can
+quote it: `unsupported` in `src/lib/server/draft.ts` refuses a number or a day its email does not hold. No draft for beA, an `other` sender or a suspect email.
 
 ## "Heute"
 
@@ -149,16 +156,19 @@ kanzlei-agent-desk/
 ├── package.json  pnpm-lock.yaml  pnpm-workspace.yaml  vite.config.ts  tsconfig.json  .gitignore
 ├── .claude/skills/run-eval/SKILL.md   runs the eval, says what failed and why
 ├── scripts/daily.ts           pnpm daily: every Kanzlei once, a non-zero exit on a failure
+├── scripts/record-drafts.ts   calls the model: one reply draft per email that has none. Ask first
 ├── src/
 │   ├── app.html  app.css  app.d.ts
 │   ├── lib/
 │   │   ├── types.ts           Email, Akte, Item, Frist
 │   │   ├── format.ts          how a date or a line reads. The browser loads it too
 │   │   ├── calendar.ts        which rows the month and the Zeitleiste show. The browser loads it too
-│   │   ├── components/        DayPage DayStats DayRowLink DayTimeline MonthCalendar EmailSource SourceTimeline ReadForm Connect RunProblems
+│   │   ├── components/        DayPage DayStats DayRowLink DayTimeline MonthCalendar EmailSource SourceTimeline ReadForm Connect RunProblems MailStats MailReader MailMessage MailFacts MailComposer
 │   │   ├── design/            a copy of what this app uses from ../design-system. A change goes there first
 │   │   └── server/            never reaches the browser
 │   │       ├── connector.ts   loadInbox(kanzlei): the simulated inbox, Graph-shaped
+│   │       ├── mailbox.ts     what the lawyer did in the Postfach, simulated: out/mailbox.json
+│   │       ├── draft.ts       a recorded reply draft, and the check on its numbers and days
 │   │       └── briefing/      akte day extract frist items llm pipeline rank schema verify
 │   └── routes/
 │       ├── +page.server.ts  +page.svelte   pick a Kanzlei
@@ -170,12 +180,14 @@ kanzlei-agent-desk/
 │           │   ├── +page.server.ts     "Neu lesen" and a tick
 │           │   └── [email]/+page.server.ts   cuts the body at its quotes, on the server
 │           └── postfach/
-│               ├── +layout.svelte      the list and the reader
-│               └── [email]/+page.server.ts   the same, for one email
+│               ├── +layout.server.ts   the mailbox
+│               ├── +layout.svelte      the 4 figures, the list and the reader
+│               └── [email]/+page.server.ts   the same, for one email, its draft, and the simulated actions
 ├── data/                      fake only
 │   ├── kanzlei-berlin/        kanzlei.json, akten.json, inbox/*.json
 │   ├── kanzlei-muenchen/      the same
-│   └── replay/                the 28 recorded LLM replies
+│   ├── replay/                the 28 recorded LLM replies
+│   └── replay-drafts/         the 17 recorded reply drafts
 ├── docs/                      BRIEF RESEARCH DESIGN DECISIONS HOW-IT-WAS-BUILT ROADMAP
 └── tests/                     *.test.ts
     └── eval/                  gold.json gold.ts scorers.ts run-eval.ts

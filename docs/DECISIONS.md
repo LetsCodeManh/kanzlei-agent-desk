@@ -36,6 +36,21 @@ directory for live calls. Not taken now: `ROADMAP.md`, "From the reviews".
   quotes are checked. It shows from two entries on: one entry only repeats the email's head.
 - **The Postfach keeps its reader.** It shows one email and no Verlauf.
 
+## The Postfach (2026-11-05)
+
+- **Answers are simulated.** I asked for what a mail provider offers, which conflicted with the Connect screen's "Es sendet nichts" and the
+  read-only connector. So Antworten, Weiterleiten, Archivieren and Ungelesen write `out/mailbox.json` alone, and the inbox's files never change.
+  The Connect line is now "Von selbst sendet, verschiebt und löscht es nichts". It adds to what a reviewer reads, against my earlier "a full email client is too much".
+- **No delete, no reply-all, no beA answer.** A dropped email is the worst failure. A fake email has one sender and no Cc. A court expects beA from its own card.
+- **Icons, not words.** People know them, and the words were too long to read. Each has its name as a tooltip.
+- **Answers in a modal.** A close with changed text asks "Entwurf verwerfen?", also on Escape and a click outside.
+- **The reader as a mail client.** Three variants in the real screen: a letter, a mail client, two columns. I picked the mail client.
+  Claude would have paired it with the two-column modal, so the email stays beside the answer. Mine quotes the email under the text.
+- **The AI button drafts a reply, recorded.** Its own prompt, key and folder, so the 28 replies and the eval did not change. A live call per click would need a login and break
+  the demo with none. Asked, I took the default of a reply draft. A draft in the lawyer's own voice needs `voice.md`: `ROADMAP.md`.
+- **The draft's first prompt was too free.** It advised a client and asked for documents on its own, and took a date from the `Received:` line, which the code check refused.
+  Two prompt fixes later a draft leaves all that in brackets. Claude read all 17 and re-recorded two with a flaw. The eval has no scorer for drafts.
+
 ## Rejected suggestions
 
 | Suggestion | Why not |

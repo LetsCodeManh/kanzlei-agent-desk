@@ -38,7 +38,8 @@ Each is a file or a folder only when its step starts. No empty structure before 
 | A chat | `src/lib/server/chat/` | Phase 3's gate |
 | Voice | `src/lib/server/voice/` | Not designed yet. Agree the design first. A spoken claim passes the same quote check. |
 | A second connector | The interface `graph.ts` needs, when a second vendor comes. The Postfach holds email from any vendor | The same test: read-only |
-| Stats for the admin | Later. "Heute" has four figures for the lawyer, and no admin screen exists | Agree the design first |
+| Real answers from the Postfach | Send and archive through the mailbox. beA through the Kanzleisoftware. Today they are simulated, in `out/mailbox.json` | Agree the design first. A test: nothing leaves without the lawyer's click |
+| Stats for the admin | Later. "Heute" and the Postfach have four figures for the lawyer, and no admin screen exists | Agree the design first |
 
 ## From the reviews, not taken now
 
@@ -168,7 +169,7 @@ data/<kanzlei>/
 - The prompt is ours: one per version, in code, the same for every lawyer. The replay fixtures and the eval are keyed
   by its hash. A prompt per lawyer would break both.
 - Settings are structured choices, not free text the model reads. Code reads the front matter and the tables only.
-- Not here: `voice.md`. It is needed only for reply drafts, which are not planned yet (see "How it learns").
+- Not here: `voice.md`. The Postfach's reply drafts are recorded and neutral. A draft in the lawyer's own voice needs it (see "How it learns").
 
 ## Onboarding
 
@@ -233,7 +234,7 @@ We do not read the Kanzlei's side. We get statistics to improve the product, and
 | "Wrong", with a reason code: Frist, Akte, summary, not important | Where the AI fails, by type |
 | Proposed rules accepted or rejected, per rule kind | Better first rules per Rechtsgebiet |
 | A tier-1 item not acted on the same day | A false alarm or a real risk. The lawyer gets the alert. We get the rate. |
-| Chat questions, per topic from a fixed list | The next feature. Many "draft a reply" questions bring in reply drafts and `voice.md`. |
+| Chat questions, per topic from a fixed list | The next feature. Many "draft a reply" questions bring in live reply drafts and `voice.md`. |
 | Tokens and time per briefing | The cost per seat |
 
 - Never to us: email text, a name, an Aktenzeichen, a sender or domain, a rule's target, free-text feedback.

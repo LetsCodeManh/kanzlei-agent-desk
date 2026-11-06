@@ -15,6 +15,7 @@ pnpm eval       # the scorers on the recorded replies, no login
 pnpm daily      # every Kanzlei once, writes data/<kanzlei>/out/briefing.json, non-zero on a failure
 
 BRIEFING_CONTEXT_CHECK=1 pnpm test tests/context.test.ts   # one model call: the canary
+node scripts/record-drafts.ts   # model calls: one reply draft per email that has none, in data/replay-drafts/
 ```
 
 ## Rules
@@ -27,6 +28,7 @@ BRIEFING_CONTEXT_CHECK=1 pnpm test tests/context.test.ts   # one model call: the
 - A hand-back says what a result means for the user, not which tests ran. `pnpm eval` is the result the user reads.
 - Tests live in `tests/`, and the eval in `tests/eval/`.
 - A changed prompt, schema or model changes the replay key. All 28 replies must then be recorded live. Ask first.
+- The reply drafts have their own prompt and folder. A change to the draft prompt or an email means recording those drafts again. Ask first.
 - Use the Svelte MCP server and skills for any `.svelte` file. The user checks the screens in the UI.
 - Put no folder or file in the repo before its step starts. A later idea goes in `docs/ROADMAP.md`.
 - Server code goes in `src/lib/server/`. It must never reach the browser.
@@ -40,3 +42,4 @@ BRIEFING_CONTEXT_CHECK=1 pnpm test tests/context.test.ts   # one model call: the
 2. Add its label to `tests/eval/gold.json`.
 3. Record its reply with `BRIEFING_LIVE=1`, after you ask. A live run calls the model for every email and overwrites those replies.
    A missing reply fails loudly.
+4. If it wants a reply draft, record it with `node scripts/record-drafts.ts <id>`, after you ask. A missing draft fails `tests/draft.test.ts`.

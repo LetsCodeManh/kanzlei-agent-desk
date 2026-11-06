@@ -29,6 +29,7 @@ gates. Claude picked Python to keep the tested code. I reversed that the same da
 3. What was new: "Heute", the hearing rule, a date the court set, "nicht gelesen", `pnpm daily`.
 4. The screens: 3 variants at a mock with real content. I picked three bands, then the code. Once I saw them I asked for one day page,
    then two tabs, Heute and Postfach, with a month, from my design system.
+5. The Postfach as a mail client: simulated answers, icons, a modal, a recorded reply draft, and the reader's look from 3 variants in the real screen.
 
 ## What the AI suggested and I rejected
 
@@ -36,12 +37,14 @@ gates. Claude picked Python to keep the tested code. I reversed that the same da
 |---|---|---|
 | Python for the submission: 142 tests carry over, and a port rewrites tested code | SvelteKit only, ported | One language, one install, a UI. The twins and the eval gate guard the port. |
 | `tsx` to run the scripts outside Vite | Plain `node` | I asked why. Node runs `.ts` itself, so no new dependency. |
-| A large test suite: 226 tests, with more lines than the source | Cut to 171 | I read `pnpm eval`, and the list of checks meant nothing to me. Kept: the spike's twins, the port's traps, tests against a silently wrong Frist date, the `claude` call, Kanzlei isolation. The later steps added their own, so 212 today. |
+| A large test suite: 226 tests, with more lines than the source | Cut to 171 | I read `pnpm eval`, and the list of checks meant nothing to me. Kept: the spike's twins, the port's traps, tests against a silently wrong Frist date, the `claude` call, Kanzlei isolation. The later steps added their own, so 237 today. |
 | A test for each planted fault that survived | Cut 3 of the 5 | A surviving fault is no reason for a test by itself. |
 | An `add-email` skill and a separate `fake.ts` | Cut | Used once or twice. One connector needs no interface. |
 | A `prompt-history/` folder in the spike, from a line in the research | Not in this repo, and every top-level folder is now my call | I never chose it. |
 | "Heute" as a page that scrolls, so the month's tiles cannot cut a Frist | The window's height on a desktop | I wanted the whole screen at once. Claude then made the tiles count what does not fit. |
 | The timeline shows the day picked | All dates in one scroller, and a click moves it | I want to see what comes next without clicking through days. |
+| The answer form at the top of the email, with word buttons | A modal and icons | I looked at the first build: good, not there yet. People know the icons, and the words were too long to read. |
+| A letter in a serif, or two columns, for the open email | The mail client | Three variants in the real screen. "Similar to an email provider" was my word from the start. |
 | "Zu tun" over "Heute tun" under the heading "Heute", which stutters | Kept "Heute tun" for now | My call. It was already a change from "Anrufen", Claude's proposal: a Wiedervorlage is a check, not a call. |
 
 The design-level rejections are in `DECISIONS.md`: n8n, the Citations API, the LLM computing a Frist or a rank, a memory the agent

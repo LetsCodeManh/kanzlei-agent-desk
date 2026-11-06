@@ -28,12 +28,13 @@ Worth clicking:
 | Berlin, "Zeitleiste", Stellungnahme bis 21.11. | The court's date is a Saturday. Both dates show, see "Not sure" below. |
 | München, "Zeitleiste", 3 Nov, Mündliche Verhandlung | A hearing tomorrow, from the case list. No email is behind it, so the row does not open anything. |
 | München, "Zeitleiste", 12 Nov, Einspruch | One Frist in a court mail and in its forward: one item, both emails. |
-| München, "Postfach", "Warnung" | An email that tells the AI to rank it first. It stays at the lowest rank, with a warning, and reaches no task or calendar. |
+| München, "Postfach", "Warnung" | An email that tells the AI to rank it first. It stays at the lowest rank, with a warning, and reaches no task or calendar. The AI button stays off on it. |
+| München, "Postfach", Bitte dringend zurückrufen, the ✦ | A recorded reply draft in a modal, with what only the lawyer can add left in brackets. Send it: it shows as answered, simulated, and nothing leaves. |
 
 The checks, all without a login:
 
 ```sh
-pnpm test       # 232 tests. One more is skipped: the live canary below
+pnpm test       # 237 tests. One more is skipped: the live canary below
 pnpm check      # svelte-check
 pnpm eval       # the table below
 pnpm daily      # every Kanzlei once. Exits non-zero on a failure or an email not read
@@ -63,7 +64,13 @@ So the app has two tabs.
 | Abgelaufen, Datum prüfen | A Frist already past. A row with no date that code can place. Each shows only when it has rows. |
 | Zeitleiste | Every dated Termin and Frist by day, in one scroller. A click on a day in the month moves it there. |
 
-A row opens its email in a side sheet, with the quotes marked. **"Postfach"** lists every email, newest first.
+A row opens its email in a side sheet, with the quotes marked.
+
+**"Postfach"** lists every email, newest first, under four figures: the connected account, the emails, the unread ones and how many reach "Heute".
+The email opens beside the list as a mail client shows it: who wrote, the model's one line with its quotes marked in the email, what code checked.
+Icons answer, forward, mark it unread and archive it. **All of that is simulated:** it writes `out/mailbox.json`, never touches the inbox's
+files, and sends nothing. An archived email stays on "Heute" with its Frist. There is no delete, because a dropped email is the worst failure.
+beA has no answer here: in reality it needs its own card and the Kanzleisoftware, so the server refuses one.
 
 The rank is a decision table in code. The sheet's title and the Postfach say it.
 
@@ -97,6 +104,9 @@ data/<kanzlei>/inbox/*.json   the simulated inbox, with Microsoft Graph's fields
   The screen says "berechnet, bitte prüfen".
 - **The rank is code, not the LLM.** An email that says "rank this first" gets a warning, not a tier.
 - **One SvelteKit app.** One language and one install. The briefing is a file on disk, so a schedule later reads the same result.
+- **Reply drafts are recorded, and code checks what it can.** The ✦ needs a free text, so nothing can quote it. `scripts/record-drafts.ts`
+  recorded one per email with its own prompt, so the demo needs no login, and the briefing's prompt and replies did not change. A draft
+  that names a number or a day its email does not hold is refused. beA, newsletters, invoices and the injection get none. The lawyer edits it, and it sends nothing.
 - **`src/lib/design/` is a copy** of my own design system, so `pnpm install` needs no other repo. A change goes there first.
 - **A simulated inbox.** The brief allows it. A real connector replaces `loadInbox`, the one seam. beA is simulated as mail.
 - **`claude -p` for the demo.** `callLlm` is the only code that calls a model. It runs with no `CLAUDE.md`, settings or tools. The
@@ -142,6 +152,9 @@ Read it with care:
 ## Not sure, not built
 
 - **No lawyer has read this.** The tier order and "Heute" come from sources and my reasoning.
+- **The reply drafts are thin, and the eval does not score them.** Most are a greeting, a thanks and brackets, on purpose: the model knows no
+  case file. The code check catches a number or a day. It cannot catch an invented promise, so the modal says to check the draft.
+- **A phone.** The side sheet on "Heute" is not checked on one. The Postfach's modal was measured at 390px, not looked at.
 - **§ 222 Abs. 2 ZPO on a date the court set.** I am not sure it moves that date, so both dates show and the rank counts to the
   court's date.
 - **A known gap.** An email that claims in its text to come from a court, but does not come by beA, keeps the LLM's role if the
