@@ -86,6 +86,45 @@ function withOldDate(event: Facts['events'][number], body: string): ItemEvent {
 	return { ...event, oldDate: dates.find((date) => body.includes(date) && !event.date_text.includes(date)) ?? null };
 }
 
+/**
+ * What a court writes when it sets a Frist, or sends what starts one. Wide on purpose: a false alarm costs a look at one
+ * email, a missed Frist costs the client's case. Not `befristet` and not `fristlos`, which set no Frist.
+ */
+const FRIST_WORDING =
+	/(?<!be)frist(?!los)|\bbinnen\b|\binnerhalb\b|spätestens|\bbis\s+(?:zum\s+)?(?:\d{1,2}\.|montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)|\b(?:einer?|zwei|drei|vier|sechs|acht|\d+)\s+(?:tage?n?|wochen?|monate?n?)\b|rechtsbehelfsbelehrung|rechtsmittelbelehrung|versäumnisurteil|vollstreckungsbescheid|mahnbescheid|stellungnahme|stellung\s+zu\s+nehmen|aufgegeben/i;
+const PASSAGE_LENGTH = 90;
+
+/** The first line that holds Frist wording, outside a quoted older reply. Null: no such line. */
+export function fristWording(body: string): string | null {
+	const line = body.split('\n').find((candidate) => !candidate.startsWith('>') && FRIST_WORDING.test(candidate));
+	if (line === undefined) return null;
+	const passage = line.trim();
+	return passage.length > PASSAGE_LENGTH ? `${passage.slice(0, PASSAGE_LENGTH)}…` : passage;
+}
+
+/**
+ * The quote check tests what the model said, not what it left out. So a court's mail with no Frist from the model, whose
+ * text reads like one, gets an open Frist with no date: the lawyer reads the email. It is not `end`: code does not guess.
+ */
+function missedFrist(email: Email, passage: string): Frist {
+	return {
+		what: 'Mögliche Frist, E-Mail lesen',
+		trigger: 'wording',
+		quote: '',
+		quoteOk: true,
+		status: 'unsure',
+		lengthText: '',
+		emailId: email.id,
+		source: 'email',
+		end: null,
+		rawEnd: null,
+		relative: false,
+		reason: 'Die KI hat keine Frist erkannt, der Text klingt danach.',
+		hint: `Im Text: „${passage}“`,
+		daysLeft: null
+	};
+}
+
 export function blankItem(): Item {
 	return {
 		emails: [],
@@ -158,6 +197,10 @@ export function buildItem(
 				kanzlei.land
 			)
 		);
+	}
+	if (role === 'court' && fristen.length === 0 && !facts.injection_suspect.present) {
+		const passage = fristWording(email.body);
+		if (passage !== null) fristen.push(missedFrist(email, passage));
 	}
 	return {
 		...blankItem(),

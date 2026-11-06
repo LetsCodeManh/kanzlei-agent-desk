@@ -71,7 +71,8 @@ export interface Akte {
 
 export interface Frist {
 	what: string;
-	trigger: Trigger | 'akte';
+	/** `wording`: the model named no Frist, and code found Frist wording in a court's mail. */
+	trigger: Trigger | 'akte' | 'wording';
 	quote: string;
 	quoteOk: boolean;
 	status: Status | 'from_event';
