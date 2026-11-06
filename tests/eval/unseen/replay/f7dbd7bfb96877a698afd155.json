@@ -1,0 +1,66 @@
+{
+ "email_id": "u06",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "LG Isarstadt verkündet Endurteil: Beklagte zur Zahlung von 27.310,48 EUR verurteilt; Berufungsfrist und Begründungsfrist laufen ab Zustellung 27.10.2026.",
+   "quotes": [
+    "Die Beklagte wird verurteilt, an den Kläger 27.310,48 EUR nebst Zinsen",
+    "Zustellungsdatum laut Zustellungsvermerk: 27.10.2026."
+   ]
+  },
+  "sender_role": {
+   "value": "court",
+   "quote": "Landgericht Isarstadt, 5. Zivilkammer"
+  },
+  "aktenzeichen": {
+   "value": "5 O 2188/25",
+   "quote": "Aktenzeichen: 5 O 2188/25"
+  },
+  "fristen": [
+   {
+    "what": "Berufung einlegen (Notfrist)",
+    "trigger": "zustellung",
+    "trigger_date_text": "27.10.2026",
+    "length_text": "einem Monat",
+    "quote": "Die Berufung muss binnen einer Notfrist von einem Monat nach Zustellung des in vollständiger Form abgefassten Urteils",
+    "status": "found"
+   },
+   {
+    "what": "Berufung begründen",
+    "trigger": "zustellung",
+    "trigger_date_text": "27.10.2026",
+    "length_text": "zwei Monaten",
+    "quote": "Die Berufung ist innerhalb von zwei Monaten nach Zustellung des in vollständiger Form abgefassten Urteils zu begründen.",
+    "status": "found"
+   }
+  ],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 4233,
+  "cost_usd": 0.0159814,
+  "input_tokens": 4388,
+  "output_tokens": 777
+ }
+}

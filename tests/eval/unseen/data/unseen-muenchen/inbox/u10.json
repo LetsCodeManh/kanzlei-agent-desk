@@ -1,0 +1,16 @@
+{
+  "id": "u10",
+  "channel": "email",
+  "receivedDateTime": "2026-10-21T08:30:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Rechtsfix Datenbanken GmbH",
+      "address": "rechnung@rechtsfix.example"
+    }
+  },
+  "subject": "Rechnung 2026-48811 - Jahreslizenz Online-Kommentare",
+  "body": {
+    "contentType": "text",
+    "content": "Rechtsfix Datenbanken GmbH\nKundenservice Buchhaltung\n\nRechnung Nr. 2026-48811\nKundennummer: 70-30291\nRechnungsdatum: 20.10.2026\n\nKanzlei Erfunden\nHerrn RA Jonas Erfunden\nIsarstadt\n\nSehr geehrter Herr Erfunden,\n\nfür den Leistungszeitraum 01.11.2026 bis 31.10.2027 berechnen wir Ihnen:\n\nJahreslizenz Online-Kommentare \"Zivilprozess Plus\", 1 Arbeitsplatz     1.188,00 EUR\nZusatzmodul Mietrecht                                                      240,00 EUR\nSumme netto                                                              1.428,00 EUR\nzzgl. 19 % USt                                                             271,32 EUR\nRechnungsbetrag brutto                                                   1.699,32 EUR\n\nZahlungsziel: 14 Tage netto, fällig am 03.11.2026.\n\nZahlbar per Überweisung auf das Konto IBAN DE00 0000 0000 0000 0000 00 (Verwendungszweck: Rechnungsnummer). Bei Einzugsermächtigung wird der Betrag am Fälligkeitstag eingezogen.\n\nIhre Lizenz verlängert sich automatisch um ein weiteres Jahr, wenn sie nicht rechtzeitig gekündigt wird. Die Kündigungsfrist beträgt drei Monate zum Laufzeitende.\n\nBei Fragen erreichen Sie uns unter 0800 000000 (kostenlos) oder per Antwort auf diese E-Mail.\n\nMit freundlichen Grüßen\nIhre Rechtsfix Datenbanken GmbH\nSitz der Gesellschaft: Musterstadt, Handelsregister B 00000"
+  }
+}

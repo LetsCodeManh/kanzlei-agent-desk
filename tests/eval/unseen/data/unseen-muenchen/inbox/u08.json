@@ -1,0 +1,16 @@
+{
+  "id": "u08",
+  "channel": "email",
+  "receivedDateTime": "2026-11-02T05:02:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Walter Kellerer",
+      "address": "w.kellerer@mailbox-sued.example"
+    }
+  },
+  "subject": "AW: AW: AW: Berufung gegen das Urteil, Unterlagen",
+  "body": {
+    "contentType": "text",
+    "content": "Hallo Herr Erfunden,\n\nja, passt so. Dann bleibt es beim Treffen am Mittwoch um 10 Uhr bei Ihnen. Die Ordner bringe ich mit. Meine Frau kommt auch mit, wenn das ok ist.\n\nViele Grüße\nWalter Kellerer\n\nAm 29.10.2026 um 16:12 schrieb Walter Kellerer <w.kellerer@mailbox-sued.example>:\n> Hallo Herr Erfunden,\n>\n> danke für die Info. Mittwoch ginge bei mir um 10 oder um 15 Uhr. Was ist besser?\n> Ich such noch den Brief von der Bank raus, den hatte ich damals nicht abgeheftet.\n>\n> VG W. Kellerer\n>\n> Am 28.10.2026 um 09:40 schrieb Jonas Erfunden <erfunden@kanzlei-erfunden.example>:\n>> Sehr geehrter Herr Kellerer,\n>>\n>> kurzer Stand zur Berufung. Das Oberlandesgericht hat die Frist zur Berufungsbegründung bis zum 30.11.2026 verlängert. Die Verfügung ist am 22.10. bei uns eingegangen, ursprünglich wäre die Frist am 02.11.2026 abgelaufen. Sie müssen dazu nichts tun, wir arbeiten an der Begründung.\n>>\n>> Wir brauchen von Ihnen noch die vollständige Korrespondenz mit der Bank aus dem Jahr 2023, besonders die Schreiben zur Kündigung des Darlehens. Können wir uns diese Woche dafür treffen? Mittwoch, den 4. November, wäre bei mir frei.\n>>\n>> Mit freundlichen Grüßen\n>> Jonas Erfunden\n>> Rechtsanwalt\n>>\n>> Am 21.10.2026 um 18:03 schrieb Walter Kellerer <w.kellerer@mailbox-sued.example>:\n>>> Sehr geehrter Herr Erfunden,\n>>>\n>>> ich hab von meiner Frau gehört, dass das Gericht ihnen geschrieben hat. Stimmt das? Muss ich was unterschreiben? Ich bin ab Freitag auf Montage in Passau und schlecht erreichbar.\n>>>\n>>> Gruß W. Kellerer"
+  }
+}

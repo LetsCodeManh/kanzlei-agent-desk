@@ -1,0 +1,16 @@
+{
+  "id": "u04",
+  "channel": "email",
+  "receivedDateTime": "2026-10-30T07:02:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Fortbildungsinstitut Spreeburg e.V.",
+      "address": "newsletter@fortbildung-spreeburg.example"
+    }
+  },
+  "subject": "Seminare November/Dezember: Mietrecht aktuell - jetzt anmelden",
+  "body": {
+    "contentType": "text",
+    "content": "Fortbildungsinstitut Spreeburg e.V. - Newsletter 11/2026\n\nLiebe Kolleginnen und Kollegen,\n\nim Winter bieten wir Ihnen wieder ein dichtes Programm für die Fachanwaltsfortbildung nach § 15 FAO an.\n\nUnsere Highlights:\n\n* Mietrecht aktuell - Rechtsprechung des BGH 2025/26\n  Samstag, 5. Dezember 2026, 9:00 bis 16:30 Uhr, Spreeburg, Haus der Anwaltschaft (5 Zeitstunden)\n  Referent: RA Dr. Konrad Weidenfeld\n  Frühbucherrabatt bis zum 06.11.2026, regulärer Preis danach 190,00 EUR zzgl. USt.\n\n* Das beA im Kanzleialltag - Störungen, Fristen, Nachweise\n  Mittwoch, 25. November 2026, online (3 Zeitstunden)\n  Die Anmeldefrist endet am 13.11.2026.\n\n* Arbeitsrecht für Einsteiger\n  Termine im Januar, Anmeldung ab sofort möglich.\n\nDie Teilnahmebescheinigungen erhalten Sie im Anschluss per E-Mail. Stornierungen sind bis 14 Tage vor Veranstaltungsbeginn kostenfrei möglich.\n\nAnmeldung unter www.fortbildung-spreeburg.example/anmeldung\n\nMit kollegialen Grüßen\nIhr Team vom Fortbildungsinstitut Spreeburg e.V.\n\nSie möchten den Newsletter nicht mehr erhalten? Hier abbestellen: www.fortbildung-spreeburg.example/abbestellen"
+  }
+}

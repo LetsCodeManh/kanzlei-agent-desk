@@ -1,0 +1,132 @@
+{
+  "u01": {
+    "sender_role": "court",
+    "fristen": [
+      {
+        "what": "Verteidigungsanzeige",
+        "starts": "2026-10-29",
+        "length": "zwei Wochen",
+        "stated_end": null,
+        "expected_end": "2026-11-12",
+        "words": "innerhalb einer Frist von zwei Wochen nach Zustellung der Klageschrift"
+      },
+      {
+        "what": "Klageerwiderung",
+        "starts": "2026-10-29",
+        "length": "vier Wochen",
+        "stated_end": null,
+        "expected_end": "2026-11-26",
+        "words": "binnen vier Wochen ab Zustellung der Klageschrift"
+      }
+    ],
+    "lawyer_must_see_today": true,
+    "why": "Two periods in one Verfügung, both run from the stated Zustellung 29.10 and the Klageerwiderung one sits in point 3 under different wording; no date is given by the court."
+  },
+  "u02": {
+    "sender_role": "client",
+    "fristen": [
+      {
+        "what": "Widerspruch gegen Mahnbescheid",
+        "starts": "2026-10-31",
+        "length": "zwei Wochen",
+        "stated_end": null,
+        "expected_end": "2026-11-16",
+        "words": "Mahnbescheid steht drauf"
+      }
+    ],
+    "lawyer_must_see_today": true,
+    "why": "Client never names a deadline; the two-week Widerspruchsfrist (§ 692 Abs. 1 Nr. 3 ZPO) follows from the Mahnbescheid and the Zustellung on Sat 31.10, so the end 14.11 is a Saturday and moves to Mon 16.11."
+  },
+  "u03": {
+    "sender_role": "internal",
+    "fristen": [
+      {
+        "what": "Stellungnahme zum Schriftsatz der Klägerin",
+        "starts": null,
+        "length": null,
+        "stated_end": "2026-11-20",
+        "expected_end": "2026-11-20",
+        "words": "Gelegenheit zur Stellungnahme bis zum 20.11.2026"
+      }
+    ],
+    "lawyer_must_see_today": true,
+    "why": "Secretary forwards and retypes a court letter; the deadline is a court-stated date inside the pasted text, and other dates in the body (30.10 Eingang, 12.11 Mandantentermin, 26.10, 22.10, 02.10) are not deadlines."
+  },
+  "u04": {
+    "sender_role": "other",
+    "fristen": [],
+    "lawyer_must_see_today": false,
+    "why": "Newsletter with Frühbucher- and Anmeldefrist; these are marketing dates for a seminar, not a procedural or legal deadline of a case."
+  },
+  "u05": {
+    "sender_role": "court",
+    "fristen": [],
+    "lawyer_must_see_today": false,
+    "why": "Court mail that names two deadlines (06.10 Verfügung, 23.10 Stellungnahme) but only to confirm the Frist was met; no open Frist, a Ladung follows separately."
+  },
+  "u06": {
+    "sender_role": "court",
+    "fristen": [
+      {
+        "what": "Berufungsfrist",
+        "starts": "2026-10-27",
+        "length": "einen Monat",
+        "stated_end": null,
+        "expected_end": "2026-11-27",
+        "words": "binnen einer Notfrist von einem Monat nach Zustellung des in vollständiger Form abgefassten Urteils"
+      },
+      {
+        "what": "Berufungsbegründungsfrist",
+        "starts": "2026-10-27",
+        "length": "zwei Monate",
+        "stated_end": null,
+        "expected_end": "2026-12-28",
+        "words": "innerhalb von zwei Monaten nach Zustellung des in vollständiger Form abgefassten Urteils zu begründen"
+      }
+    ],
+    "lawyer_must_see_today": true,
+    "why": "Frist lives only in the Rechtsbehelfsbelehrung at the end of a long judgment; the Zustellung date comes last; Begründung end 27.12 is a Sunday, so it moves to Mon 28.12."
+  },
+  "u07": {
+    "sender_role": "opponent",
+    "fristen": [
+      {
+        "what": "Abgabe der Unterlassungserklärung (Frist der Gegenseite)",
+        "starts": null,
+        "length": null,
+        "stated_end": "2026-11-06",
+        "expected_end": "2026-11-06",
+        "words": "bis spätestens Freitag, den 06.11.2026, 12:00 Uhr"
+      }
+    ],
+    "lawyer_must_see_today": true,
+    "why": "A deadline set by the other side's lawyer, not a court or the law; it names a clock time and the date has a weekday attached (Fri 06.11 is correct)."
+  },
+  "u08": {
+    "sender_role": "client",
+    "fristen": [
+      {
+        "what": "Berufungsbegründung (verlängert)",
+        "starts": null,
+        "length": null,
+        "stated_end": "2026-11-30",
+        "expected_end": "2026-11-30",
+        "words": "hat die Frist zur Berufungsbegründung bis zum 30.11.2026 verlängert"
+      }
+    ],
+    "lawyer_must_see_today": true,
+    "why": "Newest message is only a meeting confirmation; the only record of the extended Frist is the lawyer's own quoted mail two levels down, which also holds the old end 02.11.2026 (not the current one)."
+  },
+  "u09": {
+    "sender_role": "client",
+    "fristen": [],
+    "lawyer_must_see_today": false,
+    "why": "Befristeter Mietvertrag (until 31.03.2027) and a past fristlose Kündigung (2024, decided, rechtskräftig) are mentioned in passing; the client sets no deadline and names no open one."
+  },
+  "u10": {
+    "sender_role": "other",
+    "fristen": [],
+    "lawyer_must_see_today": false,
+    "why": "Vendor invoice with Zahlungsziel 14 Tage and a Kündigungsfrist clause; business admin dates, no Frist in a case."
+  }
+}

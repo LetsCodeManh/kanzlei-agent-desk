@@ -1,0 +1,16 @@
+{
+  "id": "u02",
+  "channel": "email",
+  "receivedDateTime": "2026-11-01T18:23:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Kevin Lorenz-Haupt",
+      "address": "k.lorenzhaupt@mailbox-nord.example"
+    }
+  },
+  "subject": "gelber brief vom gericht",
+  "body": {
+    "contentType": "text",
+    "content": "hallo frau fiktiv,\n\nich hoffe sie haben ein schönes wochenende. ich wollte eigentlich erst montag schreiben aber der brief lässt mich nicht los.\n\nalso, bei uns kam am samstag so ein gelber brief an. Der Postbote hat den am Samstag 31.10. eingeworfen, steht auch hinten auf dem gelben Umschlag mit Datum. Absender ist Amtsgericht Spreeburg-Mitte, Mahnbescheid steht drauf. Die Firma Kraftwerk Energie Vertrieb will 1.847,22 € von mir wegen irgendeiner Stromnachzahlung plus Zinsen und Kosten.\n\nDabei hab ich den Vertrag mit denen schon im Frühjahr gekündigt (hab ich ihnen per Mail geschickt, die Bestätigung find ich bestimmt noch) und danach einen neuen Anbieter gehabt. Die Nachzahlung ist komplett erfunden meiner Meinung nach, mein Zähler wurde auch nie abgelesen.\n\nIch hab den Brief jetzt mal auf den Küchentisch gelegt und nichts gemacht. Ist ja nur ein Antrag von denen und kein Urteil oder? Mein Kumpel meinte das ist nur Druckmache und man muss gar nix machen. Sind sie am Montag im Büro? Dann kann ich den vorbeibringen oder foto machen und schicken.\n\nGrüße\nKevin Lorenz-Haupt\n\nGesendet von meinem Handy"
+  }
+}

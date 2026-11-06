@@ -1,0 +1,16 @@
+{
+  "id": "u03",
+  "channel": "email",
+  "receivedDateTime": "2026-11-02T05:18:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Petra Wendland",
+      "address": "wendland@kanzlei-fiktiv.example"
+    }
+  },
+  "subject": "WG: Schreiben AG Spreeburg-Mitte, Fam. Brandt",
+  "body": {
+    "contentType": "text",
+    "content": "Guten Morgen Frau Fiktiv,\n\ndas hier ist am Freitag mit der Post gekommen (Eingangsstempel 30.10.), ich hab's gestern nicht mehr geschafft Ihnen zu schicken. Habe es auch in die Akte Brandt gelegt, Original liegt auf Ihrem Tisch.\n\nHerr Brandt hat übrigens noch mal angerufen, er will Donnerstag zurückrufen. Und sein Termin bei uns ist wie besprochen am 12.11. um 14 Uhr.\n\nIch tippe das Wichtige mal ab, falls der Scan unleserlich ist:\n\n----------------------------------------\nAmtsgericht Spreeburg-Mitte\nAbteilung 33\nGeschäftsnummer: 33 C 2093/26\n\nSpreeburg, den 26.10.2026\n\nIn dem Rechtsstreit\nWohnbau Spreeburg Verwaltungs-GmbH ./. Brandt\n\nwegen Mietzahlung\n\nSehr geehrte Frau Rechtsanwältin Fiktiv,\n\ndie Klägerin hat mit Schriftsatz vom 22.10.2026 auf die Klageerwiderung vom 02.10.2026 repliziert. Der Schriftsatz liegt bei. Eine Abschrift ist Ihnen bereits direkt von der Gegenseite zugegangen.\n\nDem Beklagten wird Gelegenheit zur Stellungnahme bis zum 20.11.2026 gegeben. Nach Ablauf dieser Zeit wird das Gericht über das weitere Vorgehen entscheiden.\n\nMit freundlichen Grüßen\nMeier-Lindgren\nRichterin am Amtsgericht\n----------------------------------------\n\nSoll ich die Wiedervorlage in den Kalender eintragen? Sagen Sie mir einfach Bescheid.\n\nViele Grüße\nPetra Wendland\nKanzlei Fiktiv\nSekretariat"
+  }
+}

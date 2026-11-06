@@ -1,0 +1,60 @@
+{
+ "email_id": "u04",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Newsletter eines Fortbildungsinstituts mit Seminarangeboten; Frühbucherrabatt und Anmeldefrist sind Marketing, keine rechtlichen Fristen.",
+   "quotes": [
+    "Frühbucherrabatt bis zum 06.11.2026",
+    "Die Anmeldefrist endet am 13.11.2026."
+   ]
+  },
+  "sender_role": {
+   "value": "other",
+   "quote": "Fortbildungsinstitut Spreeburg e.V. - Newsletter 11/2026"
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [
+   {
+    "what": "Seminar Mietrecht aktuell, Haus der Anwaltschaft Spreeburg",
+    "date_text": "Samstag, 5. Dezember 2026, 9:00 bis 16:30 Uhr",
+    "quote": "Samstag, 5. Dezember 2026, 9:00 bis 16:30 Uhr, Spreeburg, Haus der Anwaltschaft (5 Zeitstunden)"
+   },
+   {
+    "what": "Online-Seminar Das beA im Kanzleialltag",
+    "date_text": "Mittwoch, 25. November 2026",
+    "quote": "Mittwoch, 25. November 2026, online (3 Zeitstunden)"
+   }
+  ],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 4605,
+  "cost_usd": 0.0127774,
+  "input_tokens": 3752,
+  "output_tokens": 711
+ }
+}

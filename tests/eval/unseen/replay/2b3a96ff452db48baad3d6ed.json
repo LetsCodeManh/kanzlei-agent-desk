@@ -1,0 +1,50 @@
+{
+ "email_id": "u02",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Mandant meldet Mahnbescheid des Amtsgerichts Spreeburg-Mitte (1.847,22 €), am Samstag 31.10. eingeworfen; er hat bisher nichts unternommen.",
+   "quotes": [
+    "Der Postbote hat den am Samstag 31.10. eingeworfen",
+    "Absender ist Amtsgericht Spreeburg-Mitte, Mahnbescheid steht drauf.",
+    "Ich hab den Brief jetzt mal auf den Küchentisch gelegt und nichts gemacht."
+   ]
+  },
+  "sender_role": {
+   "value": "client",
+   "quote": "Die Firma Kraftwerk Energie Vertrieb will 1.847,22 € von mir wegen irgendeiner Stromnachzahlung plus Zinsen und Kosten."
+  },
+  "aktenzeichen": {
+   "value": "",
+   "quote": ""
+  },
+  "fristen": [],
+  "frist_event": {
+   "present": true,
+   "kind": "mahnbescheid",
+   "date_text": "Samstag 31.10.",
+   "quote": "Der Postbote hat den am Samstag 31.10. eingeworfen"
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 5455,
+  "cost_usd": 0.011539399999999998,
+  "input_tokens": 3660,
+  "output_tokens": 624
+ }
+}

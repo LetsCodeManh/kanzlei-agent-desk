@@ -1,0 +1,16 @@
+{
+  "id": "u09",
+  "channel": "email",
+  "receivedDateTime": "2026-10-24T10:11:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Sabine Ostermeier",
+      "address": "sabine.ostermeier@mailbox-sued.example"
+    }
+  },
+  "subject": "Mietvertrag Ladenlokal Verlängerung",
+  "body": {
+    "contentType": "text",
+    "content": "Lieber Herr Erfunden,\n\nich schreibe ihnen heute wegen dem Laden in der Sendlinger Str. Wie sie wissen hab ich das Ladenlokal ja seit 2021 gemietet, und der Mietvertrag ist befristet bis 31.03.2027. Ich würde ihn gerne verlängern, mindestens um 5 Jahre, weil ich gerade viel in die Einrichtung investiert hab.\n\nDie Vermieterin, Frau Grünwald, ist da nicht ganz leicht. Ich hab ja schon mal Ärger gehabt mit ihr, 2024, da hat sie mir fristlos gekündigt wegen angeblich verspäteter Miete im Januar. Das hat das Amtsgericht damals ja vom Tisch gewischt und das Urteil ist seit letztem Sommer rechtskräftig, das haben sie ja für mich gemacht. Damit ist das für mich eigentlich abgehakt, ich erwähne es nur weil Frau Grünwald immer noch so tut als wäre ich ein schlechter Mieter.\n\nJetzt meine Frage: kann ich die Verlängerung irgendwie erzwingen, oder hat sie komplett freie Hand? Im Vertrag steht was von einer Option, ich hänge den Vertrag als PDF an (hoffe das klappt, mein Scanner spinnt). Und muss ich irgendwas beachten wenn ich ihr schreibe, damit sie nicht gleich wieder blockt?\n\nEs eilt nicht wirklich, ich bin aber nächste Woche auf der Messe in Nürnberg und danach hätte ich gerne einen Rat von ihnen. Telefonisch geht bei mir am besten vormittags.\n\nDanke und schönes Wochenende\nSabine Ostermeier\nBoutique Sabine"
+  }
+}

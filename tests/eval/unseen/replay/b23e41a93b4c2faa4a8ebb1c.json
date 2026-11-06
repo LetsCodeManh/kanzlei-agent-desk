@@ -1,0 +1,67 @@
+{
+ "email_id": "u01",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "LG Spreeburg stellt der Beklagten die Klageschrift am 29.10.2026 zu; Verteidigungsanzeige binnen zwei Wochen, Klageerwiderung binnen vier Wochen ab Zustellung.",
+   "quotes": [
+    "Zustellungsdatum laut Zustellungsvermerk: 29.10.2026.",
+    "innerhalb einer Frist von zwei Wochen nach Zustellung der Klageschrift",
+    "binnen vier Wochen ab Zustellung der Klageschrift einzureichen"
+   ]
+  },
+  "sender_role": {
+   "value": "court",
+   "quote": "Vorsitzende Richterin am Landgericht"
+  },
+  "aktenzeichen": {
+   "value": "14 O 311/26",
+   "quote": "Geschäftsnummer: 14 O 311/26"
+  },
+  "fristen": [
+   {
+    "what": "Verteidigungsanzeige (Anzeige der Verteidigungsabsicht) an das Gericht",
+    "trigger": "zustellung",
+    "trigger_date_text": "29.10.2026",
+    "length_text": "zwei Wochen",
+    "quote": "innerhalb einer Frist von zwei Wochen nach Zustellung der Klageschrift",
+    "status": "found"
+   },
+   {
+    "what": "Klageerwiderung",
+    "trigger": "zustellung",
+    "trigger_date_text": "29.10.2026",
+    "length_text": "vier Wochen",
+    "quote": "binnen vier Wochen ab Zustellung der Klageschrift einzureichen",
+    "status": "found"
+   }
+  ],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 5861,
+  "cost_usd": 0.0156334,
+  "input_tokens": 4301,
+  "output_tokens": 777
+ }
+}

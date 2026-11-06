@@ -1,0 +1,64 @@
+{
+ "email_id": "u03",
+ "model": "claude-sonnet-5-5",
+ "prompt_version": "v2",
+ "output": {
+  "summary": {
+   "text": "Sekretariat leitet Gerichtsschreiben (33 C 2093/26) weiter: Stellungnahme der Beklagten bis 20.11.2026; Mandantentermin am 12.11. um 14 Uhr.",
+   "quotes": [
+    "Dem Beklagten wird Gelegenheit zur Stellungnahme bis zum 20.11.2026 gegeben.",
+    "Und sein Termin bei uns ist wie besprochen am 12.11. um 14 Uhr."
+   ]
+  },
+  "sender_role": {
+   "value": "internal",
+   "quote": "Ich tippe das Wichtige mal ab, falls der Scan unleserlich ist:"
+  },
+  "aktenzeichen": {
+   "value": "33 C 2093/26",
+   "quote": "Geschäftsnummer: 33 C 2093/26"
+  },
+  "fristen": [
+   {
+    "what": "Stellungnahme des Beklagten zum Replikschriftsatz der Klägerin",
+    "trigger": "stated_date",
+    "trigger_date_text": "20.11.2026",
+    "length_text": "",
+    "quote": "Dem Beklagten wird Gelegenheit zur Stellungnahme bis zum 20.11.2026 gegeben.",
+    "status": "found"
+   }
+  ],
+  "frist_event": {
+   "present": false,
+   "kind": "other",
+   "date_text": "",
+   "quote": ""
+  },
+  "urgent_request": {
+   "present": false,
+   "quote": ""
+  },
+  "wiedervorlage_today": {
+   "present": false,
+   "quote": ""
+  },
+  "events": [
+   {
+    "what": "Termin von Herrn Brandt in der Kanzlei",
+    "date_text": "12.11. um 14 Uhr",
+    "quote": "Und sein Termin bei uns ist wie besprochen am 12.11. um 14 Uhr."
+   }
+  ],
+  "injection_suspect": {
+   "present": false,
+   "quote": ""
+  }
+ },
+ "meta": {
+  "model": "claude-sonnet-5-5",
+  "duration_ms": 6042,
+  "cost_usd": 0.016185400000000003,
+  "input_tokens": 3814,
+  "output_tokens": 1027
+ }
+}

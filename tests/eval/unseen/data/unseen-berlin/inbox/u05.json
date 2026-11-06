@@ -1,0 +1,16 @@
+{
+  "id": "u05",
+  "channel": "bea",
+  "receivedDateTime": "2026-10-27T09:35:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Amtsgericht Spreeburg-Mitte",
+      "address": "geschaeftsstelle33@ag-spreeburg-mitte.justiz.example"
+    }
+  },
+  "subject": "33 C 4417/26 - Kreutzer ./. Hallmann - Eingang Schriftsatz",
+  "body": {
+    "contentType": "text",
+    "content": "Amtsgericht Spreeburg-Mitte\nAbteilung 33\nGeschäftsnummer: 33 C 4417/26\n\nIn dem Rechtsstreit\n\nIngrid Kreutzer, Birkenstraße 9, 13359 Spreeburg\n                                                        - Klägerin -\nProzessbevollmächtigter: Rechtsanwalt Dr. Faber, Spreeburg\n\ngegen\n\nOlaf Hallmann, Am Kanal 17, 10179 Spreeburg\n                                                        - Beklagter -\nProzessbevollmächtigte: Rechtsanwältin Clara Fiktiv, Kanzlei Fiktiv, Spreeburg\n\nwegen Schadensersatz (Verkehrsunfall)\n\nSehr geehrte Frau Rechtsanwältin Fiktiv,\n\nin der Angelegenheit teilt das Gericht mit:\n\nMit Verfügung vom 06.10.2026 war Ihnen Gelegenheit zur Stellungnahme bis zum 23.10.2026 gegeben worden. Ihr Schriftsatz vom 22.10.2026 ist am 22.10.2026 bei Gericht eingegangen. Die Frist ist damit gewahrt. Der Schriftsatz wurde der Klägerseite zur Kenntnis übersandt.\n\nWeitere Fristen werden nicht gesetzt. Die Akte wird nun der zuständigen Richterin zur Entscheidung über die weitere Terminierung vorgelegt. Über den Termin ergeht gesonderte Ladung.\n\nDieses Schreiben dient nur zur Kenntnis. Eine Antwort ist nicht erforderlich.\n\nMit freundlichen Grüßen\nJustizangestellte Kowalik\nUrkundsbeamtin der Geschäftsstelle\n\nDieses Schreiben wurde elektronisch erstellt und ist ohne Unterschrift gültig."
+  }
+}

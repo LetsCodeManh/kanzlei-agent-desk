@@ -1,0 +1,16 @@
+{
+  "id": "u01",
+  "channel": "bea",
+  "receivedDateTime": "2026-10-29T13:12:00Z",
+  "from": {
+    "emailAddress": {
+      "name": "Landgericht Spreeburg",
+      "address": "poststelle@lg-spreeburg.justiz.example"
+    }
+  },
+  "subject": "14 O 311/26 - Brandvoll ./. Eisenschmidt - Zustellung Klageschrift",
+  "body": {
+    "contentType": "text",
+    "content": "Landgericht Spreeburg\n14. Zivilkammer\nGeschäftsnummer: 14 O 311/26\n(bei allen Schreiben bitte angeben)\n\nIn dem Rechtsstreit\n\nHartmut Brandvoll, Lindenallee 12, 10999 Spreeburg,\n                                                        - Kläger -\nProzessbevollmächtigte: Rechtsanwälte Nordlicht & Kollegen, Spreeburg\n\ngegen\n\nTanja Eisenschmidt, Wiesenweg 4, 12043 Spreeburg,\n                                                        - Beklagte -\nProzessbevollmächtigte: Rechtsanwältin Clara Fiktiv, Kanzlei Fiktiv, Spreeburg\n\nwegen Kaufpreisrückzahlung (Gebrauchtwagen), Streitwert 18.450,00 EUR\n\nergeht folgende\n\nVerfügung\n\n1. Die Klageschrift vom 21.10.2026 nebst Anlagen K1 bis K9 wird der Beklagten zugestellt. Die Zustellung erfolgt gegen elektronisches Empfangsbekenntnis. Zustellungsdatum laut Zustellungsvermerk: 29.10.2026.\n\n2. Das schriftliche Vorverfahren wird angeordnet (§ 276 ZPO). Die Beklagte wird aufgefordert, innerhalb einer Frist von zwei Wochen nach Zustellung der Klageschrift dem Gericht schriftlich anzuzeigen, ob sie sich gegen die Klage verteidigen will.\n\n3. Eine Erwiderung auf die Klage ist binnen vier Wochen ab Zustellung der Klageschrift einzureichen. Die Erwiderung muss durch eine bei dem Landgericht zugelassene Rechtsanwältin oder einen zugelassenen Rechtsanwalt erfolgen.\n\n4. Termin zur mündlichen Verhandlung wird nach Eingang der Erwiderung bestimmt.\n\nHinweise:\n\na) Der Anwaltszwang (§ 78 Abs. 1 ZPO) gilt. Die Beklagte kann die Verteidigungsanzeige nur durch eine zugelassene Rechtsanwältin abgeben.\n\nb) Zeigt die Beklagte nicht rechtzeitig an, dass sie sich verteidigen will, kann auf Antrag des Klägers ein Versäumnisurteil gegen sie ergehen (§ 331 Abs. 3 ZPO). Wird die Klage nicht rechtzeitig erwidert, kann verspätetes Vorbringen nach § 296 ZPO zurückgewiesen werden.\n\nc) Die Prozessakte wird elektronisch geführt. Schriftsätze sind als elektronisches Dokument über das beBPo oder das EGVP einzureichen (§ 130d ZPO).\n\nd) Einem Antrag auf Verlängerung der Fristen kann nur stattgegeben werden, wenn er rechtzeitig vor Fristablauf gestellt und die Verlängerung hinreichend begründet wird.\n\nDr. Wiebke Sonnenfeld\nVorsitzende Richterin am Landgericht\n\nDieses Schreiben wurde elektronisch erstellt und ist ohne Unterschrift gültig."
+  }
+}

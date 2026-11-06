@@ -27,6 +27,7 @@ node scripts/record-drafts.ts   # model calls: one reply draft per email that ha
   A surviving planted fault is no reason for a test by itself.
 - A hand-back says what a result means for the user, not which tests ran. `pnpm eval` is the result the user reads.
 - Tests live in `tests/`, and the eval in `tests/eval/`.
+- `tests/eval/unseen/` is the record of one live run, not a gate. Do not tune a prompt or the Frist wording to it.
 - A changed prompt, schema or model changes the replay key. All 28 replies must then be recorded live. Ask first.
 - The reply drafts have their own prompt and folder. A change to the draft prompt or an email means recording those drafts again. Ask first.
 - Use the Svelte MCP server and skills for any `.svelte` file. The user checks the screens in the UI.
