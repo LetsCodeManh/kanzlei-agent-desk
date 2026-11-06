@@ -29,7 +29,7 @@ gates. Claude picked Python to keep the tested code. I reversed that the same da
 3. What was new: "Heute", the hearing rule, a date the court set, "nicht gelesen", `pnpm daily`.
 4. The screens: 3 variants at a mock with real content. I picked three bands, then the code. Once I saw them I asked for one day page,
    then two tabs, Heute and Postfach, with a month, from my design system.
-5. The Postfach as a mail client: simulated answers, icons, a modal, a recorded reply draft, and the reader's and the Eingang's look, each from 3 variants in the real screen.
+5. The Postfach as a mail client: simulated answers, icons, a modal, a recorded reply draft, and the reader's and the Eingang's look, each from 3 variants in the real screen. Then the connectors in a modal, with adding simulated.
 
 ## What the AI suggested and I rejected
 

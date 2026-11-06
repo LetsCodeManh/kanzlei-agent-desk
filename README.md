@@ -29,6 +29,7 @@ Worth clicking:
 | München, "Zeitleiste", 3 Nov, Mündliche Verhandlung | A hearing tomorrow, from the case list. No email is behind it, so the row does not open anything. |
 | München, "Zeitleiste", 12 Nov, Einspruch | One Frist in a court mail and in its forward: one item, both emails. |
 | München, "Postfach", "Warnung" | An email that tells the AI to rank it first. It stays at the lowest rank, with a warning, and reaches no task or calendar. The AI button stays off on it. |
+| München, "Postfach", the "Verbundenes Konto" figure | The connectors in a modal. Add one: it says it has no demo emails behind it, so it does not look like an empty inbox. |
 | München, "Postfach", Bitte dringend zurückrufen, the ✦ | A recorded reply draft in a modal, with what only the lawyer can add left in brackets. Send it: it shows as answered, simulated, and nothing leaves. |
 
 The checks, all without a login:
@@ -71,6 +72,7 @@ The email opens beside the list as a mail client shows it: who wrote, the model'
 Icons answer, forward, mark it unread and archive it. **All of that is simulated:** it writes `out/mailbox.json`, never touches the inbox's
 files, and sends nothing. An archived email stays on "Heute" with its Frist. There is no delete, because a dropped email is the worst failure.
 beA has no answer here: in reality it needs its own card and the Kanzleisoftware, so the server refuses one.
+The "Verbundenes Konto" figure opens the connectors. Adding Google Workspace or IMAP is simulated too: no login, and no mail comes from it, because `loadInbox` is still the only code that reads mail.
 
 The rank is a decision table in code. The sheet's title and the Postfach say it.
 

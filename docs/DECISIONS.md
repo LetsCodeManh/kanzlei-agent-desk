@@ -48,6 +48,8 @@ directory for live calls. Not taken now: `ROADMAP.md`, "From the reviews".
   Claude would have paired it with the two-column modal, so the email stays beside the answer. Mine quotes the email under the text.
 - **The Eingang's row.** Three variants in the real screen: two lines by day, the model's line with initials by day, two lines under a filter. I picked the model's line.
   Claude would have picked two lines: the reader says the same line, and it shows 7 full rows at 1440x900 where mine shows 4. No "Outlook" tag: only beA is the exception. A Frist's tag holds its date.
+- **The connectors in a modal, adding simulated.** The inbox holds email from any vendor, so the screen shows it. Adding one asks for no login, because a fake form that wants a password is the wrong thing to show a lawyer.
+  No mail comes from it, so it says so, and the interface still waits for a real second connector. It is one more screen for something that does not really happen, and I kept it for what it shows.
 - **The AI button drafts a reply, recorded.** Its own prompt, key and folder, so the 28 replies and the eval did not change. A live call per click would need a login and break
   the demo with none. Asked, I took the default of a reply draft. A draft in the lawyer's own voice needs `voice.md`: `ROADMAP.md`.
 - **The draft's first prompt was too free.** It advised a client and asked for documents on its own, and took a date from the `Received:` line, which the code check refused.

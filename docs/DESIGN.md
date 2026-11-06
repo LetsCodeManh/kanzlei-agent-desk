@@ -55,6 +55,8 @@ POSTFACH   4 figures: Verbundenes Konto, E-Mails, Ungelesen, Auf Heute
            a row: initials, who and when, the subject, the model's line, tags with the date from "Heute"
   2/3      the email: who wrote, the model's line, what code checked, the words with quotes marked, what was answered
   icons    Antworten, KI-Entwurf, Weiterleiten, Ungelesen, Archivieren. An answer opens in a modal, the email quoted under it
+  konto    the Verbundenes Konto figure opens the connectors in a modal: Outlook, beA, Akten, and Google Workspace or IMAP to add.
+           Adding one writes out/mailbox.json only. No login, no mail from it
 ```
 
 In this version a lawyer reads the fake inbox and can answer by simulation: every action writes `out/mailbox.json`, the inbox's files never
