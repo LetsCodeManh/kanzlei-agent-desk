@@ -1,0 +1,20 @@
+/* Setting row: a preference, what it is and does on the left, its control on the right (a
+   segmented control, a button); rows in a group under a mono title (ListSection). Needs tokens/index.css.
+   CSS only here; SettingRow.svelte writes a row:
+   <section class="list-section"><h3 class="list-title">Privacy</h3>
+     <div class="setting-row-list"><div class="setting-row"><div class="setting-row-text"><p class="setting-row-name">Hide names</p>
+       <p class="setting-row-sub">Blurs every name on every page.</p></div>
+       <div class="segmented" data-size="small" …>Off, On</div></div></div></section>
+   An on/off setting is a segmented control of Off and On: the system has no switch.
+   Every global name here starts with setting-row. */
+
+/* a setting: its name in 500 over a gray-900 line, the control at the right, centred on both */
+/* the rows of a group, 12 apart; the group's title over them is a ListSection's */
+.setting-row-list { display: grid; gap: var(--space-3); container-type: inline-size; }
+.setting-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); font-size: 14px; line-height: 20px; }
+/* a group 440 or narrower (a phone): every control under its text, at the left, so the text keeps the width.
+   Not by each row's room: a wider control alone then dropped on a desktop, its rows no longer alike */
+@container (max-width: 440px) { .setting-row { flex-direction: column; align-items: start; gap: var(--space-3); } }
+.setting-row-text { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-0-5); }  /* the name, its line 2 under */
+.setting-row-name { margin: 0; font-weight: 500; }
+.setting-row-sub { margin: 0; color: var(--gray-900); font-size: 13px; line-height: 18px; }

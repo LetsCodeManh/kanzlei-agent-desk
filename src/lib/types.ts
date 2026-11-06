@@ -191,6 +191,8 @@ export interface Mailbox {
 	read: string[];
 	archived: string[];
 	sent: SentMail[];
+	/** Connectors added in the Postfach's modal. Simulated: no mail comes from them. */
+	added: string[];
 }
 
 /** Each thing on "Heute" sits in one place, and every email read is in the Postfach. */

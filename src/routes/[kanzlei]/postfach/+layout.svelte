@@ -31,7 +31,7 @@
 			</div>
 		</div>
 
-		<MailStats info={data.info} {mails} read={data.mailbox.read} notRead={data.briefing.coverage.notRead} />
+		<MailStats kanzlei={data.kanzlei} info={data.info} {mails} read={data.mailbox.read} added={data.mailbox.added} notRead={data.briefing.coverage.notRead} />
 
 		<div class="grid-split split">
 			<div class="grid-column">

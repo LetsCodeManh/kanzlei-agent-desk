@@ -5,6 +5,7 @@
 	When a prop changes later the tile changes in place (Stat.set): the arc moves, the figure counts,
 	a ring that reaches `done` draws as the plain arc first and turns to metal once it has landed.
 	With no `value` there is no target and no ring: the figure alone (the next hearing's time).
+	With `onopen` the whole tile is one button, named by its label: it opens what the figure is of.
 -->
 <script lang="ts">
 	import { untrack } from 'svelte';
@@ -39,9 +40,11 @@
 		size?: 'hero';
 		/** the tile of what the page shows now, as a period picked (Today, Week, Month): a hairline round it */
 		current?: boolean;
+		/** the tile opens what the figure is of (a modal): the whole tile is the target, named by `label` */
+		onopen?: () => void;
 	};
 
-	let { status, label, sub, fig, denom, meta, value, pace, valuetext, rise, size, current, class: className, ...rest }: Props = $props();
+	let { status, label, sub, fig, denom, meta, value, pace, valuetext, rise, size, current, onopen, class: className, ...rest }: Props = $props();
 
 	// what the tile shows now; null until it has mounted, so the prerendered tile is the final one
 	type Shown = { status: Props['status']; value: number; fig: string; landed: boolean };
@@ -106,7 +109,11 @@
 	style:--stat-pace={pace}
 >
 	<div class="stat-head">
-		<span class="stat-label">{label}</span>
+		{#if onopen}
+			<button class="stat-label stat-open" type="button" aria-haspopup="dialog" onclick={onopen}>{label}</button>
+		{:else}
+			<span class="stat-label">{label}</span>
+		{/if}
 		{#if sub != null}<span class="stat-sub">{sub}</span>{/if}
 	</div>
 	<div class="stat-main">

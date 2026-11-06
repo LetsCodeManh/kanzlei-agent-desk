@@ -1,12 +1,23 @@
 <!--
 	Four figures on top of the Postfach: which account is connected, how many emails, how many the lawyer has not opened,
 	how many reach "Heute". "Ungelesen" is the lawyer's own. What the briefing read is `coverage`, said in the page's head.
+	The account's tile opens the connectors.
 -->
 <script lang="ts">
 	import Stat from '#components/stat/Stat.svelte';
 	import type { Kanzlei, MailLabel, MailRow } from '#lib/types.ts';
+	import ConnectorsModal from './ConnectorsModal.svelte';
 
-	let { info, mails, read, notRead }: { info: Kanzlei; mails: MailRow[]; read: string[]; notRead: number } = $props();
+	let {
+		kanzlei,
+		info,
+		mails,
+		read,
+		added,
+		notRead
+	}: { kanzlei: string; info: Kanzlei; mails: MailRow[]; read: string[]; added: string[]; notRead: number } = $props();
+
+	let connectorsOpen = $state(false);
 
 	const total = $derived(mails.length);
 	const bea = $derived(mails.filter((mail) => mail.channel === 'bea').length);
@@ -27,9 +38,10 @@
 		status="on-track"
 		sub="simuliert"
 		fig="Outlook"
-		denom="+ beA"
+		denom={added.length === 0 ? '+ beA' : `+ ${added.length + 1}`}
 		meta={info.anwalt.address}
 		title={info.anwalt.address}
+		onopen={() => (connectorsOpen = true)}
 	/>
 
 	<Stat
@@ -58,6 +70,8 @@
 		title={landedLine}
 	/>
 </div>
+
+<ConnectorsModal bind:open={connectorsOpen} {kanzlei} {info} {added} outlook={total - bea} {bea} />
 
 <style>
 	/* A title holds one line. stat.css lets a meta wrap, and its readout grow to the longest word. */
