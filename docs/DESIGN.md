@@ -51,7 +51,8 @@ SHEET      a row with an email opens it in a side sheet: the rank as its title, 
            (emails, Frist, Termin, in order, when there are two or more), the emails with quotes marked
 
 POSTFACH   4 figures: Verbundenes Konto, E-Mails, Ungelesen, Auf Heute
-  1/3      Eingang, every email, newest first. Archiv in a Fold under it
+  1/3      Eingang, every email, newest first, under Heute, Gestern, Früher. Archiv in a Fold under it
+           a row: initials, who and when, the subject, the model's line, tags with the date from "Heute"
   2/3      the email: who wrote, the model's line, what code checked, the words with quotes marked, what was answered
   icons    Antworten, KI-Entwurf, Weiterleiten, Ungelesen, Archivieren. An answer opens in a modal, the email quoted under it
 ```

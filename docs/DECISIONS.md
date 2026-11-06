@@ -46,6 +46,8 @@ directory for live calls. Not taken now: `ROADMAP.md`, "From the reviews".
 - **Answers in a modal.** A close with changed text asks "Entwurf verwerfen?", also on Escape and a click outside.
 - **The reader as a mail client.** Three variants in the real screen: a letter, a mail client, two columns. I picked the mail client.
   Claude would have paired it with the two-column modal, so the email stays beside the answer. Mine quotes the email under the text.
+- **The Eingang's row.** Three variants in the real screen: two lines by day, the model's line with initials by day, two lines under a filter. I picked the model's line.
+  Claude would have picked two lines: the reader says the same line, and it shows 7 full rows at 1440x900 where mine shows 4. No "Outlook" tag: only beA is the exception. A Frist's tag holds its date.
 - **The AI button drafts a reply, recorded.** Its own prompt, key and folder, so the 28 replies and the eval did not change. A live call per click would need a login and break
   the demo with none. Asked, I took the default of a reply draft. A draft in the lawyer's own voice needs `voice.md`: `ROADMAP.md`.
 - **The draft's first prompt was too free.** It advised a client and asked for documents on its own, and took a date from the `Received:` line, which the code check refused.

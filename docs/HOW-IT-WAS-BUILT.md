@@ -29,7 +29,7 @@ gates. Claude picked Python to keep the tested code. I reversed that the same da
 3. What was new: "Heute", the hearing rule, a date the court set, "nicht gelesen", `pnpm daily`.
 4. The screens: 3 variants at a mock with real content. I picked three bands, then the code. Once I saw them I asked for one day page,
    then two tabs, Heute and Postfach, with a month, from my design system.
-5. The Postfach as a mail client: simulated answers, icons, a modal, a recorded reply draft, and the reader's look from 3 variants in the real screen.
+5. The Postfach as a mail client: simulated answers, icons, a modal, a recorded reply draft, and the reader's and the Eingang's look, each from 3 variants in the real screen.
 
 ## What the AI suggested and I rejected
 
@@ -37,7 +37,7 @@ gates. Claude picked Python to keep the tested code. I reversed that the same da
 |---|---|---|
 | Python for the submission: 142 tests carry over, and a port rewrites tested code | SvelteKit only, ported | One language, one install, a UI. The twins and the eval gate guard the port. |
 | `tsx` to run the scripts outside Vite | Plain `node` | I asked why. Node runs `.ts` itself, so no new dependency. |
-| A large test suite: 226 tests, with more lines than the source | Cut to 171 | I read `pnpm eval`, and the list of checks meant nothing to me. Kept: the spike's twins, the port's traps, tests against a silently wrong Frist date, the `claude` call, Kanzlei isolation. The later steps added their own, so 237 today. |
+| A large test suite: 226 tests, with more lines than the source | Cut to 171 | I read `pnpm eval`, and the list of checks meant nothing to me. Kept: the spike's twins, the port's traps, tests against a silently wrong Frist date, the `claude` call, Kanzlei isolation. The later steps added their own, so 243 today. |
 | A test for each planted fault that survived | Cut 3 of the 5 | A surviving fault is no reason for a test by itself. |
 | An `add-email` skill and a separate `fake.ts` | Cut | Used once or twice. One connector needs no interface. |
 | A `prompt-history/` folder in the spike, from a line in the research | Not in this repo, and every top-level folder is now my call | I never chose it. |

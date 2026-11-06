@@ -34,7 +34,7 @@ Worth clicking:
 The checks, all without a login:
 
 ```sh
-pnpm test       # 237 tests. One more is skipped: the live canary below
+pnpm test       # 243 tests. One more is skipped: the live canary below
 pnpm check      # svelte-check
 pnpm eval       # the table below
 pnpm daily      # every Kanzlei once. Exits non-zero on a failure or an email not read
@@ -66,7 +66,7 @@ So the app has two tabs.
 
 A row opens its email in a side sheet, with the quotes marked.
 
-**"Postfach"** lists every email, newest first, under four figures: the connected account, the emails, the unread ones and how many reach "Heute".
+**"Postfach"** lists every email, newest first, under four figures: the connected account, the emails, the unread ones and how many reach "Heute". A row shows who wrote, the subject and the model's line. A tag gives a Frist or a Termin its date, the same one as on "Heute".
 The email opens beside the list as a mail client shows it: who wrote, the model's one line with its quotes marked in the email, what code checked.
 Icons answer, forward, mark it unread and archive it. **All of that is simulated:** it writes `out/mailbox.json`, never touches the inbox's
 files, and sends nothing. An archived email stays on "Heute" with its Frist. There is no delete, because a dropped email is the worst failure.
