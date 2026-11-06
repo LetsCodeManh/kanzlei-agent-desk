@@ -1,0 +1,40 @@
+/* Mail row: one email in a list that opens it beside the list. Needs tokens/index.css.
+   MailRow.svelte writes it. Its <ul class="mail-rows"> runs to a card's edges: --card-pad is the card's.
+   Initials, who and when, the subject, the summary in two lines at most, then its tags.
+   Every global name here starts with mail-row. */
+.mail-rows { margin: 0 calc(-1 * var(--card-pad, 0px)); padding: 0; list-style: none; }
+.mail-rows > li + li { border-top: 1px solid var(--gray-alpha-200); }
+
+.mail-row {
+  position: relative; display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-2) var(--card-pad, var(--space-4));
+  color: inherit; text-decoration: none; transition: background-color var(--duration-hover) var(--ease-out);
+}
+/* 100, not 200: a Tag's fill is gray 200, so on 200 a selected row's tags lost their pill. */
+.mail-row:hover, .mail-row[aria-current] { background: var(--gray-alpha-100); }
+.mail-row:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+
+/* In the row's left padding, so the initials stay in one column, read or unread. 5: centred in the 16 of the padding.
+   7 below the row's top padding: centred on the name's 20px line. */
+.mail-row-dot {
+  position: absolute; left: 5px; top: calc(var(--space-2) + 7px); width: 6px; height: 6px; border-radius: 999px; background: var(--blue-700);
+}
+
+.mail-row-body { flex: 1; display: grid; gap: var(--space-1-5); min-width: 0; }
+.mail-row-texts { display: grid; gap: var(--space-0-5); min-width: 0; }
+.mail-row-top { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.mail-row-sender, .mail-row-subject { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mail-row-sender { font-size: 14px; line-height: 20px; }
+.mail-row-subject { color: var(--gray-900); font-size: 13px; line-height: 20px; }
+.mail-row[data-unread] :is(.mail-row-sender, .mail-row-subject) { color: var(--gray-1000); font-weight: 600; }
+
+.mail-row-end { flex: none; display: flex; align-items: center; gap: var(--space-1); margin-left: auto; color: var(--gray-900); }
+.mail-row-when { font-size: 13px; line-height: 18px; font-variant-numeric: tabular-nums; }
+
+/* A summary wraps: cut to one line at a third of the window, it said too little to help. */
+.mail-row-summary {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+  color: var(--gray-900); font-size: 13px; line-height: 18px;
+}
+.mail-row-tags { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+/* A page may pass tags that come to none: then no line, and no gap over it. */
+.mail-row-tags:empty { display: none; }

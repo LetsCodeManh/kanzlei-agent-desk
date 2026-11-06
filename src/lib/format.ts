@@ -43,10 +43,19 @@ export function dayLabel(day: Day): string {
 	return `${WEEKDAYS[date.getUTCDay()]} ${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]}`;
 }
 
-/** `Mo 2 Nov, 08:05`, in German time, whatever the viewer's time zone is. */
+/** The day in Germany, whatever the viewer's time zone is. */
+export function germanDay(time: string): Day {
+	return GERMAN_DAY.format(new Date(time));
+}
+
+/** `08:05`, in German time. */
+export function germanTime(time: string): string {
+	return GERMAN_TIME.format(new Date(time));
+}
+
+/** `Mo 2 Nov, 08:05`. */
 export function receivedLabel(time: string): string {
-	const date = new Date(time);
-	return `${dayLabel(GERMAN_DAY.format(date))}, ${GERMAN_TIME.format(date)}`;
+	return `${dayLabel(germanDay(time))}, ${germanTime(time)}`;
 }
 
 /** `November 2026`, the calendar's head. */
