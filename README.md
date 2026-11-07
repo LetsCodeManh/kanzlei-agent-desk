@@ -145,7 +145,7 @@ Read it with care:
 - **It is directional, not a benchmark.** One recorded run, n=14 per Kanzlei. The emails are cleaner than a real inbox: no
   attachments, no HTML, no long threads.
 - **A full score does not prove a good briefing.** It was already full while a court's moved hearing sat in a collapsed
-  "Rest" on an earlier screen, because my own gold label put it there. Reading the briefing as a lawyer found that, not the eval.
+  "Rest" on an earlier screen, because its gold label put it there. Reading the briefing as a lawyer found that, not the eval.
 - **End-date accuracy tests the calculator more than the LLM.** The LLM only copies "zwei Wochen" and "29.10.2026".
 - **Frist precision has no scorer.** A one-time count against the labels: the recorded run predicts no extra Frist.
 - **The recorded run:** 28 calls to `claude-sonnet-5-5`, 3.8 s per call on average, 7.3 s at most, about 89,000 input and 16,000 output

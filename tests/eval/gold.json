@@ -1,5 +1,5 @@
 {
- "_about": "Hand labels for the fake inboxes. A Frist: its end date as code must compute it, or null with its length when not computable. tier: the decision table's. must_see: the lawyer must see it in the top 3. traps: RESEARCH.md section 4.",
+ "_about": "Labels for the fake inboxes, from the spike, written with the emails. A Frist: its end date as code must compute it, or null with its length when not computable. tier: the decision table's. must_see: the lawyer must see it in the top 3. traps: RESEARCH.md section 4.",
  "kanzlei-berlin": {
   "today": "2026-11-02",
   "emails": {

@@ -80,7 +80,7 @@ lawyer. What they gave is in `DECISIONS.md`, and what waits is in `ROADMAP.md`.
 
 | What | Caught by | The fix |
 |---|---|---|
-| The eval read 100% while a court's moved hearing sat in collapsed "Rest", and a Frist with 2 days left ranked behind one with 21. My gold label was part of it. | Reading the briefing as a lawyer (Claude's read), not the eval | "Heute", and the hearing rule. Two gold labels changed, in the open. |
+| The eval read 100% while a court's moved hearing sat in collapsed "Rest", and a Frist with 2 days left ranked behind one with 21. Its gold label was part of it. | Reading the briefing as a lawyer (Claude's read), not the eval | "Heute", and the hearing rule. Two gold labels changed, in the open. |
 | Claude merged "a date the court set" into the hearing rule, in chat and in `DESIGN.md`. They are different rules. | Reading the notes back at the end of the session | `DESIGN.md` corrected. |
 | `claude -p` sent my global `CLAUDE.md` with every email: 4069 input tokens against 1227. | A planted canary and the token count | Both switches and an empty folder. `tests/context.test.ts` repeats it live. |
 | `BRIEFING_LIVE=1 pnpm test` would have called the model and overwritten the 28 replies. | Reading the port | `vite.config.ts` turns it off for tests. The canary has its own switch. |
