@@ -1,8 +1,8 @@
 # How it was built
 
 A summary, not the session history. The brief asks for the history. I kept it private, because the sessions ran in my private
-workspace, which holds unrelated personal data. `git log` is the full record of the code: each commit says what changed and
-what was checked.
+workspace, which holds unrelated personal data. "Where I steered" gives each turn with the date and time of my message, in
+plain words, not quoted. `git log` is the full record of the code: each commit says what changed and what was checked.
 
 I used Claude Code for all of it: research, design, code, tests and reviews. The Svelte MCP server and skills were build aids.
 `.claude/skills/run-eval` is the one skill in this repo.
@@ -32,16 +32,40 @@ gates. Claude picked Python to keep the tested code. I reversed that the same da
 5. The Postfach as a mail client: simulated answers, icons, a modal, a recorded reply draft, and the reader's and the Eingang's look, each from 3 variants in the real screen. Then the connectors in a modal, with adding simulated.
 6. Whether it holds: I asked if it was foolproof. Claude's answer was no, because a Frist the model leaves out stayed silent. So came a code check for a court's mail, a second live run of the 28, and 10 emails written by a separate agent that had not seen the prompt. The README has the results, and `tests/eval/unseen/` the 10.
 
+
+## Where I steered
+
+My messages are short. My rules and the session briefs turn them into exact steps. These are the turns, my message in plain words.
+
+| When (UTC−5) | What I said | What changed |
+|---|---|---|
+| Sun 1 Nov, 19:09 | Not a build session yet. Plan first, from the assessment criteria. | Research before any code |
+| Sun 1 Nov, 19:13 | Could this run in n8n instead? | n8n compared, then rejected (`DECISIONS.md`) |
+| Sun 1 Nov, 19:18 | The simplest form: a web app laid out like an email client. Is that already too much? | The mail client layout |
+| Mon 2 Nov, 09:41 | The workflow must be simple to maintain, build and launch. | The bar for every choice after |
+| Mon 2 Nov, 10:36 | A `prompt-history/` folder the research suggested, not one I chose. | Every top-level folder is my call |
+| Mon 2 Nov, 10:48 | So it becomes a Kanzlei agent desk. That might be too much. | The bigger design, cut on 5 Nov |
+| Thu 5 Nov, 09:46 | The full desk is too big. Keep the structure, finish only the morning briefing. | The cut, the rest to `ROADMAP.md` |
+| Thu 5 Nov, 10:22 | We use SvelteKit, so why keep Python? | SvelteKit only, the spike ported |
+| Thu 5 Nov, 10:26 | Two reviews: one from a lawyer's morning, one from the builder's seat. | Two review agents (`DECISIONS.md`) |
+| Thu 5 Nov, 10:47 | Why `tsx`, if we have SvelteKit? | Plain `node` |
+| Thu 5 Nov, 11:21 | I could not tell what each test protects. Keep only the necessary ones. | 226 tests cut to 171 |
+| Thu 5 Nov, 12:35 | No hierarchy, and where does the lawyer connect the email? "Tageslauf starten" means nothing. | The screens rebuilt |
+| Thu 5 Nov, 14:45 | Two tabs: the inbox and today. | Heute and Postfach |
+| Thu 5 Nov, 15:26 | One scroller for the whole timeline. A click on the calendar jumps to the date. | The timeline |
+| Thu 5 Nov, 16:18 | Icons, not word buttons: people know them. Reply and forward in a modal. | Icons and the modal |
+| Thu 5 Nov, 21:03 | Next we check if it is foolproof. I need to be sure. | The court mail check, the unseen set |
+
 ## What the AI suggested and I rejected
 
 | Suggestion | My call | Why |
 |---|---|---|
 | Python for the submission: 142 tests carry over, and a port rewrites tested code | SvelteKit only, ported | One language, one install, a UI. The twins and the eval gate guard the port. |
 | `tsx` to run the scripts outside Vite | Plain `node` | I asked why. Node runs `.ts` itself, so no new dependency. |
-| A large test suite: 226 tests, with more lines than the source | Cut to 171 | I read `pnpm eval`, and the list of checks meant nothing to me. Kept: the spike's twins, the port's traps, tests against a silently wrong Frist date, the `claude` call, Kanzlei isolation. The later steps added their own, so 262 today. |
+| A large test suite: 226 tests, with more lines than the source | Cut to 171 | I read `pnpm eval`, and I could not tell what each check protects. Kept: the spike's twins, the port's traps, tests against a silently wrong Frist date, the `claude` call, Kanzlei isolation. The later steps added their own, so 262 today. |
 | A test for each planted fault that survived | Cut 3 of the 5 | A surviving fault is no reason for a test by itself. |
 | An `add-email` skill and a separate `fake.ts` | Cut | Used once or twice. One connector needs no interface. |
-| A `prompt-history/` folder in the spike, from a line in the research | Not in this repo, and every top-level folder is now my call | I never chose it. |
+| A `prompt-history/` folder in the spike, from a line in the research | Not in this repo, and every top-level folder is now my call | A folder the research suggested, not one I chose. |
 | "Heute" as a page that scrolls, so the month's tiles cannot cut a Frist | The window's height on a desktop | I wanted the whole screen at once. Claude then made the tiles count what does not fit. |
 | The timeline shows the day picked | All dates in one scroller, and a click moves it | I want to see what comes next without clicking through days. |
 | The answer form at the top of the email, with word buttons | A modal and icons | I looked at the first build: good, not there yet. People know the icons, and the words were too long to read. |

@@ -1,4 +1,4 @@
-/** `tests/eval/gold.json`: the hand labels. */
+/** `tests/eval/gold.json`: the labels, from the spike. */
 import { readFileSync } from 'node:fs';
 
 export interface GoldFrist {

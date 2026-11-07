@@ -120,7 +120,7 @@ The other routes (Cowork, n8n, Copilot, Kanzlei products) and what I rejected: `
 
 ## The eval
 
-28 fake emails, 14 per Kanzlei, written for this, with hand labels in `tests/eval/gold.json`. They hold 11 traps: a beA mail with no
+28 fake emails, 14 per Kanzlei, written for this, with labels in `tests/eval/gold.json` from the spike. Two changed since, in the open. They hold 11 traps: a beA mail with no
 Zustellung date, a Termin and a Frist in one mail, an end on a Saturday, an end on a holiday, a Kündigung "gestern", a Frist
 already met, a newsletter's "letzte Frist", a forwarded Frist, a date only in a quoted older reply, an injection, and a
 relative date ("bis Freitag"). The scorers are code, and each scores a perfect prediction full and fails a wrong one.

@@ -296,7 +296,7 @@ recursively, and pin one key in a test. `test_no_stale_fixture` (its twin) catch
 
 ## Eval
 
-`tests/eval/gold.json` holds hand labels. Code scorers only, each with a planted-fault test: it scores a perfect
+`tests/eval/gold.json` holds the labels, from the spike. Code scorers only, each with a planted-fault test: it scores a perfect
 prediction full and fails a wrong one.
 
 | Scorer | Spike, both Kanzleien |
